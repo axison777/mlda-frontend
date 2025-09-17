@@ -1,6 +1,9 @@
 import { Bell, Search, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { NotificationCenter } from '@/components/NotificationCenter';
+import { useNotifications } from '@/hooks/useNotifications';
+import { useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,9 +15,12 @@ import { useAuth } from '@/hooks/useAuth';
 
 export const Header = () => {
   const { user, logout } = useAuth();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
+  const [showNotifications, setShowNotifications] = useState(false);
 
   return (
-    <header className="fixed top-0 left-70 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-30 w-full">
+    <>
+      <header className="fixed top-0 left-70 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-30 w-full">
       <div className="flex items-center space-x-4">
         <Button variant="ghost" size="sm" className="lg:hidden">
           <Menu className="w-5 h-5" />
@@ -29,9 +35,18 @@ export const Header = () => {
       </div>
 
       <div className="flex items-center space-x-4">
-        <Button variant="ghost" size="sm" className="relative">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="relative"
+          onClick={() => setShowNotifications(!showNotifications)}
+        >
           <Bell className="w-5 h-5" />
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-600 rounded-full"></span>
+          {unreadCount > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-600 rounded-full flex items-center justify-center text-xs text-white">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
+          )}
         </Button>
 
         <DropdownMenu>
@@ -51,6 +66,15 @@ export const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    </header>
+      </header>
+      
+      <NotificationCenter
+        isOpen={showNotifications}
+        onClose={() => setShowNotifications(false)}
+        notifications={notifications}
+        onMarkAsRead={markAsRead}
+        onMarkAllAsRead={markAllAsRead}
+      />
+    </>
   );
 };

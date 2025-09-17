@@ -16,6 +16,9 @@ import {
   Calendar,
   UserCheck,
   UserCog,
+  MessageCircle,
+  Award,
+  FileText,
 } from 'lucide-react';
 
 const adminMenuItems = [
@@ -27,6 +30,8 @@ const adminMenuItems = [
   { icon: Package, label: 'Produits', href: '/admin/products' },
   { icon: CreditCard, label: 'Paiements', href: '/admin/payments' },
   { icon: BarChart3, label: 'Publicités', href: '/admin/ads' },
+  { icon: FileText, label: 'Rapports', href: '/admin/reports' },
+  { icon: MessageCircle, label: 'Messages', href: '/admin/messages' },
   { icon: Settings, label: 'Paramètres', href: '/admin/settings' },
 ];
 
@@ -36,6 +41,8 @@ const professorMenuItems = [
   { icon: PlusCircle, label: 'Ajouter un cours', href: '/professor/create-course' },
   { icon: Calendar, label: 'Leçons & Quiz', href: '/professor/lessons' },
   { icon: Users, label: 'Étudiants', href: '/professor/students' },
+  { icon: MessageCircle, label: 'Messages', href: '/professor/messages' },
+  { icon: FileText, label: 'Rapports', href: '/professor/reports' },
   { icon: User, label: 'Profil', href: '/professor/profile' },
 ];
 
@@ -45,6 +52,8 @@ const studentMenuItems = [
   { icon: GraduationCap, label: 'Continuer', href: '/student/continue' },
   { icon: Calendar, label: 'Test de niveau', href: '/student/level-test' },
   { icon: CreditCard, label: 'Abonnements', href: '/student/subscriptions' },
+  { icon: MessageCircle, label: 'Messages', href: '/student/messages' },
+  { icon: Award, label: 'Achievements', href: '/student/achievements' },
   { icon: User, label: 'Profil', href: '/student/profile' },
 ];
 

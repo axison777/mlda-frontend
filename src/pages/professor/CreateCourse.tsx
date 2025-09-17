@@ -15,9 +15,12 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Save, Upload, Plus, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useCreateCourse } from '@/hooks/useCourses';
+import { toast } from 'sonner';
 
 export const CreateCourse = () => {
   const navigate = useNavigate();
+  const createCourseMutation = useCreateCourse();
   const [courseData, setCourseData] = useState({
     title: '',
     description: '',
@@ -28,6 +31,7 @@ export const CreateCourse = () => {
     prerequisites: '',
     objectives: [''],
     image: '',
+    price: '',
   });
 
   const [lessons, setLessons] = useState([
@@ -76,8 +80,14 @@ export const CreateCourse = () => {
   };
 
   const handleSave = (status: 'draft' | 'published') => {
-    console.log('Sauvegarde du cours:', { ...courseData, lessons, status });
-    navigate('/professor/courses');
+    const coursePayload = {
+      ...courseData,
+      price: parseFloat(courseData.price) || 0,
+      status: status.toUpperCase(),
+      lessons,
+    };
+    
+    createCourseMutation.mutate(coursePayload);
   };
 
   return (
@@ -103,6 +113,21 @@ export const CreateCourse = () => {
       </div>
 
       <Tabs defaultValue="general" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="general">Informations Générales</TabsTrigger>
+          <TabsTrigger value="content">Contenu du Cours</TabsTrigger>
+          <TabsTrigger value="settings">Paramètres</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="general">
+          <Card>
+            <CardHeader>
+              <CardTitle>Informations Générales</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="title">Titre du cours</Label>
                   <Input
                     id="title"
                     value={courseData.title}
@@ -129,6 +154,33 @@ export const CreateCourse = () => {
                 </div>
               </div>
 
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="category">Catégorie</Label>
+                  <Select value={courseData.category} onValueChange={(value) => handleInputChange('category', value)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Sélectionnez une catégorie" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Général">Général</SelectItem>
+                      <SelectItem value="Business">Business</SelectItem>
+                      <SelectItem value="Grammaire">Grammaire</SelectItem>
+                      <SelectItem value="Conversation">Conversation</SelectItem>
+                      <SelectItem value="Préparation examens">Préparation examens</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label htmlFor="duration">Durée estimée</Label>
+                  <Input
+                    id="duration"
+                    value={courseData.duration}
+                    onChange={(e) => handleInputChange('duration', e.target.value)}
+                    placeholder="Ex: 8 semaines"
+                  />
+                </div>
+              </div>
+
               <div>
                 <Label htmlFor="description">Description du cours</Label>
                 <Textarea
@@ -140,6 +192,18 @@ export const CreateCourse = () => {
                   required
                 />
               </div>
+
+              <div>
+                <Label htmlFor="prerequisites">Prérequis</Label>
+                <Textarea
+                  id="prerequisites"
+                  value={courseData.prerequisites}
+                  onChange={(e) => handleInputChange('prerequisites', e.target.value)}
+                  placeholder="Décrivez les prérequis pour ce cours..."
+                  rows={2}
+                />
+              </div>
+
               <div>
                 <Label>Objectifs d'apprentissage</Label>
                 <div className="space-y-3 mt-2">

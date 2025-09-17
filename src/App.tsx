@@ -39,6 +39,11 @@ import { LevelTest } from '@/pages/student/LevelTest';
 import { Subscriptions } from '@/pages/student/Subscriptions';
 import { StudentProfile } from '@/pages/student/StudentProfile';
 
+// Shared Pages
+import { MessagesPage } from '@/pages/shared/MessagesPage';
+import { AchievementsPage } from '@/pages/shared/AchievementsPage';
+import { ReportsPage } from '@/pages/shared/ReportsPage';
+
 const queryClient = new QueryClient();
 
 function App() {
@@ -78,6 +83,8 @@ function App() {
             <Route path="payments" element={<PaymentsManagement />} />
             <Route path="ads" element={<AdsManagement />} />
             <Route path="settings" element={<AdminSettings />} />
+            <Route path="reports" element={<ReportsPage />} />
+            <Route path="messages" element={<MessagesPage />} />
           </Route>
 
           <Route
@@ -94,6 +101,8 @@ function App() {
             <Route path="lessons" element={<LessonsQuiz />} />
             <Route path="students" element={<MyStudents />} />
             <Route path="profile" element={<ProfessorProfile />} />
+            <Route path="reports" element={<ReportsPage />} />
+            <Route path="messages" element={<MessagesPage />} />
           </Route>
 
           <Route
@@ -110,6 +119,8 @@ function App() {
             <Route path="level-test" element={<LevelTest />} />
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="profile" element={<StudentProfile />} />
+            <Route path="messages" element={<MessagesPage />} />
+            <Route path="achievements" element={<AchievementsPage />} />
           </Route>
         </Routes>
         <Toaster />
