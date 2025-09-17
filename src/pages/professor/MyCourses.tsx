@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Search, Plus, Users, Star, Edit, Eye } from 'lucide-react';
+import { Search, Plus, Users, Star, Edit, Eye, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const myCourses = [
   {
@@ -225,12 +226,18 @@ export const MyCourses = () => {
                     <div className="flex items-center justify-between">
                       <span className="text-2xl font-bold text-red-600">€{course.price}</span>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => toast.info(`Aperçu du cours: ${course.title}`)}
+                        >
                           <Eye className="w-4 h-4" />
                         </Button>
-                          onClick={() => toast.info(`Aperçu du cours: ${course.title}`)}
+                        <Button 
+                          variant="outline" 
+                          size="sm"
                           onClick={() => toast.info(`Modification du cours: ${course.title}`)}
-                        <Button variant="outline" size="sm">
+                        >
                           <Edit className="w-4 h-4" />
                         </Button>
                         <Button 

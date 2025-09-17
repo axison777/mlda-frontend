@@ -10,6 +10,7 @@ import { ProtectedRoute } from '@/components/ProtectedRoute';
 
 // Public Pages
 import { LandingPage } from '@/pages/public/LandingPage';
+import { CoursesPage } from '@/pages/public/CoursesPage';
 import { ContactPage } from '@/pages/public/ContactPage';
 import { ShopPage } from '@/pages/public/ShopPage';
 import { LoginPage } from '@/pages/auth/LoginPage';
@@ -18,6 +19,8 @@ import { SignupPage } from '@/pages/auth/SignupPage';
 // Dashboard Pages
 import { AdminDashboard } from '@/pages/admin/AdminDashboard';
 import { UsersManagement } from '@/pages/admin/UsersManagement';
+import { TeacherTracking } from '@/pages/admin/TeacherTracking';
+import { StudentTracking } from '@/pages/admin/StudentTracking';
 import { CoursesManagement } from '@/pages/admin/CoursesManagement';
 import { ProductsManagement } from '@/pages/admin/ProductsManagement';
 import { PaymentsManagement } from '@/pages/admin/PaymentsManagement';
@@ -32,6 +35,7 @@ import { ProfessorProfile } from '@/pages/professor/ProfessorProfile';
 import { StudentDashboard } from '@/pages/student/StudentDashboard';
 import { MyCourses as StudentCourses } from '@/pages/student/MyCourses';
 import { ContinueCourse } from '@/pages/student/ContinueCourse';
+import { LevelTest } from '@/pages/student/LevelTest';
 import { Subscriptions } from '@/pages/student/Subscriptions';
 import { StudentProfile } from '@/pages/student/StudentProfile';
 
@@ -50,6 +54,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
+          <Route path="/courses" element={<CoursesPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -66,6 +71,8 @@ function App() {
           >
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<UsersManagement />} />
+            <Route path="teachers" element={<TeacherTracking />} />
+            <Route path="students" element={<StudentTracking />} />
             <Route path="courses" element={<CoursesManagement />} />
             <Route path="products" element={<ProductsManagement />} />
             <Route path="payments" element={<PaymentsManagement />} />
@@ -100,6 +107,7 @@ function App() {
             <Route index element={<StudentDashboard />} />
             <Route path="courses" element={<StudentCourses />} />
             <Route path="continue" element={<ContinueCourse />} />
+            <Route path="level-test" element={<LevelTest />} />
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="profile" element={<StudentProfile />} />
           </Route>

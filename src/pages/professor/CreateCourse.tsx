@@ -23,7 +23,6 @@ export const CreateCourse = () => {
     description: '',
     level: '',
     category: '',
-    price: '',
     duration: '',
     language: 'fr',
     prerequisites: '',
@@ -104,55 +103,43 @@ export const CreateCourse = () => {
       </div>
 
       <Tabs defaultValue="general" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="general">Informations Générales</TabsTrigger>
-          <TabsTrigger value="content">Contenu du Cours</TabsTrigger>
-          <TabsTrigger value="settings">Paramètres</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="general">
-          <Card>
-            <CardHeader>
-              <CardTitle>Informations du Cours</CardTitle>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="duration">Durée estimée</Label>
                   <Input
-                    id="duration"
-                    value={courseData.duration}
-                    onChange={(e) => handleInputChange('duration', e.target.value)}
-                    placeholder="Ex: 8 semaines"
+                    id="title"
+                    value={courseData.title}
+                    onChange={(e) => handleInputChange('title', e.target.value)}
+                    placeholder="Ex: Allemand pour débutants"
+                    required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="category">Catégorie</Label>
-                  <Select value={courseData.category} onValueChange={(value) => handleInputChange('category', value)}>
+                  <Label htmlFor="level">Niveau</Label>
+                  <Select value={courseData.level} onValueChange={(value) => handleInputChange('level', value)}>
                     <SelectTrigger>
-                      <SelectValue placeholder="Sélectionnez une catégorie" />
+                      <SelectValue placeholder="Sélectionnez un niveau" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="general">Allemand Général</SelectItem>
-                      <SelectItem value="business">Allemand des Affaires</SelectItem>
-                      <SelectItem value="grammar">Grammaire</SelectItem>
-                      <SelectItem value="conversation">Conversation</SelectItem>
-                      <SelectItem value="exam">Préparation aux Examens</SelectItem>
+                      <SelectItem value="A1">A1 - Débutant</SelectItem>
+                      <SelectItem value="A2">A2 - Élémentaire</SelectItem>
+                      <SelectItem value="B1">B1 - Intermédiaire</SelectItem>
+                      <SelectItem value="B2">B2 - Intermédiaire supérieur</SelectItem>
+                      <SelectItem value="C1">C1 - Avancé</SelectItem>
+                      <SelectItem value="C2">C2 - Maîtrise</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="prerequisites">Prérequis</Label>
+                <Label htmlFor="description">Description du cours</Label>
                 <Textarea
-                  id="prerequisites"
-                  value={courseData.prerequisites}
-                  onChange={(e) => handleInputChange('prerequisites', e.target.value)}
-                  placeholder="Décrivez les prérequis nécessaires..."
-                  rows={3}
+                  id="description"
+                  value={courseData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  placeholder="Décrivez votre cours..."
+                  rows={4}
+                  required
                 />
               </div>
-
               <div>
                 <Label>Objectifs d'apprentissage</Label>
                 <div className="space-y-3 mt-2">

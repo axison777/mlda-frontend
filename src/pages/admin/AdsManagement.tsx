@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target } from 'lucide-react';
+import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target, DollarSign } from 'lucide-react';
 
 const mockAds = [
   {

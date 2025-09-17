@@ -88,8 +88,8 @@ export const LandingPage = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <header className="border-b border-gray-200 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
               <h1 className="text-2xl font-bold text-black">
@@ -102,6 +102,7 @@ export const LandingPage = () => {
             </div>
             <nav className="hidden md:flex space-x-8">
               <a href="#features" className="text-gray-600 hover:text-gray-900">Fonctionnalités</a>
+              <Link to="/courses" className="text-gray-600 hover:text-gray-900">Cours</Link>
               <Link to="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
               <a href="#pricing" className="text-gray-600 hover:text-gray-900">Tarifs</a>
               <a href="#testimonials" className="text-gray-600 hover:text-gray-900">Témoignages</a>
@@ -120,8 +121,8 @@ export const LandingPage = () => {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-red-50 to-yellow-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="min-h-screen py-20 bg-gradient-to-br from-red-50 to-yellow-50 flex items-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -189,8 +190,8 @@ export const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="features" className="py-20 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -236,8 +237,8 @@ export const LandingPage = () => {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="pricing" className="py-20 bg-gray-50 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -301,8 +302,8 @@ export const LandingPage = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section id="testimonials" className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="testimonials" className="py-20 w-full">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -350,7 +351,7 @@ export const LandingPage = () => {
 
       {/* Footer */}
       <footer className="bg-black text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-2xl font-bold text-red-600 mb-4">MLDA</h3>

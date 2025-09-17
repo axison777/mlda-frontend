@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Search, Play, BookOpen, Clock, Star, Filter } from 'lucide-react';
+import { Search, Play, BookOpen, Clock, Star, Filter, HelpCircle } from 'lucide-react';
 import { useCourses, useUserEnrollments } from '@/hooks/useCourses';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +21,9 @@ export const MyCourses = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLevel, setFilterLevel] = useState('all');
   const [activeTab, setActiveTab] = useState('enrolled');
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [currentQuiz, setCurrentQuiz] = useState<any>(null);
+  const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
   
   const { data: enrollmentsData, isLoading: enrollmentsLoading } = useUserEnrollments();
   const { data: coursesData, isLoading: coursesLoading } = useCourses({
@@ -29,6 +33,49 @@ export const MyCourses = () => {
 
   const enrolledCourses = enrollmentsData?.enrollments || [];
   const availableCourses = coursesData?.courses || [];
+
+  const handleContinueCourse = (course: any) => {
+    // Vérifier s'il y a un quiz en attente
+    const hasQuiz = Math.random() > 0.5; // Simulation
+    
+    if (hasQuiz) {
+      setCurrentQuiz({
+        title: `Quiz - ${course.title}`,
+        questions: [
+          {
+            question: 'Comment dit-on "Bonjour" en allemand ?',
+            options: ['Guten Tag', 'Auf Wiedersehen', 'Danke', 'Bitte'],
+            correct: 0,
+          },
+          {
+            question: 'Quel est l\'article défini pour "Buch" (livre) ?',
+            options: ['der', 'die', 'das', 'den'],
+            correct: 2,
+          },
+        ]
+      });
+      setQuizAnswers([]);
+      setShowQuiz(true);
+    } else {
+      toast.success(`Redirection vers la prochaine leçon de: ${course.title}`);
+    }
+  };
+
+  const handleQuizAnswer = (questionIndex: number, answerIndex: number) => {
+    const newAnswers = [...quizAnswers];
+    newAnswers[questionIndex] = answerIndex;
+    setQuizAnswers(newAnswers);
+  };
+
+  const handleSubmitQuiz = () => {
+    const score = currentQuiz.questions.reduce((correct: number, question: any, index: number) => {
+      return correct + (quizAnswers[index] === question.correct ? 1 : 0);
+    }, 0);
+    
+    const percentage = Math.round((score / currentQuiz.questions.length) * 100);
+    toast.success(`Quiz terminé ! Score: ${percentage}%`);
+    setShowQuiz(false);
+  };
 
   const filteredEnrolledCourses = enrolledCourses.filter(course => {
     const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -52,18 +99,6 @@ export const MyCourses = () => {
     );
   }
 
-  const filteredEnrolledCourses = enrolledCourses.filter((enrollment: any) => {
-    const course = enrollment.course;
-    const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = filterLevel === 'all' || course.level.toLowerCase() === filterLevel;
-    return matchesSearch && matchesLevel;
-  });
-
-  const filteredAvailableCourses = availableCourses.filter((course: any) => {
-    const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = filterLevel === 'all' || course.level.toLowerCase() === filterLevel;
-    return matchesSearch && matchesLevel;
-  });
   const getLevelBadge = (level: string) => {
     const colors = {
       a1: 'bg-green-100 text-green-800',
@@ -212,10 +247,7 @@ export const MyCourses = () => {
                       </p>
                       <Button 
                         className="w-full bg-red-600 hover:bg-red-700"
-                        onClick={() => {
-                          toast.success(`Redirection vers: ${course.nextLesson}`);
-                          // Ici vous pouvez ajouter la navigation vers la leçon
-                        }}
+                        onClick={() => handleContinueCourse(course)}
                       >
                         <Play className="w-4 h-4 mr-2" />
                         Continuer le cours
@@ -229,6 +261,71 @@ export const MyCourses = () => {
         </div>
       )}
 
+      {/* Quiz Dialog */}
+      <Dialog open={showQuiz} onOpenChange={setShowQuiz}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <HelpCircle className="w-5 h-5 mr-2 text-purple-600" />
+              {currentQuiz?.title}
+            </DialogTitle>
+          </DialogHeader>
+          
+          {currentQuiz && (
+            <div className="space-y-6">
+              {currentQuiz.questions.map((question: any, questionIndex: number) => (
+                <div key={questionIndex} className="space-y-3">
+                  <h3 className="font-medium">
+                    Question {questionIndex + 1}: {question.question}
+                  </h3>
+                  <div className="space-y-2">
+                    {question.options.map((option: string, optionIndex: number) => (
+                      <div 
+                        key={optionIndex}
+                        className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                          quizAnswers[questionIndex] === optionIndex 
+                            ? 'border-red-500 bg-red-50' 
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                        onClick={() => handleQuizAnswer(questionIndex, optionIndex)}
+                      >
+                        <div className="flex items-center">
+                          <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                            quizAnswers[questionIndex] === optionIndex 
+                              ? 'border-red-500 bg-red-500' 
+                              : 'border-gray-300'
+                          }`}>
+                            {quizAnswers[questionIndex] === optionIndex && (
+                              <div className="w-2 h-2 rounded-full bg-white mx-auto mt-0.5" />
+                            )}
+                          </div>
+                          {option}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              
+              <div className="flex gap-2">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setShowQuiz(false)}
+                >
+                  Fermer
+                </Button>
+                <Button 
+                  onClick={handleSubmitQuiz}
+                  className="bg-purple-600 hover:bg-purple-700"
+                  disabled={quizAnswers.length !== currentQuiz.questions.length}
+                >
+                  Valider le quiz
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
       {/* Available Courses */}
       {activeTab === 'available' && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

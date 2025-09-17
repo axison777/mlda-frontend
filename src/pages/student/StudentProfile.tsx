@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Save, Upload, Award, Target, Calendar, TrendingUp } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const StudentProfile = () => {
   const [profileData, setProfileData] = useState({
@@ -36,6 +37,31 @@ export const StudentProfile = () => {
 
   const handlePasswordChange = (field: string, value: string) => {
     setPasswordData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handleSaveProfile = () => {
+    toast.success('Profil sauvegardé avec succès !');
+  };
+
+  const handleSaveGoals = () => {
+    toast.success('Objectifs sauvegardés avec succès !');
+  };
+
+  const addInterest = () => {
+    const newInterest = prompt('Ajouter un centre d\'intérêt:');
+    if (newInterest) {
+      setProfileData(prev => ({
+        ...prev,
+        interests: [...prev.interests, newInterest]
+      }));
+    }
+  };
+
+  const removeInterest = (index: number) => {
+    setProfileData(prev => ({
+      ...prev,
+      interests: prev.interests.filter((_, i) => i !== index)
+    }));
   };
 
   const achievements = [
@@ -218,10 +244,12 @@ export const StudentProfile = () => {
                   {profileData.interests.map((interest, index) => (
                     <Badge key={index} variant="secondary">
                       {interest}
-                      <X 
+                      <button
                         className="w-3 h-3 ml-1 cursor-pointer" 
                         onClick={() => removeInterest(index)}
-                      />
+                      >
+                        ×
+                      </button>
                     </Badge>
                   ))}
                 </div>

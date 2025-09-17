@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
   Play, 
   Pause, 
@@ -13,7 +14,8 @@ import {
   CheckCircle, 
   Clock,
   Volume2,
-  Subtitles
+  Subtitles,
+  HelpCircle
 } from 'lucide-react';
 
 const currentLesson = {
@@ -59,15 +61,50 @@ export const ContinueCourse = () => {
   const [currentTime, setCurrentTime] = useState('05:23');
   const [showSubtitles, setShowSubtitles] = useState(true);
   const [volume, setVolume] = useState(80);
+  const [lessonCompleted, setLessonCompleted] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
+
+  const lessonQuiz = {
+    title: 'Quiz - Les verbes de modalité',
+    questions: [
+      {
+        question: 'Quel verbe modal exprime la capacité ou la possibilité ?',
+        options: ['können', 'müssen', 'wollen', 'sollen'],
+        correct: 0,
+      },
+      {
+        question: 'Comment dit-on "Je dois étudier" en allemand ?',
+        options: ['Ich kann studieren', 'Ich muss studieren', 'Ich will studieren', 'Ich soll studieren'],
+        correct: 1,
+      },
+    ]
+  };
 
   const handleMarkComplete = () => {
-    console.log('Leçon marquée comme terminée');
+    setLessonCompleted(true);
+    setShowQuiz(true);
   };
 
   const handleNextLesson = () => {
     console.log('Passer à la leçon suivante');
   };
 
+  const handleQuizAnswer = (questionIndex: number, answerIndex: number) => {
+    const newAnswers = [...quizAnswers];
+    newAnswers[questionIndex] = answerIndex;
+    setQuizAnswers(newAnswers);
+  };
+
+  const handleSubmitQuiz = () => {
+    const score = lessonQuiz.questions.reduce((correct, question, index) => {
+      return correct + (quizAnswers[index] === question.correct ? 1 : 0);
+    }, 0);
+    
+    const percentage = Math.round((score / lessonQuiz.questions.length) * 100);
+    toast.success(`Quiz terminé ! Score: ${percentage}%`);
+    setShowQuiz(false);
+  };
   return (
     <motion.div
       initial={{ opacity: 0 }}

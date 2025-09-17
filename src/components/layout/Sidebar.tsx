@@ -14,11 +14,15 @@ import {
   GraduationCap,
   User,
   Calendar,
+  UserCheck,
+  UserCog,
 } from 'lucide-react';
 
 const adminMenuItems = [
   { icon: Home, label: 'Accueil', href: '/admin' },
   { icon: Users, label: 'Utilisateurs', href: '/admin/users' },
+  { icon: UserCheck, label: 'Suivi Professeurs', href: '/admin/teachers' },
+  { icon: UserCog, label: 'Suivi Étudiants', href: '/admin/students' },
   { icon: BookOpen, label: 'Cours', href: '/admin/courses' },
   { icon: Package, label: 'Produits', href: '/admin/products' },
   { icon: CreditCard, label: 'Paiements', href: '/admin/payments' },
@@ -39,6 +43,7 @@ const studentMenuItems = [
   { icon: Home, label: 'Accueil', href: '/student' },
   { icon: BookOpen, label: 'Mes cours', href: '/student/courses' },
   { icon: GraduationCap, label: 'Continuer', href: '/student/continue' },
+  { icon: Calendar, label: 'Test de niveau', href: '/student/level-test' },
   { icon: CreditCard, label: 'Abonnements', href: '/student/subscriptions' },
   { icon: User, label: 'Profil', href: '/student/profile' },
 ];

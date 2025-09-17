@@ -14,7 +14,7 @@ export const Header = () => {
   const { user, logout } = useAuth();
 
   return (
-    <header className="fixed top-0 left-70 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-30">
+    <header className="fixed top-0 left-70 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-30 w-full">
       <div className="flex items-center space-x-4">
         <Button variant="ghost" size="sm" className="lg:hidden">
           <Menu className="w-5 h-5" />

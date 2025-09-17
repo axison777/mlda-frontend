@@ -41,11 +41,19 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50 flex items-center justify-center p-4">
+    <div className="min-h-screen w-full bg-gradient-to-br from-red-50 to-yellow-50 flex items-center justify-center p-4 relative">
+      {/* Background Image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-10"
+        style={{
+          backgroundImage: 'url(https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg)'
+        }}
+      />
+      
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
       >
         {/* Header */}
         <div className="text-center mb-8">
