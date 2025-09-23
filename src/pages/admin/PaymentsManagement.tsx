@@ -29,6 +29,8 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+import { PaymentDetailsDialog } from '@/components/admin/PaymentDetailsDialog';
+
 const mockPayments = [
   {
     id: 'PAY-001',
@@ -79,6 +81,8 @@ const revenueData = [
 
 export const PaymentsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedPayment, setSelectedPayment] = useState<any>(null);
 
   const filteredPayments = mockPayments.filter(payment =>
     payment.user.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -111,6 +115,21 @@ export const PaymentsManagement = () => {
 
   const completedPayments = mockPayments.filter(p => p.status === 'completed').length;
   const pendingPayments = mockPayments.filter(p => p.status === 'pending').length;
+
+  const handleViewPayment = (payment: any) => {
+    setSelectedPayment(payment);
+    setShowDetailsDialog(true);
+  };
+
+  const handleDownloadReceipt = (payment: any) => {
+    toast.success(`Téléchargement du reçu ${payment.id}...`);
+  };
+
+  const handleRefundPayment = (payment: any) => {
+    if (confirm('Êtes-vous sûr de vouloir rembourser cette transaction ?')) {
+      toast.success(`Remboursement initié pour ${payment.id}`);
+    }
+  };
 
   return (
     <motion.div
@@ -258,10 +277,17 @@ export const PaymentsManagement = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Voir détails</DropdownMenuItem>
-                        <DropdownMenuItem>Télécharger reçu</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleViewPayment(payment)}>
+                          Voir détails
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDownloadReceipt(payment)}>
+                          Télécharger reçu
+                        </DropdownMenuItem>
                         {payment.status === 'completed' && (
-                          <DropdownMenuItem className="text-red-600">
+                          <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={() => handleRefundPayment(payment)}
+                          >
                             Rembourser
                           </DropdownMenuItem>
                         )}
@@ -274,6 +300,12 @@ export const PaymentsManagement = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <PaymentDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        payment={selectedPayment}
+      />
     </motion.div>
   );
 };

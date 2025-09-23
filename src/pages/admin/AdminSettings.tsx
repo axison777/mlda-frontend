@@ -484,6 +484,347 @@ export const AdminSettings = () => {
           </div>
         </TabsContent>
 
+        <TabsContent value="categories">
+          <div className="space-y-6">
+            {/* Catégories de produits */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="flex items-center">
+                    <Tag className="w-5 h-5 mr-2" />
+                    Catégories de Produits
+                  </CardTitle>
+                  <Dialog open={showCategoryDialog} onOpenChange={setShowCategoryDialog}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-red-600 hover:bg-red-700">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Ajouter
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Ajouter une Catégorie de Produit</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="categoryName">Nom de la catégorie</Label>
+                          <Input
+                            id="categoryName"
+                            value={newCategory.name}
+                            onChange={(e) => setNewCategory(prev => ({ ...prev, name: e.target.value }))}
+                            placeholder="Ex: Livres"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="categoryDescription">Description</Label>
+                          <Textarea
+                            id="categoryDescription"
+                            value={newCategory.description}
+                            onChange={(e) => setNewCategory(prev => ({ ...prev, description: e.target.value }))}
+                            placeholder="Description de la catégorie..."
+                            rows={3}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" onClick={() => setShowCategoryDialog(false)}>
+                            Annuler
+                          </Button>
+                          <Button onClick={handleAddCategory} className="bg-red-600 hover:bg-red-700">
+                            Ajouter
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {productCategories.map((category) => (
+                    <div key={category.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                      <div>
+                        <p className="font-medium">{category.name}</p>
+                        <p className="text-sm text-gray-600">{category.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={category.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                          {category.active ? 'Actif' : 'Inactif'}
+                        </Badge>
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Catégories de cours */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Catégories de Cours
+                  </CardTitle>
+                  <Button className="bg-red-600 hover:bg-red-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Ajouter
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {courseCategories.map((category) => (
+                    <div key={category.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                      <div>
+                        <p className="font-medium">{category.name}</p>
+                        <p className="text-sm text-gray-600">{category.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={category.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                          {category.active ? 'Actif' : 'Inactif'}
+                        </Badge>
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="levels">
+          <Card>
+            <CardHeader>
+              <div className="flex justify-between items-center">
+                <CardTitle className="flex items-center">
+                  <BarChart3 className="w-5 h-5 mr-2" />
+                  Niveaux de Cours
+                </CardTitle>
+                <Dialog open={showLevelDialog} onOpenChange={setShowLevelDialog}>
+                  <DialogTrigger asChild>
+                    <Button className="bg-red-600 hover:bg-red-700">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Ajouter
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Ajouter un Niveau</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="levelCode">Code du niveau</Label>
+                          <Input
+                            id="levelCode"
+                            value={newLevel.code}
+                            onChange={(e) => setNewLevel(prev => ({ ...prev, code: e.target.value }))}
+                            placeholder="Ex: A1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="levelName">Nom du niveau</Label>
+                          <Input
+                            id="levelName"
+                            value={newLevel.name}
+                            onChange={(e) => setNewLevel(prev => ({ ...prev, name: e.target.value }))}
+                            placeholder="Ex: Débutant"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="levelDescription">Description</Label>
+                        <Textarea
+                          id="levelDescription"
+                          value={newLevel.description}
+                          onChange={(e) => setNewLevel(prev => ({ ...prev, description: e.target.value }))}
+                          placeholder="Description du niveau..."
+                          rows={3}
+                        />
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" onClick={() => setShowLevelDialog(false)}>
+                          Annuler
+                        </Button>
+                        <Button onClick={handleAddLevel} className="bg-red-600 hover:bg-red-700">
+                          Ajouter
+                        </Button>
+                      </div>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {levels.map((level) => (
+                  <div key={level.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-blue-100 text-blue-800">{level.code}</Badge>
+                        <p className="font-medium">{level.name}</p>
+                      </div>
+                      <p className="text-sm text-gray-600">{level.description}</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge className={level.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                        {level.active ? 'Actif' : 'Inactif'}
+                      </Badge>
+                      <Button variant="outline" size="sm">
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-red-600">
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="emails">
+          <div className="space-y-6">
+            {/* Types de publicité */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="flex items-center">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    Types de Publicité
+                  </CardTitle>
+                  <Button className="bg-red-600 hover:bg-red-700">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Ajouter
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {adTypes.map((adType) => (
+                    <div key={adType.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                      <div>
+                        <p className="font-medium">{adType.name}</p>
+                        <p className="text-sm text-gray-600">{adType.description}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={adType.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                          {adType.active ? 'Actif' : 'Inactif'}
+                        </Badge>
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Templates d'email */}
+            <Card>
+              <CardHeader>
+                <div className="flex justify-between items-center">
+                  <CardTitle className="flex items-center">
+                    <Mail className="w-5 h-5 mr-2" />
+                    Templates d'Email
+                  </CardTitle>
+                  <Dialog open={showEmailDialog} onOpenChange={setShowEmailDialog}>
+                    <DialogTrigger asChild>
+                      <Button className="bg-red-600 hover:bg-red-700">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Nouveau template
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Créer un Template d'Email</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="templateName">Nom du template</Label>
+                          <Input
+                            id="templateName"
+                            value={newEmailTemplate.name}
+                            onChange={(e) => setNewEmailTemplate(prev => ({ ...prev, name: e.target.value }))}
+                            placeholder="Ex: Bienvenue"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="templateSubject">Sujet de l'email</Label>
+                          <Input
+                            id="templateSubject"
+                            value={newEmailTemplate.subject}
+                            onChange={(e) => setNewEmailTemplate(prev => ({ ...prev, subject: e.target.value }))}
+                            placeholder="Ex: Bienvenue sur MLDA !"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="templateContent">Contenu de l'email</Label>
+                          <Textarea
+                            id="templateContent"
+                            value={newEmailTemplate.content}
+                            onChange={(e) => setNewEmailTemplate(prev => ({ ...prev, content: e.target.value }))}
+                            placeholder="Contenu de l'email... Utilisez {nom} pour le nom de l'utilisateur"
+                            rows={6}
+                          />
+                        </div>
+                        <div className="flex gap-2">
+                          <Button variant="outline" onClick={() => setShowEmailDialog(false)}>
+                            Annuler
+                          </Button>
+                          <Button onClick={handleAddEmailTemplate} className="bg-red-600 hover:bg-red-700">
+                            Créer le template
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {emailTemplates.map((template) => (
+                    <div key={template.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                      <div>
+                        <p className="font-medium">{template.name}</p>
+                        <p className="text-sm text-gray-600">{template.subject}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className={template.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
+                          {template.active ? 'Actif' : 'Inactif'}
+                        </Badge>
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm" className="text-red-600">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
         <TabsContent value="levels">
           <Card>
             <CardHeader>

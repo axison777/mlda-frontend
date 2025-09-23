@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { User, Settings, LogOut } from 'lucide-react';
+import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
 
 export const Header = () => {
   const { user, logout } = useAuth();
@@ -53,24 +53,33 @@ export const Header = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100">
+            <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100 px-3 py-2 rounded-lg">
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-red-600 text-white text-sm font-medium">
                   {user?.name.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <span className="hidden md:block font-medium">{user?.name}</span>
+              <div className="hidden md:block text-left">
+                <p className="font-medium text-sm">{user?.name}</p>
+                <p className="text-xs text-gray-500 capitalize">{user?.role}</p>
+              </div>
+              <ChevronDown className="w-4 h-4 text-gray-400" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem>
               <User className="w-4 h-4 mr-2" />
-              Détails du profil
+              Mon profil
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="w-4 h-4 mr-2" />
               Paramètres
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <div className="px-2 py-1.5">
+              <p className="text-xs text-gray-500">Connecté en tant que</p>
+              <p className="text-sm font-medium capitalize">{user?.role}</p>
+            </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={logout} className="text-red-600">
               <LogOut className="w-4 h-4 mr-2" />

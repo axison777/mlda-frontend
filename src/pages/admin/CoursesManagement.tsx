@@ -21,9 +21,14 @@ import {
 import { Search, MoreHorizontal, Plus, BookOpen, Users, Star } from 'lucide-react';
 
 import { useCourses, useDeleteCourse } from '@/hooks/useCourses';
+import { CreateCourseDialog } from '@/components/admin/CreateCourseDialog';
+import { CourseDetailsDialog } from '@/components/admin/CourseDetailsDialog';
 
 export const CoursesManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
   const { data: coursesData, isLoading } = useCourses({
     search: searchTerm,
@@ -63,6 +68,19 @@ export const CoursesManagement = () => {
     }
   };
 
+  const handleViewCourse = (course: any) => {
+    setSelectedCourse(course);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEditCourse = (course: any) => {
+    toast.info(`Ouverture de l'édition pour ${course.title}`);
+  };
+
+  const handleDuplicateCourse = (course: any) => {
+    toast.success(`Cours "${course.title}" dupliqué avec succès !`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -74,7 +92,10 @@ export const CoursesManagement = () => {
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Cours</h1>
           <p className="text-gray-600">Gérez le contenu pédagogique de la plateforme</p>
         </div>
-        <Button className="bg-red-600 hover:bg-red-700">
+        <Button 
+          onClick={() => setShowCreateDialog(true)}
+          className="bg-red-600 hover:bg-red-700"
+        >
           <Plus className="w-4 h-4 mr-2" />
           Nouveau cours
         </Button>
@@ -198,9 +219,15 @@ export const CoursesManagement = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Voir détails</DropdownMenuItem>
-                          <DropdownMenuItem>Modifier</DropdownMenuItem>
-                          <DropdownMenuItem>Dupliquer</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewCourse(course)}>
+                            Voir détails
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditCourse(course)}>
+                            Modifier
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleDuplicateCourse(course)}>
+                            Dupliquer
+                          </DropdownMenuItem>
                           <DropdownMenuItem 
                             className="text-red-600"
                             onClick={() => handleDeleteCourse(course.id)}
@@ -217,6 +244,17 @@ export const CoursesManagement = () => {
           )}
         </CardContent>
       </Card>
+
+      <CreateCourseDialog
+        isOpen={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+      />
+
+      <CourseDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        course={selectedCourse}
+      />
     </motion.div>
   );
 };

@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target, DollarSign, Edit, Copy, Play, Pause, Trash2 } from 'lucide-react';
 import { CreateCampaignDialog } from '@/components/admin/CreateCampaignDialog';
+import { AdDetailsDialog } from '@/components/admin/AdDetailsDialog';
 
 const mockAds = [
   {
@@ -66,6 +67,8 @@ const mockAds = [
 export const AdsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedAd, setSelectedAd] = useState<any>(null);
 
   const filteredAds = mockAds.filter(ad =>
     ad.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -93,25 +96,26 @@ export const AdsManagement = () => {
   };
 
   const handleViewDetails = (ad: any) => {
-    console.log('Voir détails:', ad);
+    setSelectedAd(ad);
+    setShowDetailsDialog(true);
   };
 
   const handleEditCampaign = (ad: any) => {
-    console.log('Modifier campagne:', ad);
+    toast.info(`Ouverture de l'édition pour ${ad.title}`);
   };
 
   const handleDuplicateCampaign = (ad: any) => {
-    console.log('Dupliquer campagne:', ad);
+    toast.success(`Campagne "${ad.title}" dupliquée avec succès !`);
   };
 
   const handleToggleStatus = (ad: any) => {
     const newStatus = ad.status === 'active' ? 'paused' : 'active';
-    console.log(`${newStatus === 'active' ? 'Activer' : 'Mettre en pause'} campagne:`, ad);
+    toast.success(`Campagne ${newStatus === 'active' ? 'activée' : 'mise en pause'}`);
   };
 
   const handleDeleteCampaign = (ad: any) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette campagne ?')) {
-      console.log('Supprimer campagne:', ad);
+      toast.success('Campagne supprimée avec succès');
     }
   };
   const totalImpressions = mockAds.reduce((sum, ad) => sum + ad.impressions, 0);
@@ -301,6 +305,12 @@ export const AdsManagement = () => {
       <CreateCampaignDialog
         isOpen={showCreateDialog}
         onClose={() => setShowCreateDialog(false)}
+      />
+
+      <AdDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        ad={selectedAd}
       />
     </motion.div>
   );
