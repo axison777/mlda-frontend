@@ -12,6 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { User, Settings, LogOut } from 'lucide-react';
 
 export const Header = () => {
   const { user, logout } = useAuth();
@@ -51,18 +53,29 @@ export const Header = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center space-x-2">
-              <div className="w-8 h-8 rounded-full bg-red-600 flex items-center justify-center text-white text-sm font-medium">
-                {user?.name.charAt(0)}
-              </div>
-              <span className="hidden md:block">{user?.name}</span>
+            <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100">
+              <Avatar className="w-8 h-8">
+                <AvatarFallback className="bg-red-600 text-white text-sm font-medium">
+                  {user?.name.charAt(0)}
+                </AvatarFallback>
+              </Avatar>
+              <span className="hidden md:block font-medium">{user?.name}</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuItem>Profil</DropdownMenuItem>
-            <DropdownMenuItem>Paramètres</DropdownMenuItem>
+            <DropdownMenuItem>
+              <User className="w-4 h-4 mr-2" />
+              Détails du profil
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Settings className="w-4 h-4 mr-2" />
+              Paramètres
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={logout}>Déconnexion</DropdownMenuItem>
+            <DropdownMenuItem onClick={logout} className="text-red-600">
+              <LogOut className="w-4 h-4 mr-2" />
+              Se déconnecter
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

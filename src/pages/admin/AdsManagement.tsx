@@ -18,7 +18,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target, DollarSign } from 'lucide-react';
+import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target, DollarSign, Edit, Copy, Play, Pause, Trash2 } from 'lucide-react';
+import { CreateCampaignDialog } from '@/components/admin/CreateCampaignDialog';
 
 const mockAds = [
   {
@@ -64,6 +65,7 @@ const mockAds = [
 
 export const AdsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
 
   const filteredAds = mockAds.filter(ad =>
     ad.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -90,6 +92,28 @@ export const AdsManagement = () => {
     return colors[type as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
 
+  const handleViewDetails = (ad: any) => {
+    console.log('Voir détails:', ad);
+  };
+
+  const handleEditCampaign = (ad: any) => {
+    console.log('Modifier campagne:', ad);
+  };
+
+  const handleDuplicateCampaign = (ad: any) => {
+    console.log('Dupliquer campagne:', ad);
+  };
+
+  const handleToggleStatus = (ad: any) => {
+    const newStatus = ad.status === 'active' ? 'paused' : 'active';
+    console.log(`${newStatus === 'active' ? 'Activer' : 'Mettre en pause'} campagne:`, ad);
+  };
+
+  const handleDeleteCampaign = (ad: any) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cette campagne ?')) {
+      console.log('Supprimer campagne:', ad);
+    }
+  };
   const totalImpressions = mockAds.reduce((sum, ad) => sum + ad.impressions, 0);
   const totalClicks = mockAds.reduce((sum, ad) => sum + ad.clicks, 0);
   const totalSpent = mockAds.reduce((sum, ad) => sum + ad.spent, 0);
@@ -106,7 +130,10 @@ export const AdsManagement = () => {
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Publicités</h1>
           <p className="text-gray-600">Gérez vos campagnes publicitaires et analysez les performances</p>
         </div>
-        <Button className="bg-red-600 hover:bg-red-700">
+        <Button 
+          onClick={() => setShowCreateDialog(true)}
+          className="bg-red-600 hover:bg-red-700"
+        >
           <Plus className="w-4 h-4 mr-2" />
           Nouvelle campagne
         </Button>
@@ -232,15 +259,33 @@ export const AdsManagement = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Voir détails</DropdownMenuItem>
-                        <DropdownMenuItem>Modifier</DropdownMenuItem>
-                        <DropdownMenuItem>Dupliquer</DropdownMenuItem>
-                        {ad.status === 'active' ? (
-                          <DropdownMenuItem>Mettre en pause</DropdownMenuItem>
-                        ) : (
-                          <DropdownMenuItem>Activer</DropdownMenuItem>
-                        )}
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem onClick={() => handleViewDetails(ad)}>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Voir détails
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditCampaign(ad)}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          Modifier
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDuplicateCampaign(ad)}>
+                          <Copy className="w-4 h-4 mr-2" />
+                          Dupliquer
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleToggleStatus(ad)}>
+                          {ad.status === 'active' ? (
+                            <>
+                              <Pause className="w-4 h-4 mr-2" />
+                              Mettre en pause
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-4 h-4 mr-2" />
+                              Activer
+                            </>
+                          )}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDeleteCampaign(ad)} className="text-red-600">
+                          <Trash2 className="w-4 h-4 mr-2" />
                           Supprimer
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -252,6 +297,11 @@ export const AdsManagement = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <CreateCampaignDialog
+        isOpen={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+      />
     </motion.div>
   );
 };

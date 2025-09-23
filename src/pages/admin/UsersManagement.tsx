@@ -18,13 +18,20 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, UserPlus, Filter } from 'lucide-react';
+import { Search, MoreHorizontal, UserPlus, Filter, Eye, Edit, Ban, MessageCircle } from 'lucide-react';
 
 import { useUsers, useUpdateUser, useDeleteUser } from '@/hooks/useUsers';
+import { CreateUserDialog } from '@/components/admin/CreateUserDialog';
+import { UserDetailsDialog } from '@/components/admin/UserDetailsDialog';
+import { EditUserDialog } from '@/components/admin/EditUserDialog';
 
 export const UsersManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRole, setFilterRole] = useState('all');
+  const [showCreateDialog, setShowCreateDialog] = useState(false);
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   const { data: usersData, isLoading } = useUsers({
     search: searchTerm,
@@ -51,6 +58,28 @@ export const UsersManagement = () => {
       : 'bg-gray-100 text-gray-800';
   };
 
+  const handleViewUser = (user: any) => {
+    setSelectedUser(user);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEditUser = (user: any) => {
+    setSelectedUser(user);
+    setShowEditDialog(true);
+  };
+
+  const handleSendMessage = (user: any) => {
+    console.log('Envoyer message à:', user);
+  };
+
+  const handleSuspendUser = async (user: any) => {
+    if (confirm(`Êtes-vous sûr de vouloir ${user.isActive ? 'suspendre' : 'activer'} cet utilisateur ?`)) {
+      await updateUserMutation.mutateAsync({ 
+        id: user.id, 
+        updates: { isActive: !user.isActive } 
+      });
+    }
+  };
   const handleDeleteUser = async (id: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       await deleteUserMutation.mutateAsync(id);
@@ -67,7 +96,10 @@ export const UsersManagement = () => {
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
           <p className="text-gray-600">Gérez les étudiants et professeurs de la plateforme</p>
         </div>
-        <Button className="bg-red-600 hover:bg-red-700">
+        <Button 
+          onClick={() => setShowCreateDialog(true)}
+          className="bg-red-600 hover:bg-red-700"
+        >
           <UserPlus className="w-4 h-4 mr-2" />
           Ajouter un utilisateur
         </Button>
@@ -208,9 +240,20 @@ export const UsersManagement = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>Voir le profil</DropdownMenuItem>
-                          <DropdownMenuItem>Modifier</DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewUser(user)}>
+                            <Eye className="w-4 h-4 mr-2" />
+                            Voir le profil
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditUser(user)}>
+                            <Edit className="w-4 h-4 mr-2" />
+                            Modifier
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSendMessage(user)}>
+                            <MessageCircle className="w-4 h-4 mr-2" />
+                            Envoyer un message
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleSuspendUser(user)}>
+                            <Ban className="w-4 h-4 mr-2" />
                             {user.isActive ? 'Suspendre' : 'Activer'}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
@@ -229,6 +272,24 @@ export const UsersManagement = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Dialogs */}
+      <CreateUserDialog
+        isOpen={showCreateDialog}
+        onClose={() => setShowCreateDialog(false)}
+      />
+      
+      <UserDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        user={selectedUser}
+      />
+      
+      <EditUserDialog
+        isOpen={showEditDialog}
+        onClose={() => setShowEditDialog(false)}
+        user={selectedUser}
+      />
     </motion.div>
   );
 };

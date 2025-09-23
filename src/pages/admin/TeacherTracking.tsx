@@ -19,7 +19,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, Users, BookOpen, Star, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Search, MoreHorizontal, Users, BookOpen, Star, AlertTriangle, CheckCircle, Eye, Edit, MessageCircle, FileText, Ban } from 'lucide-react';
+import { TeacherDetailsDialog } from '@/components/admin/TeacherDetailsDialog';
 
 const mockTeachers = [
   {
@@ -71,6 +72,8 @@ const mockTeachers = [
 
 export const TeacherTracking = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedTeacher, setSelectedTeacher] = useState<any>(null);
 
   const filteredTeachers = mockTeachers.filter(teacher =>
     teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -92,6 +95,30 @@ export const TeacherTracking = () => {
     return 'text-red-600';
   };
 
+  const handleViewTeacher = (teacher: any) => {
+    setSelectedTeacher(teacher);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEditTeacher = (teacher: any) => {
+    console.log('Modifier professeur:', teacher);
+  };
+
+  const handleSendMessage = (teacher: any) => {
+    console.log('Envoyer message à:', teacher);
+  };
+
+  const handleGenerateReport = (teacher: any) => {
+    console.log('Générer rapport pour:', teacher);
+  };
+
+  const handleSendWarning = (teacher: any) => {
+    console.log('Envoyer avertissement à:', teacher);
+  };
+
+  const handleSuspend = (teacher: any) => {
+    console.log('Suspendre professeur:', teacher);
+  };
   const totalTeachers = mockTeachers.length;
   const activeTeachers = mockTeachers.filter(t => t.status === 'active').length;
   const totalRevenue = mockTeachers.reduce((sum, t) => sum + t.revenue, 0);
@@ -238,16 +265,30 @@ export const TeacherTracking = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Voir le profil</DropdownMenuItem>
-                        <DropdownMenuItem>Voir les cours</DropdownMenuItem>
-                        <DropdownMenuItem>Envoyer un message</DropdownMenuItem>
-                        <DropdownMenuItem>Générer un rapport</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleViewTeacher(teacher)}>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Voir le profil
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditTeacher(teacher)}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          Modifier
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleSendMessage(teacher)}>
+                          <MessageCircle className="w-4 h-4 mr-2" />
+                          Envoyer un message
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleGenerateReport(teacher)}>
+                          <FileText className="w-4 h-4 mr-2" />
+                          Générer un rapport
+                        </DropdownMenuItem>
                         {teacher.status === 'warning' && (
-                          <DropdownMenuItem className="text-yellow-600">
+                          <DropdownMenuItem onClick={() => handleSendWarning(teacher)} className="text-yellow-600">
+                            <AlertTriangle className="w-4 h-4 mr-2" />
                             Envoyer un avertissement
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem onClick={() => handleSuspend(teacher)} className="text-red-600">
+                          <Ban className="w-4 h-4 mr-2" />
                           Suspendre
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -259,6 +300,12 @@ export const TeacherTracking = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <TeacherDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        teacher={selectedTeacher}
+      />
     </motion.div>
   );
 };

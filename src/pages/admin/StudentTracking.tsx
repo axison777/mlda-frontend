@@ -19,7 +19,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, Users, BookOpen, TrendingUp, AlertTriangle } from 'lucide-react';
+import { Search, MoreHorizontal, Users, BookOpen, TrendingUp, AlertTriangle, Eye, Edit, MessageCircle, FileText, Ban, Bell } from 'lucide-react';
+import { StudentDetailsDialog } from '@/components/admin/StudentDetailsDialog';
 
 const mockStudents = [
   {
@@ -82,6 +83,8 @@ const mockStudents = [
 
 export const StudentTracking = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<any>(null);
 
   const filteredStudents = mockStudents.filter(student =>
     student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -115,6 +118,30 @@ export const StudentTracking = () => {
     return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
 
+  const handleViewStudent = (student: any) => {
+    setSelectedStudent(student);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEditStudent = (student: any) => {
+    console.log('Modifier étudiant:', student);
+  };
+
+  const handleSendMessage = (student: any) => {
+    console.log('Envoyer message à:', student);
+  };
+
+  const handleGenerateReport = (student: any) => {
+    console.log('Générer rapport pour:', student);
+  };
+
+  const handleSendReminder = (student: any) => {
+    console.log('Envoyer rappel à:', student);
+  };
+
+  const handleSuspend = (student: any) => {
+    console.log('Suspendre étudiant:', student);
+  };
   const totalStudents = mockStudents.length;
   const activeStudents = mockStudents.filter(s => s.status === 'active').length;
   const warningStudents = mockStudents.filter(s => s.status === 'warning').length;
@@ -270,16 +297,30 @@ export const StudentTracking = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Voir le profil</DropdownMenuItem>
-                        <DropdownMenuItem>Voir les cours</DropdownMenuItem>
-                        <DropdownMenuItem>Envoyer un message</DropdownMenuItem>
-                        <DropdownMenuItem>Générer un rapport</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleViewStudent(student)}>
+                          <Eye className="w-4 h-4 mr-2" />
+                          Voir le profil
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditStudent(student)}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          Modifier
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleSendMessage(student)}>
+                          <MessageCircle className="w-4 h-4 mr-2" />
+                          Envoyer un message
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleGenerateReport(student)}>
+                          <FileText className="w-4 h-4 mr-2" />
+                          Générer un rapport
+                        </DropdownMenuItem>
                         {student.status === 'warning' && (
-                          <DropdownMenuItem className="text-yellow-600">
+                          <DropdownMenuItem onClick={() => handleSendReminder(student)} className="text-yellow-600">
+                            <Bell className="w-4 h-4 mr-2" />
                             Envoyer un rappel
                           </DropdownMenuItem>
                         )}
-                        <DropdownMenuItem className="text-red-600">
+                        <DropdownMenuItem onClick={() => handleSuspend(student)} className="text-red-600">
+                          <Ban className="w-4 h-4 mr-2" />
                           Suspendre
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -291,6 +332,12 @@ export const StudentTracking = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <StudentDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        student={selectedStudent}
+      />
     </motion.div>
   );
 };
