@@ -57,7 +57,6 @@ export const MyCourses = () => {
     // Exclure les cours déjà inscrits
     const isNotEnrolled = !enrolledCourses.some((enrollment: any) => enrollment.course.id === course.id);
     return matchesSearch && matchesLevel && isNotEnrolled;
-    return matchesSearch && matchesLevel;
   });
 
   if (enrollmentsLoading || coursesLoading) {

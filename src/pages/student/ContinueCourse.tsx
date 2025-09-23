@@ -75,21 +75,22 @@ export const ContinueCourse = () => {
   const [examAnswers, setExamAnswers] = useState<number[]>([]);
   const [currentExamQuestion, setCurrentExamQuestion] = useState(0);
 
-  const allLessons = [
-    { id: '1', title: 'Introduction à l\'allemand', type: 'video', completed: true },
-    { id: '2', title: 'Les salutations', type: 'video', completed: true },
-    { id: '3', title: 'Quiz: Salutations', type: 'quiz', completed: true },
-    { id: '4', title: 'Les nombres', type: 'text', completed: true },
-    { id: '5', title: 'Quiz: Nombres', type: 'quiz', completed: true },
-    // ... autres leçons
-    { id: '19', title: 'Les verbes de modalité', type: 'video', completed: false, current: true },
-    { id: '20', title: 'Quiz: Verbes de modalité', type: 'quiz', completed: false },
-    { id: '21', title: 'Le passé composé', type: 'video', completed: false },
-    { id: '22', title: 'Quiz: Passé composé', type: 'quiz', completed: false },
-    { id: '23', title: 'Vocabulaire: La famille', type: 'text', completed: false },
-    { id: '24', title: 'Examen final', type: 'exam', completed: false },
-  ];
   const lessonQuiz = {
+    title: 'Quiz - Les verbes de modalité',
+    questions: [
+      {
+        question: 'Quel verbe modal exprime la capacité ou la possibilité ?',
+        options: ['können', 'müssen', 'wollen', 'sollen'],
+        correct: 0,
+      },
+      {
+        question: 'Comment dit-on "Je dois étudier" en allemand ?',
+        options: ['Ich kann studieren', 'Ich muss studieren', 'Ich will studieren', 'Ich soll studieren'],
+        correct: 1,
+      },
+    ]
+  };
+
   const finalExam = {
     title: 'Examen Final - Allemand pour débutants',
     questions: [
@@ -110,21 +111,21 @@ export const ContinueCourse = () => {
       },
     ]
   };
-  
-    title: 'Quiz - Les verbes de modalité',
-    questions: [
-      {
-        question: 'Quel verbe modal exprime la capacité ou la possibilité ?',
-        options: ['können', 'müssen', 'wollen', 'sollen'],
-        correct: 0,
-      },
-      {
-        question: 'Comment dit-on "Je dois étudier" en allemand ?',
-        options: ['Ich kann studieren', 'Ich muss studieren', 'Ich will studieren', 'Ich soll studieren'],
-        correct: 1,
-      },
-    ]
-  };
+
+  const allLessons = [
+    { id: '1', title: 'Introduction à l\'allemand', type: 'video', completed: true },
+    { id: '2', title: 'Les salutations', type: 'video', completed: true },
+    { id: '3', title: 'Quiz: Salutations', type: 'quiz', completed: true },
+    { id: '4', title: 'Les nombres', type: 'text', completed: true },
+    { id: '5', title: 'Quiz: Nombres', type: 'quiz', completed: true },
+    // ... autres leçons
+    { id: '19', title: 'Les verbes de modalité', type: 'video', completed: false, current: true },
+    { id: '20', title: 'Quiz: Verbes de modalité', type: 'quiz', completed: false },
+    { id: '21', title: 'Le passé composé', type: 'video', completed: false },
+    { id: '22', title: 'Quiz: Passé composé', type: 'quiz', completed: false },
+    { id: '23', title: 'Vocabulaire: La famille', type: 'text', completed: false },
+    { id: '24', title: 'Examen final', type: 'exam', completed: false },
+  ];
 
   const handleMarkComplete = () => {
     setLessonCompleted(true);

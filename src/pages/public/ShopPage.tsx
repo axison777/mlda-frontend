@@ -443,33 +443,10 @@ export const ShopPage = () => {
                     />
                   </div>
                 </div>
-                <div>
-                  <Label htmlFor="address">Adresse de livraison</Label>
-                  <Input
-                    id="address"
-                    value={paymentData.address}
-                    onChange={(e) => setPaymentData(prev => ({ ...prev, address: e.target.value }))}
-                    placeholder="Votre adresse complète"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="city">Ville</Label>
-                    <Input
-                      id="city"
-                      value={paymentData.city}
-                      onChange={(e) => setPaymentData(prev => ({ ...prev, city: e.target.value }))}
-                      placeholder="Votre ville"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="postalCode">Code postal</Label>
-                    <Input
-                      id="postalCode"
-                      value={paymentData.postalCode}
-                      onChange={(e) => setPaymentData(prev => ({ ...prev, postalCode: e.target.value }))}
+              </div>
+
               <Separator />
-                      placeholder="Code postal"
+
               {/* Payment Method */}
               <div className="space-y-4">
                 <h3 className="font-medium">Méthode de paiement</h3>
@@ -497,7 +474,7 @@ export const ShopPage = () => {
                   </div>
                 </RadioGroup>
               </div>
-                    />
+
               {paymentMethod === 'card' && (
                 <div className="space-y-4">
                   <h3 className="font-medium">Informations de carte</h3>
@@ -531,10 +508,33 @@ export const ShopPage = () => {
                     </div>
                   </div>
                 </div>
-              )}
-                  </div>
-              <Separator />
+                <div>
+                  <Label htmlFor="address">Adresse de livraison</Label>
+                  <Input
+                    id="address"
+                    value={paymentData.address}
+                    onChange={(e) => setPaymentData(prev => ({ ...prev, address: e.target.value }))}
+                    placeholder="Votre adresse complète"
+                  />
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="city">Ville</Label>
+                    <Input
+                      id="city"
+                      value={paymentData.city}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, city: e.target.value }))}
+                      placeholder="Votre ville"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="postalCode">Code postal</Label>
+                    <Input
+                      id="postalCode"
+                      value={paymentData.postalCode}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, postalCode: e.target.value }))}
+              )}
+
               {/* Order Total */}
               <div className="space-y-2">
                 <div className="flex justify-between">
@@ -553,7 +553,7 @@ export const ShopPage = () => {
                   </span>
                 </div>
               </div>
-              </div>
+
               <div className="flex gap-2">
                 <Button variant="outline" onClick={() => setShowPayment(false)}>
                   Annuler

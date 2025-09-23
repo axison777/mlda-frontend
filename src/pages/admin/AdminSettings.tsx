@@ -125,6 +125,7 @@ export const AdminSettings = () => {
     setNewEmailTemplate({ name: '', subject: '', content: '', active: true });
     setShowEmailDialog(false);
   };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -364,125 +365,7 @@ export const AdminSettings = () => {
           </Card>
         </TabsContent>
       </Tabs>
-        <TabsContent value="categories">
-          <div className="space-y-6">
-            {/* Catégories de produits */}
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center">
-                    <Tag className="w-5 h-5 mr-2" />
-                    Catégories de Produits
-                  </CardTitle>
-                  <Dialog open={showCategoryDialog} onOpenChange={setShowCategoryDialog}>
-                    <DialogTrigger asChild>
-                      <Button className="bg-red-600 hover:bg-red-700">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Ajouter
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Ajouter une Catégorie de Produit</DialogTitle>
-                      </DialogHeader>
-                      <div className="space-y-4">
-                        <div>
-                          <Label htmlFor="categoryName">Nom de la catégorie</Label>
-                          <Input
-                            id="categoryName"
-                            value={newCategory.name}
-                            onChange={(e) => setNewCategory(prev => ({ ...prev, name: e.target.value }))}
-                            placeholder="Ex: Livres"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="categoryDescription">Description</Label>
-                          <Textarea
-                            id="categoryDescription"
-                            value={newCategory.description}
-                            onChange={(e) => setNewCategory(prev => ({ ...prev, description: e.target.value }))}
-                            placeholder="Description de la catégorie..."
-                            rows={3}
-                          />
-                        </div>
-                        <div className="flex gap-2">
-                          <Button variant="outline" onClick={() => setShowCategoryDialog(false)}>
-                            Annuler
-                          </Button>
-                          <Button onClick={handleAddCategory} className="bg-red-600 hover:bg-red-700">
-                            Ajouter
-                          </Button>
-                        </div>
-                      </div>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {productCategories.map((category) => (
-                    <div key={category.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-                      <div>
-                        <p className="font-medium">{category.name}</p>
-                        <p className="text-sm text-gray-600">{category.description}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={category.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                          {category.active ? 'Actif' : 'Inactif'}
-                        </Badge>
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-red-600">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* Catégories de cours */}
-            <Card>
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center">
-                    <BookOpen className="w-5 h-5 mr-2" />
-                    Catégories de Cours
-                  </CardTitle>
-                  <Button className="bg-red-600 hover:bg-red-700">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Ajouter
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {courseCategories.map((category) => (
-                    <div key={category.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
-                      <div>
-                        <p className="font-medium">{category.name}</p>
-                        <p className="text-sm text-gray-600">{category.description}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge className={category.active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                          {category.active ? 'Actif' : 'Inactif'}
-                        </Badge>
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm" className="text-red-600">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
 
         <TabsContent value="categories">
           <div className="space-y-6">
@@ -602,7 +485,6 @@ export const AdminSettings = () => {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
 
         <TabsContent value="levels">
           <Card>
@@ -1045,6 +927,7 @@ export const AdminSettings = () => {
             </Card>
           </div>
         </TabsContent>
+      </Tabs>
     </motion.div>
   );
 };

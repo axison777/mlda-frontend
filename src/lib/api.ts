@@ -196,7 +196,7 @@ class ApiClient {
         ]
       };
     }
-  }
+  };
 
   // Progress endpoints
   async updateLessonProgress(lessonId: string, data: { completed: boolean; timeSpent?: number }) {
