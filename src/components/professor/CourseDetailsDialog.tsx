@@ -253,13 +253,15 @@ export const CourseDetailsDialog = ({ isOpen, onClose, course }: CourseDetailsDi
                   <CardHeader>
                     <div className="flex justify-between items-center">
                       <CardTitle>Leçons du Cours</CardTitle>
-                      <Button 
-                        onClick={() => setShowCreateLessonDialog(true)}
-                        className="bg-red-600 hover:bg-red-700"
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Créer une leçon
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button 
+                          onClick={() => setShowCreateLessonDialog(true)}
+                          className="bg-red-600 hover:bg-red-700"
+                        >
+                          <Plus className="w-4 h-4 mr-2" />
+                          Créer une leçon
+                        </Button>
+                      </div>
                     </div>
                   </CardHeader>
                   <CardContent>
@@ -329,7 +331,7 @@ export const CourseDetailsDialog = ({ isOpen, onClose, course }: CourseDetailsDi
                             setQuizType('lesson');
                             setShowCreateQuizDialog(true);
                           }}
-                          variant="outline"
+                          className="bg-purple-600 hover:bg-purple-700"
                         >
                           <Plus className="w-4 h-4 mr-2" />
                           Quiz de leçon
@@ -339,7 +341,7 @@ export const CourseDetailsDialog = ({ isOpen, onClose, course }: CourseDetailsDi
                             setQuizType('course');
                             setShowCreateQuizDialog(true);
                           }}
-                          className="bg-purple-600 hover:bg-purple-700"
+                          variant="outline"
                         >
                           <Plus className="w-4 h-4 mr-2" />
                           Quiz final

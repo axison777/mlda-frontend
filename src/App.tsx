@@ -28,8 +28,6 @@ import { AdsManagement } from '@/pages/admin/AdsManagement';
 import { AdminSettings } from '@/pages/admin/AdminSettings';
 import { ProfessorDashboard } from '@/pages/professor/ProfessorDashboard';
 import { MyCourses as ProfessorCourses } from '@/pages/professor/MyCourses';
-import { CreateCourse } from '@/pages/professor/CreateCourse';
-import { LessonsQuiz } from '@/pages/professor/LessonsQuiz';
 import { MyStudents } from '@/pages/professor/MyStudents';
 import { ProfessorProfile } from '@/pages/professor/ProfessorProfile';
 import { StudentDashboard } from '@/pages/student/StudentDashboard';

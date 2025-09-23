@@ -36,8 +36,6 @@ const adminMenuItems = [
 ];
 
 const professorMenuItems = [
-  { icon: Home, label: 'Accueil', href: '/professor' },
-  { icon: BookOpen, label: 'Mes cours', href: '/professor/courses' },
   { icon: Users, label: 'Étudiants', href: '/professor/students' },
   { icon: MessageCircle, label: 'Messages', href: '/professor/messages' },
   { icon: FileText, label: 'Rapports', href: '/professor/reports' },

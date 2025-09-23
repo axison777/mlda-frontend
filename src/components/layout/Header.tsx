@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { User, Settings, LogOut, ChevronDown, Eye } from 'lucide-react';
+import { User, Settings, LogOut, ChevronDown, Eye, UserCircle } from 'lucide-react';
 
 export const Header = () => {
   const { user, logout } = useAuth();
@@ -74,8 +74,8 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem>
-              <Eye className="w-4 h-4 mr-2" />
-              <span onClick={handleViewProfile}>Détails</span>
+              <UserCircle className="w-4 h-4 mr-2" />
+              <span>Détails</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <div className="px-2 py-1.5">

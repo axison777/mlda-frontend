@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Users, Star, TrendingUp, Plus } from 'lucide-react';
+import { BookOpen, Users, Star, TrendingUp, Calendar, MessageCircle, Award, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
   LineChart,
@@ -41,6 +41,60 @@ const professorStats = [
     change: '+18%',
     icon: TrendingUp,
     color: 'text-red-600',
+  },
+];
+
+const recentActivity = [
+  {
+    id: '1',
+    type: 'student_enrolled',
+    title: 'Nouvel étudiant inscrit',
+    description: 'Marie Dubois s\'est inscrite à "Allemand pour débutants"',
+    time: 'Il y a 2 heures',
+    icon: Users,
+    color: 'text-green-600',
+  },
+  {
+    id: '2',
+    type: 'quiz_completed',
+    title: 'Quiz complété',
+    description: 'Pierre Martin a terminé le quiz de grammaire (85%)',
+    time: 'Il y a 4 heures',
+    icon: Award,
+    color: 'text-blue-600',
+  },
+  {
+    id: '3',
+    type: 'message_received',
+    title: 'Nouveau message',
+    description: 'Sophie Laurent a posé une question sur les verbes',
+    time: 'Hier',
+    icon: MessageCircle,
+    color: 'text-purple-600',
+  },
+];
+
+const upcomingTasks = [
+  {
+    id: '1',
+    title: 'Corriger les devoirs',
+    description: '12 devoirs en attente de correction',
+    dueDate: '2024-01-25',
+    priority: 'high',
+  },
+  {
+    id: '2',
+    title: 'Préparer le quiz final',
+    description: 'Quiz final pour "Allemand débutants"',
+    dueDate: '2024-01-28',
+    priority: 'medium',
+  },
+  {
+    id: '3',
+    title: 'Répondre aux messages',
+    description: '5 messages d\'étudiants en attente',
+    dueDate: '2024-01-23',
+    priority: 'high',
   },
 ];
 
@@ -92,9 +146,10 @@ export const ProfessorDashboard = () => {
         ))}
       </div>
 
-      {/* Course Management */}
+      {/* Dashboard Content */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2">
+        {/* Inscriptions Chart */}
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Inscriptions d'Étudiants</CardTitle>
@@ -114,6 +169,93 @@ export const ProfessorDashboard = () => {
                   />
                 </LineChart>
               </ResponsiveContainer>
+            </CardContent>
+          </Card>
+          
+          {/* Recent Activity */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Activité Récente</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recentActivity.map((activity) => (
+                  <div key={activity.id} className="flex items-center space-x-4 p-3 border border-gray-200 rounded-lg">
+                    <div className={`w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center`}>
+                      <activity.icon className={`w-5 h-5 ${activity.color}`} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">{activity.title}</p>
+                      <p className="text-sm text-gray-600">{activity.description}</p>
+                      <p className="text-xs text-gray-500">{activity.time}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+        
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Upcoming Tasks */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Calendar className="w-5 h-5 mr-2" />
+                Tâches à Venir
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {upcomingTasks.map((task) => (
+                  <div key={task.id} className="p-3 border border-gray-200 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <h4 className="font-medium text-sm">{task.title}</h4>
+                      <Badge className={
+                        task.priority === 'high' ? 'bg-red-100 text-red-800' :
+                        task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-green-100 text-green-800'
+                      }>
+                        {task.priority === 'high' ? 'Urgent' :
+                         task.priority === 'medium' ? 'Moyen' : 'Faible'}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-gray-600 mb-2">{task.description}</p>
+                    <div className="flex items-center text-xs text-gray-500">
+                      <Clock className="w-3 h-3 mr-1" />
+                      {new Date(task.dueDate).toLocaleDateString('fr-FR')}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          {/* Quick Actions */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Actions Rapides</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Link to="/professor/courses">
+                <Button className="w-full justify-start bg-red-600 hover:bg-red-700">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Gérer mes cours
+                </Button>
+              </Link>
+              <Link to="/professor/students">
+                <Button variant="outline" className="w-full justify-start">
+                  <Users className="w-4 h-4 mr-2" />
+                  Voir mes étudiants
+                </Button>
+              </Link>
+              <Link to="/professor/messages">
+                <Button variant="outline" className="w-full justify-start">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Messages
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>
