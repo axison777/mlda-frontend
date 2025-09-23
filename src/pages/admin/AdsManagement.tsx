@@ -21,6 +21,7 @@ import {
 import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target, DollarSign, Edit, Copy, Play, Pause, Trash2 } from 'lucide-react';
 import { CreateCampaignDialog } from '@/components/admin/CreateCampaignDialog';
 import { AdDetailsDialog } from '@/components/admin/AdDetailsDialog';
+import { toast } from 'sonner';
 
 const mockAds = [
   {

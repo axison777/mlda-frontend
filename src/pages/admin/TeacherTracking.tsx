@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Search, MoreHorizontal, Users, BookOpen, Star, AlertTriangle, CheckCircle, Eye, Edit, MessageCircle, FileText, Ban } from 'lucide-react';
 import { TeacherDetailsDialog } from '@/components/admin/TeacherDetailsDialog';
+import { toast } from 'sonner';
 
 const mockTeachers = [
   {

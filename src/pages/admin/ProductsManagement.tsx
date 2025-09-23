@@ -36,6 +36,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Search, Plus, MoreHorizontal, Package, Edit, Trash2, Upload } from 'lucide-react';
 import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from '@/hooks/useProducts';
+import { toast } from 'sonner';
 
 export const ProductsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');

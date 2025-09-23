@@ -8,6 +8,7 @@ import { Progress } from '@/components/ui/progress';
 import { Search, Plus, Users, Star, Edit, Eye, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { CourseDetailsDialog } from '@/components/professor/CourseDetailsDialog';
 
 const myCourses = [
   {
@@ -59,6 +60,8 @@ const myCourses = [
 
 export const MyCourses = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
 
   const filteredCourses = myCourses.filter(course =>
     course.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -89,6 +92,21 @@ export const MyCourses = () => {
     .reduce((sum, course) => sum + course.rating, 0) / 
     myCourses.filter(course => course.rating > 0).length;
 
+  const handleViewCourse = (course: any) => {
+    setSelectedCourse(course);
+    setShowDetailsDialog(true);
+  };
+
+  const handleEditCourse = (course: any) => {
+    toast.info(`Modification du cours: ${course.title}`);
+  };
+
+  const handleDeleteCourse = (course: any) => {
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
+      toast.success(`Cours "${course.title}" supprimé avec succès !`);
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -100,12 +118,6 @@ export const MyCourses = () => {
           <h1 className="text-3xl font-bold text-gray-900">Mes Cours</h1>
           <p className="text-gray-600">Gérez et suivez vos cours</p>
         </div>
-        <Link to="/professor/create-course">
-          <Button className="bg-red-600 hover:bg-red-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Créer un cours
-          </Button>
-        </Link>
       </div>
 
       {/* Stats Cards */}
@@ -229,14 +241,14 @@ export const MyCourses = () => {
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => toast.info(`Aperçu du cours: ${course.title}`)}
+                          onClick={() => handleViewCourse(course)}
                         >
                           <Eye className="w-4 h-4" />
                         </Button>
                         <Button 
                           variant="outline" 
                           size="sm"
-                          onClick={() => toast.info(`Modification du cours: ${course.title}`)}
+                          onClick={() => handleEditCourse(course)}
                         >
                           <Edit className="w-4 h-4" />
                         </Button>
@@ -244,11 +256,7 @@ export const MyCourses = () => {
                           variant="outline" 
                           size="sm" 
                           className="text-red-600"
-                          onClick={() => {
-                            if (confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
-                              toast.success('Cours supprimé avec succès !');
-                            }
-                          }}
+                          onClick={() => handleDeleteCourse(course)}
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -261,6 +269,12 @@ export const MyCourses = () => {
           </motion.div>
         ))}
       </div>
+
+      <CourseDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        course={selectedCourse}
+      />
     </motion.div>
   );
 };

@@ -60,17 +60,11 @@ export const ProfessorDashboard = () => {
       animate={{ opacity: 1 }}
       className="space-y-6"
     >
-      <div className="flex justify-between items-center">
+      <div>
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Dashboard Professeur</h1>
           <p className="text-gray-600">Gérez vos cours et suivez vos étudiants</p>
         </div>
-        <Link to="/professor/create-course">
-          <Button className="bg-red-600 hover:bg-red-700">
-            <Plus className="w-4 h-4 mr-2" />
-            Nouveau Cours
-          </Button>
-        </Link>
       </div>
 
       {/* Stats Cards */}
@@ -123,32 +117,6 @@ export const ProfessorDashboard = () => {
             </CardContent>
           </Card>
         </div>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Actions Rapides</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Link to="/professor/create-course">
-              <Button variant="outline" className="w-full justify-start">
-                <BookOpen className="w-4 h-4 mr-2" />
-                Créer un cours
-              </Button>
-            </Link>
-            <Link to="/professor/lessons">
-              <Button variant="outline" className="w-full justify-start">
-                <Plus className="w-4 h-4 mr-2" />
-                Ajouter une leçon
-              </Button>
-            </Link>
-            <Link to="/professor/students">
-              <Button variant="outline" className="w-full justify-start">
-                <Users className="w-4 h-4 mr-2" />
-                Voir les étudiants
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
       </div>
     </motion.div>
   );

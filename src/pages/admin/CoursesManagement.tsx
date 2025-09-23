@@ -23,6 +23,7 @@ import { Search, MoreHorizontal, Plus, BookOpen, Users, Star } from 'lucide-reac
 import { useCourses, useDeleteCourse } from '@/hooks/useCourses';
 import { CreateCourseDialog } from '@/components/admin/CreateCourseDialog';
 import { CourseDetailsDialog } from '@/components/admin/CourseDetailsDialog';
+import { toast } from 'sonner';
 
 export const CoursesManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
