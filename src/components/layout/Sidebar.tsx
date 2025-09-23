@@ -45,7 +45,6 @@ const professorMenuItems = [
 const studentMenuItems = [
   { icon: Home, label: 'Accueil', href: '/student' },
   { icon: BookOpen, label: 'Mes cours', href: '/student/courses' },
-  { icon: GraduationCap, label: 'Continuer', href: '/student/continue' },
   { icon: Calendar, label: 'Test de niveau', href: '/student/level-test' },
   { icon: CreditCard, label: 'Abonnements', href: '/student/subscriptions' },
   { icon: MessageCircle, label: 'Messages', href: '/student/messages' },

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -142,6 +143,7 @@ const levelTestQuestions = [
 ];
 
 export const StudentDashboard = () => {
+  const navigate = useNavigate();
   const [showLevelTest, setShowLevelTest] = useState(false);
   const [testAnswers, setTestAnswers] = useState<number[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -199,21 +201,12 @@ export const StudentDashboard = () => {
           <h1 className="text-3xl font-bold text-gray-900">Dashboard Étudiant</h1>
           <p className="text-gray-600">Continuez votre apprentissage de l'allemand</p>
         </div>
-        <div className="flex gap-2">
-          <Button 
-            onClick={handleStartLevelTest}
-            className="bg-purple-600 hover:bg-purple-700"
-          >
-            <GraduationCap className="w-4 h-4 mr-2" />
-            Test de Niveau
+        <Link to="/student/courses">
+          <Button className="bg-red-600 hover:bg-red-700">
+            <BookOpen className="w-4 h-4 mr-2" />
+            Voir tous les cours
           </Button>
-          <Link to="/student/courses">
-            <Button className="bg-red-600 hover:bg-red-700">
-              <BookOpen className="w-4 h-4 mr-2" />
-              Voir tous les cours
-            </Button>
-          </Link>
-        </div>
+        </Link>
       </div>
 
       {/* Stats Cards */}
@@ -438,7 +431,7 @@ export const StudentDashboard = () => {
                       key={optionIndex}
                       variant="outline"
                       className="w-full justify-start text-left h-auto p-4"
-                      onClick={() => handleTestAnswer(optionIndex)}
+                      onClick={() => navigate(`/student/course/${course.id}`)}
                     >
                       {option}
                     </Button>

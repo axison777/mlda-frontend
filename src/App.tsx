@@ -36,6 +36,7 @@ import { ContinueCourse } from '@/pages/student/ContinueCourse';
 import { LevelTest } from '@/pages/student/LevelTest';
 import { Subscriptions } from '@/pages/student/Subscriptions';
 import { StudentProfile } from '@/pages/student/StudentProfile';
+import { PaymentPage } from '@/pages/student/PaymentPage';
 
 // Shared Pages
 import { MessagesPage } from '@/pages/shared/MessagesPage';
@@ -111,7 +112,8 @@ function App() {
           >
             <Route index element={<StudentDashboard />} />
             <Route path="courses" element={<StudentCourses />} />
-            <Route path="continue" element={<ContinueCourse />} />
+            <Route path="course/:courseId" element={<ContinueCourse />} />
+            <Route path="payment" element={<PaymentPage />} />
             <Route path="level-test" element={<LevelTest />} />
             <Route path="subscriptions" element={<Subscriptions />} />
             <Route path="profile" element={<StudentProfile />} />

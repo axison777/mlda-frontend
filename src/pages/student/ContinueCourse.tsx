@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -16,7 +17,9 @@ import {
   Clock,
   Volume2,
   Subtitles,
-  HelpCircle
+  HelpCircle,
+  ArrowLeft,
+  List
 } from 'lucide-react';
 
 const currentLesson = {
@@ -58,6 +61,8 @@ const courseProgress = {
 };
 
 export const ContinueCourse = () => {
+  const { courseId } = useParams();
+  const navigate = useNavigate();
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState('05:23');
   const [showSubtitles, setShowSubtitles] = useState(true);
@@ -65,7 +70,22 @@ export const ContinueCourse = () => {
   const [lessonCompleted, setLessonCompleted] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
+  const [showLessonsList, setShowLessonsList] = useState(false);
 
+  const allLessons = [
+    { id: '1', title: 'Introduction à l\'allemand', type: 'video', completed: true },
+    { id: '2', title: 'Les salutations', type: 'video', completed: true },
+    { id: '3', title: 'Quiz: Salutations', type: 'quiz', completed: true },
+    { id: '4', title: 'Les nombres', type: 'text', completed: true },
+    { id: '5', title: 'Quiz: Nombres', type: 'quiz', completed: true },
+    // ... autres leçons
+    { id: '19', title: 'Les verbes de modalité', type: 'video', completed: false, current: true },
+    { id: '20', title: 'Quiz: Verbes de modalité', type: 'quiz', completed: false },
+    { id: '21', title: 'Le passé composé', type: 'video', completed: false },
+    { id: '22', title: 'Quiz: Passé composé', type: 'quiz', completed: false },
+    { id: '23', title: 'Vocabulaire: La famille', type: 'text', completed: false },
+    { id: '24', title: 'Examen final', type: 'exam', completed: false },
+  ];
   const lessonQuiz = {
     title: 'Quiz - Les verbes de modalité',
     questions: [
@@ -84,11 +104,30 @@ export const ContinueCourse = () => {
 
   const handleMarkComplete = () => {
     setLessonCompleted(true);
-    setShowQuiz(true);
+    // Vérifier si la leçon suivante est un quiz
+    const currentIndex = allLessons.findIndex(l => l.current);
+    const nextLesson = allLessons[currentIndex + 1];
+    
+    if (nextLesson?.type === 'quiz') {
+      setShowQuiz(true);
+    } else {
+      toast.success('Leçon terminée ! Passez à la suivante.');
+    }
   };
 
   const handleNextLesson = () => {
-    console.log('Passer à la leçon suivante');
+    const currentIndex = allLessons.findIndex(l => l.current);
+    const nextLesson = allLessons[currentIndex + 1];
+    
+    if (nextLesson) {
+      if (nextLesson.type === 'exam') {
+        toast.info('Vous êtes prêt pour l\'examen final !');
+      } else {
+        toast.success(`Passage à: ${nextLesson.title}`);
+      }
+    } else {
+      toast.success('Félicitations ! Vous avez terminé le cours !');
+    }
   };
 
   const handleQuizAnswer = (questionIndex: number, answerIndex: number) => {
@@ -112,7 +151,28 @@ export const ContinueCourse = () => {
       animate={{ opacity: 1 }}
       className="space-y-6"
     >
-      <div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/student/courses')}
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Retour aux cours
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Continuer le Cours</h1>
+            <p className="text-gray-600">{currentLesson.course}</p>
+          </div>
+        </div>
+        <Button 
+          variant="outline"
+          onClick={() => setShowLessonsList(true)}
+        >
+          <List className="w-4 h-4 mr-2" />
+          Toutes les leçons
+        </Button>
+      </div>
         <h1 className="text-3xl font-bold text-gray-900">Continuer le Cours</h1>
         <p className="text-gray-600">{currentLesson.course}</p>
       </div>
@@ -281,6 +341,50 @@ export const ContinueCourse = () => {
                     Valider le quiz
                   </Button>
                 </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+
+          {/* Lessons List Dialog */}
+          <Dialog open={showLessonsList} onOpenChange={setShowLessonsList}>
+            <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Toutes les leçons du cours</DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-3">
+                {allLessons.map((lesson, index) => (
+                  <div 
+                    key={lesson.id}
+                    className={`flex items-center justify-between p-4 border rounded-lg ${
+                      lesson.current ? 'border-red-500 bg-red-50' : 
+                      lesson.completed ? 'border-green-200 bg-green-50' : 'border-gray-200'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+                        lesson.completed ? 'bg-green-600 text-white' :
+                        lesson.current ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-600'
+                      }`}>
+                        {lesson.completed ? <CheckCircle className="w-4 h-4" /> : index + 1}
+                      </div>
+                      <div>
+                        <p className="font-medium">{lesson.title}</p>
+                        <Badge variant="outline" className="text-xs">
+                          {lesson.type === 'video' ? 'Vidéo' :
+                           lesson.type === 'text' ? 'Texte' :
+                           lesson.type === 'quiz' ? 'Quiz' : 'Examen'}
+                        </Badge>
+                      </div>
+                    </div>
+                    {lesson.current && (
+                      <Badge className="bg-red-100 text-red-800">En cours</Badge>
+                    )}
+                    {lesson.completed && (
+                      <Badge className="bg-green-100 text-green-800">Terminé</Badge>
+                    )}
+                  </div>
+                ))}
               </div>
             </DialogContent>
           </Dialog>

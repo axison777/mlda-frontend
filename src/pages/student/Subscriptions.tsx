@@ -108,10 +108,41 @@ const billingHistory = [
   },
 ];
 
+const purchaseHistory = [
+  {
+    id: 'COURSE-001',
+    type: 'course',
+    name: 'Allemand pour débutants',
+    price: 25000,
+    date: '2024-01-15',
+    status: 'completed',
+    progress: 75,
+  },
+  {
+    id: 'COURSE-002',
+    type: 'course',
+    name: 'Grammaire allemande avancée',
+    price: 35000,
+    date: '2024-01-10',
+    status: 'completed',
+    progress: 45,
+  },
+  {
+    id: 'SUB-001',
+    type: 'subscription',
+    name: 'Abonnement Professionnel',
+    price: 30000,
+    date: '2024-01-01',
+    status: 'active',
+    nextBilling: '2024-02-01',
+  },
+];
+
 export const Subscriptions = () => {
   const navigate = useNavigate();
   const [selectedPlan, setSelectedPlan] = useState('Professionnel');
   const [showPaymentDialog, setShowPaymentDialog] = useState(false);
+  const [activeTab, setActiveTab] = useState('subscription');
   const [paymentData, setPaymentData] = useState({
     cardNumber: '',
     expiryDate: '',
@@ -163,11 +194,37 @@ export const Subscriptions = () => {
     >
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Mes Abonnements</h1>
-        <p className="text-gray-600">Gérez votre abonnement et votre facturation</p>
+        <p className="text-gray-600">Gérez vos abonnements et consultez vos achats</p>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-4 mb-6">
+        <Button
+          variant={activeTab === 'subscription' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('subscription')}
+          className={activeTab === 'subscription' ? 'bg-red-600 hover:bg-red-700' : ''}
+        >
+          Abonnement Actuel
+        </Button>
+        <Button
+          variant={activeTab === 'purchases' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('purchases')}
+          className={activeTab === 'purchases' ? 'bg-red-600 hover:bg-red-700' : ''}
+        >
+          Mes Achats ({purchaseHistory.length})
+        </Button>
+        <Button
+          variant={activeTab === 'plans' ? 'default' : 'outline'}
+          onClick={() => setActiveTab('plans')}
+          className={activeTab === 'plans' ? 'bg-red-600 hover:bg-red-700' : ''}
+        >
+          Changer d'Abonnement
+        </Button>
       </div>
 
       {/* Current Subscription */}
-      <Card className="border-red-200 bg-red-50">
+      {activeTab === 'subscription' && (
+        <Card className="border-red-200 bg-red-50">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Crown className="w-5 h-5 mr-2 text-red-600" />
@@ -213,10 +270,73 @@ export const Subscriptions = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
+      {/* Purchase History */}
+      {activeTab === 'purchases' && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Historique de mes achats</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {purchaseHistory.map((purchase) => (
+                <div key={purchase.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                      purchase.type === 'course' ? 'bg-blue-100' : 'bg-purple-100'
+                    }`}>
+                      {purchase.type === 'course' ? (
+                        <BookOpen className="w-6 h-6 text-blue-600" />
+                      ) : (
+                        <Crown className="w-6 h-6 text-purple-600" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-medium">{purchase.name}</p>
+                      <p className="text-sm text-gray-600">
+                        {new Date(purchase.date).toLocaleDateString('fr-FR')}
+                      </p>
+                      {purchase.type === 'course' && purchase.progress !== undefined && (
+                        <div className="flex items-center gap-2 mt-1">
+                          <Progress value={purchase.progress} className="w-20 h-1" />
+                          <span className="text-xs text-gray-500">{purchase.progress}%</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">{purchase.price.toLocaleString()} FCFA</p>
+                    <Badge className={
+                      purchase.status === 'active' ? 'bg-green-100 text-green-800' :
+                      purchase.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                      'bg-gray-100 text-gray-800'
+                    }>
+                      {purchase.status === 'active' ? 'Actif' :
+                       purchase.status === 'completed' ? 'Acheté' : 'Inactif'}
+                    </Badge>
+                    {purchase.type === 'course' && (
+                      <div className="mt-2">
+                        <Button 
+                          size="sm" 
+                          className="bg-red-600 hover:bg-red-700"
+                          onClick={() => navigate(`/student/course/${purchase.id.replace('COURSE-', '')}`)}
+                        >
+                          Continuer
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
       {/* Available Plans */}
-      <Card>
+      {activeTab === 'plans' && (
+        <Card>
         <CardHeader>
           <CardTitle>Changer d'Abonnement</CardTitle>
         </CardHeader>
@@ -285,10 +405,12 @@ export const Subscriptions = () => {
             ))}
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* Billing History */}
-      <Card>
+      {activeTab === 'subscription' && (
+        <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <CreditCard className="w-5 h-5 mr-2" />
@@ -327,10 +449,12 @@ export const Subscriptions = () => {
             ))}
           </div>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* Payment Method */}
-      <Card>
+      {activeTab === 'subscription' && (
+        <Card>
         <CardHeader>
           <CardTitle>Méthode de Paiement</CardTitle>
         </CardHeader>
@@ -368,7 +492,8 @@ export const Subscriptions = () => {
             Ajouter une méthode de paiement
           </Button>
         </CardContent>
-      </Card>
+        </Card>
+      )}
 
       {/* Payment Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>
