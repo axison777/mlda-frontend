@@ -5,7 +5,21 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { BookOpen, Clock, Award, Play, HelpCircle, GraduationCap } from 'lucide-react';
+import { 
+  BookOpen, 
+  Clock,
+  Award, 
+  Play, 
+  HelpCircle,
+  GraduationCap,
+  TrendingUp,
+  Calendar,
+  Target,
+  MessageCircle,
+  Star,
+  Users,
+  ArrowRight
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -59,6 +73,54 @@ const currentCourses = [
     hasQuiz: false,
     isFinalQuiz: true,
   },
+];
+
+const recentActivity = [
+  {
+    id: '1',
+    type: 'lesson_completed',
+    title: 'Leçon complétée: Les verbes modaux',
+    time: 'Il y a 2 heures',
+    icon: BookOpen,
+    color: 'text-green-600',
+  },
+  {
+    id: '2',
+    type: 'quiz_passed',
+    title: 'Quiz réussi: Grammaire de base (85%)',
+    time: 'Hier',
+    icon: Award,
+    color: 'text-blue-600',
+  },
+  {
+    id: '3',
+    type: 'course_enrolled',
+    title: 'Inscription: Conversation avancée',
+    time: 'Il y a 3 jours',
+    icon: Users,
+    color: 'text-purple-600',
+  },
+];
+
+const upcomingDeadlines = [
+  {
+    id: '1',
+    title: 'Quiz final - Allemand débutants',
+    date: '2024-01-25',
+    type: 'quiz',
+  },
+  {
+    id: '2',
+    title: 'Projet oral - Conversation',
+    date: '2024-01-28',
+    type: 'project',
+  },
+];
+
+const weeklyGoals = [
+  { title: 'Compléter 3 leçons', progress: 67, current: 2, target: 3 },
+  { title: 'Réviser le vocabulaire', progress: 100, current: 1, target: 1 },
+  { title: 'Quiz de grammaire', progress: 0, current: 0, target: 1 },
 ];
 
 const levelTestQuestions = [
@@ -137,13 +199,21 @@ export const StudentDashboard = () => {
           <h1 className="text-3xl font-bold text-gray-900">Dashboard Étudiant</h1>
           <p className="text-gray-600">Continuez votre apprentissage de l'allemand</p>
         </div>
-        <Button 
-          onClick={handleStartLevelTest}
-          className="bg-purple-600 hover:bg-purple-700"
-        >
-          <GraduationCap className="w-4 h-4 mr-2" />
-          Test de Niveau
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handleStartLevelTest}
+            className="bg-purple-600 hover:bg-purple-700"
+          >
+            <GraduationCap className="w-4 h-4 mr-2" />
+            Test de Niveau
+          </Button>
+          <Link to="/student/courses">
+            <Button className="bg-red-600 hover:bg-red-700">
+              <BookOpen className="w-4 h-4 mr-2" />
+              Voir tous les cours
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -228,11 +298,93 @@ export const StudentDashboard = () => {
         </CardContent>
       </Card>
 
-      {/* Quick Actions */}
+      {/* Extended Dashboard Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Weekly Goals */}
         <Card>
           <CardHeader>
-            <CardTitle>Recommandé pour vous</CardTitle>
+            <CardTitle className="flex items-center">
+              <Target className="w-5 h-5 mr-2" />
+              Objectifs de la Semaine
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {weeklyGoals.map((goal, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">{goal.title}</span>
+                    <span className="text-sm text-gray-600">{goal.current}/{goal.target}</span>
+                  </div>
+                  <Progress value={goal.progress} className="h-2" />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recent Activity */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <TrendingUp className="w-5 h-5 mr-2" />
+              Activité Récente
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {recentActivity.map((activity) => (
+                <div key={activity.id} className="flex items-center space-x-3">
+                  <div className={`w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center`}>
+                    <activity.icon className={`w-4 h-4 ${activity.color}`} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{activity.title}</p>
+                    <p className="text-xs text-gray-600">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Additional Content */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Upcoming Deadlines */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Calendar className="w-5 h-5 mr-2" />
+              Échéances Importantes
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-3">
+              {upcomingDeadlines.map((deadline) => (
+                <div key={deadline.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                  <div>
+                    <p className="font-medium">{deadline.title}</p>
+                    <p className="text-sm text-gray-600">
+                      {new Date(deadline.date).toLocaleDateString('fr-FR')}
+                    </p>
+                  </div>
+                  <Badge className={deadline.type === 'quiz' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}>
+                    {deadline.type === 'quiz' ? 'Quiz' : 'Projet'}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Recommendations */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center">
+              <Star className="w-5 h-5 mr-2" />
+              Recommandé pour vous
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -241,29 +393,16 @@ export const StudentDashboard = () => {
                 <p className="text-sm text-gray-600">Préparez-vous à l'examen officiel</p>
                 <Button variant="outline" size="sm" className="mt-2">
                   En savoir plus
+                  <ArrowRight className="w-3 h-3 ml-1" />
                 </Button>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Objectifs de la Semaine</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Compléter 3 leçons</span>
-                <span className="text-sm text-green-600 font-medium">2/3</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Réviser le vocabulaire</span>
-                <span className="text-sm text-yellow-600 font-medium">En cours</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Quiz de grammaire</span>
-                <span className="text-sm text-gray-400 font-medium">À faire</span>
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 className="font-medium text-gray-900">Session de conversation</h3>
+                <p className="text-sm text-gray-600">Pratiquez avec un professeur natif</p>
+                <Button variant="outline" size="sm" className="mt-2">
+                  Réserver
+                  <ArrowRight className="w-3 h-3 ml-1" />
+                </Button>
               </div>
             </div>
           </CardContent>

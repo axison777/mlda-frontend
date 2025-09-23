@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Save, Upload, Award, Target, Calendar, TrendingUp } from 'lucide-react';
+import { Save, Upload, Award, Target, Calendar, TrendingUp, BookOpen, Clock, Star, Trophy, Zap } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const StudentProfile = () => {
@@ -65,17 +65,46 @@ export const StudentProfile = () => {
   };
 
   const achievements = [
-    { title: 'Premier cours terminé', date: '2024-01-10', icon: Award },
-    { title: '7 jours consécutifs', date: '2024-01-15', icon: Calendar },
-    { title: 'Score parfait au quiz', date: '2024-01-18', icon: Target },
-    { title: '50 leçons complétées', date: '2024-01-20', icon: TrendingUp },
+    { title: 'Premier cours terminé', date: '2024-01-10', icon: Award, points: 10, rarity: 'common' },
+    { title: '7 jours consécutifs', date: '2024-01-15', icon: Calendar, points: 50, rarity: 'rare' },
+    { title: 'Score parfait au quiz', date: '2024-01-18', icon: Target, points: 25, rarity: 'rare' },
+    { title: '50 leçons complétées', date: '2024-01-20', icon: TrendingUp, points: 100, rarity: 'epic' },
+    { title: 'Maître des mots', date: '2024-01-22', icon: Star, points: 75, rarity: 'epic' },
+    { title: 'Série de feu', date: '2024-01-23', icon: Zap, points: 150, rarity: 'legendary' },
   ];
 
   const learningStats = [
-    { label: 'Niveau actuel', value: 'A2', progress: 40 },
-    { label: 'Objectif', value: 'B2', progress: 100 },
-    { label: 'Temps d\'étude total', value: '47h', progress: 60 },
-    { label: 'Série actuelle', value: '12 jours', progress: 80 },
+    { label: 'Niveau actuel', value: 'A2', progress: 40, icon: BookOpen },
+    { label: 'Objectif', value: 'B2', progress: 100, icon: Target },
+    { label: 'Temps d\'étude total', value: '47h', progress: 60, icon: Clock },
+    { label: 'Série actuelle', value: '12 jours', progress: 80, icon: Calendar },
+  ];
+
+  const studyStreak = [
+    { day: 'Lun', completed: true },
+    { day: 'Mar', completed: true },
+    { day: 'Mer', completed: true },
+    { day: 'Jeu', completed: true },
+    { day: 'Ven', completed: false },
+    { day: 'Sam', completed: false },
+    { day: 'Dim', completed: false },
+  ];
+
+  const skillProgress = [
+    { skill: 'Grammaire', level: 85, color: 'bg-blue-500' },
+    { skill: 'Vocabulaire', level: 92, color: 'bg-green-500' },
+    { skill: 'Conversation', level: 78, color: 'bg-yellow-500' },
+    { skill: 'Compréhension', level: 88, color: 'bg-purple-500' },
+  ];
+
+  const getRarityColor = (rarity: string) => {
+    switch (rarity) {
+      case 'common': return 'bg-gray-100 text-gray-800';
+      case 'rare': return 'bg-blue-100 text-blue-800';
+      case 'epic': return 'bg-purple-100 text-purple-800';
+      case 'legendary': return 'bg-yellow-100 text-yellow-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
   ];
 
   return (
@@ -120,11 +149,16 @@ export const StudentProfile = () => {
           <CardTitle>Progression d'Apprentissage</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {learningStats.map((stat, index) => (
-              <div key={stat.label} className="text-center">
-                <p className="text-sm text-gray-600 mb-2">{stat.label}</p>
-                <p className="text-2xl font-bold text-gray-900 mb-3">{stat.value}</p>
+              <div key={stat.label} className="text-center space-y-3">
+                <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto">
+                  <stat.icon className="w-6 h-6 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-sm text-gray-600">{stat.label}</p>
+                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                </div>
                 <Progress value={stat.progress} className="h-2" />
               </div>
             ))}
@@ -132,11 +166,61 @@ export const StudentProfile = () => {
         </CardContent>
       </Card>
 
+      {/* Study Streak */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Zap className="w-5 h-5 mr-2" />
+            Série d'Étude - 12 jours
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center gap-2">
+            {studyStreak.map((day, index) => (
+              <div key={index} className="text-center">
+                <p className="text-xs text-gray-600 mb-2">{day.day}</p>
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  day.completed ? 'bg-green-500 text-white' : 'bg-gray-200 text-gray-400'
+                }`}>
+                  {day.completed ? '✓' : '○'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Skills Progress */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Progression par Compétence</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {skillProgress.map((skill, index) => (
+              <div key={skill.skill} className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">{skill.skill}</span>
+                  <span className="text-sm text-gray-600">{skill.level}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div 
+                    className={`h-3 rounded-full ${skill.color}`}
+                    style={{ width: `${skill.level}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="profile">Profil</TabsTrigger>
           <TabsTrigger value="learning">Apprentissage</TabsTrigger>
           <TabsTrigger value="achievements">Réussites</TabsTrigger>
+          <TabsTrigger value="statistics">Statistiques</TabsTrigger>
           <TabsTrigger value="security">Sécurité</TabsTrigger>
         </TabsList>
 
@@ -277,32 +361,104 @@ export const StudentProfile = () => {
         <TabsContent value="achievements">
           <Card>
             <CardHeader>
-              <CardTitle>Mes Réussites</CardTitle>
+              <CardTitle className="flex items-center justify-between">
+                <span>Mes Réussites</span>
+                <Badge className="bg-yellow-100 text-yellow-800">
+                  <Trophy className="w-3 h-3 mr-1" />
+                  {achievements.reduce((sum, a) => sum + a.points, 0)} points
+                </Badge>
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {achievements.map((achievement, index) => (
                   <motion.div
                     key={achievement.title}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg"
+                    className="p-4 border border-gray-200 rounded-lg"
                   >
-                    <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                      <achievement.icon className="w-6 h-6 text-yellow-600" />
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+                        <achievement.icon className="w-5 h-5 text-yellow-600" />
+                      </div>
+                      <Badge className={getRarityColor(achievement.rarity)}>
+                        {achievement.rarity === 'common' ? 'Commun' :
+                         achievement.rarity === 'rare' ? 'Rare' :
+                         achievement.rarity === 'epic' ? 'Épique' : 'Légendaire'}
+                      </Badge>
                     </div>
                     <div>
-                      <p className="font-medium">{achievement.title}</p>
-                      <p className="text-sm text-gray-600">
+                      <h3 className="font-medium mb-1">{achievement.title}</h3>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">
                         Obtenu le {new Date(achievement.date).toLocaleDateString('fr-FR')}
-                      </p>
+                        </span>
+                        <span className="text-yellow-600 font-medium">+{achievement.points} pts</span>
+                      </div>
                     </div>
                   </motion.div>
                 ))}
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="statistics">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Statistiques d'Étude</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Total heures d'étude:</span>
+                  <span className="font-medium">47h 23min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Moyenne quotidienne:</span>
+                  <span className="font-medium">1h 15min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Leçons complétées:</span>
+                  <span className="font-medium">67</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Quiz réussis:</span>
+                  <span className="font-medium">23</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Série la plus longue:</span>
+                  <span className="font-medium">15 jours</span>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Performances</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Score moyen quiz:</span>
+                  <span className="font-medium text-green-600">85%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Taux de réussite:</span>
+                  <span className="font-medium text-green-600">92%</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Temps par leçon:</span>
+                  <span className="font-medium">12 min</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Niveau de motivation:</span>
+                  <span className="font-medium text-blue-600">Élevé</span>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </TabsContent>
 
         <TabsContent value="security">
