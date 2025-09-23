@@ -75,7 +75,7 @@ export const Header = () => {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem onClick={handleViewProfile}>
               <UserCircle className="w-4 h-4 mr-2" />
-              <span>Détails</span>
+              <span>Profil</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <div className="px-2 py-1.5">

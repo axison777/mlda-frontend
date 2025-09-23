@@ -19,9 +19,9 @@ import {
 
 
 export const MyCourses = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLevel, setFilterLevel] = useState('all');
-  const [activeTab, setActiveTab] = useState('enrolled');
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<any>(null);
   
@@ -54,6 +54,9 @@ export const MyCourses = () => {
     const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          course.instructor?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLevel = filterLevel === 'all' || course.level === filterLevel;
+    // Exclure les cours déjà inscrits
+    const isNotEnrolled = !enrolledCourses.some((enrollment: any) => enrollment.course.id === course.id);
+    return matchesSearch && matchesLevel && isNotEnrolled;
     return matchesSearch && matchesLevel;
   });
 
@@ -143,25 +146,20 @@ export const MyCourses = () => {
       </Card>
 
       {/* Course Tabs */}
-      <div className="flex gap-4 mb-6">
-        <Button
-          variant={activeTab === 'enrolled' ? 'default' : 'outline'}
-          onClick={() => setActiveTab('enrolled')}
-          className={activeTab === 'enrolled' ? 'bg-red-600 hover:bg-red-700' : ''}
-        >
-          Mes Cours Inscrits ({enrolledCourses.length})
-        </Button>
-        <Button
-          variant={activeTab === 'available' ? 'default' : 'outline'}
-          onClick={() => setActiveTab('available')}
-          className={activeTab === 'available' ? 'bg-red-600 hover:bg-red-700' : ''}
-        >
-          Cours Disponibles ({availableCourses.length})
-        </Button>
-      </div>
 
       {/* Enrolled Courses */}
-      {activeTab === 'enrolled' && (
+      <Card>
+        <CardHeader>
+          <CardTitle>Mes Cours Inscrits ({enrolledCourses.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {filteredEnrolledCourses.length === 0 ? (
+            <div className="text-center py-8">
+              <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun cours inscrit</h3>
+              <p className="text-gray-600">Explorez nos cours disponibles ci-dessous</p>
+            </div>
+          ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEnrolledCourses.map((enrollment: any, index: number) => {
             const course = enrollment.course;
@@ -195,12 +193,12 @@ export const MyCourses = () => {
                   <div className="space-y-3">
                     <div className="flex justify-between items-center text-sm">
                       <span className="text-gray-600">Progression</span>
-                      <span className="font-medium">0%</span>
+                      <span className="font-medium">{enrollment.progress || 0}%</span>
                     </div>
-                    <Progress value={0} className="h-2" />
+                    <Progress value={enrollment.progress || 0} className="h-2" />
                     
                     <div className="flex items-center justify-between text-sm text-gray-600">
-                      <span>0/{course._count?.lessons || 0} leçons</span>
+                      <span>{enrollment.completedLessons || 0}/{course._count?.lessons || 0} leçons</span>
                       <div className="flex items-center">
                         <Star className="w-4 h-4 mr-1 text-yellow-400" />
                         4.8
@@ -234,17 +232,16 @@ export const MyCourses = () => {
             </motion.div>
           )})}
         </div>
-      )}
+          )}
+        </CardContent>
+      </Card>
 
-      {/* Quiz Dialog */}
-      <CourseDetailsDialog
-        isOpen={showDetailsDialog}
-        onClose={() => setShowDetailsDialog(false)}
-        course={selectedCourse}
-        isEnrolled={selectedCourse?.isEnrolled}
-      />
       {/* Available Courses */}
-      {activeTab === 'available' && (
+      <Card>
+        <CardHeader>
+          <CardTitle>Cours Disponibles ({filteredAvailableCourses.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredAvailableCourses.map((course, index) => (
             <motion.div
@@ -284,7 +281,7 @@ export const MyCourses = () => {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-red-600">€{course.price}</span>
+                    <span className="text-2xl font-bold text-red-600">{course.price?.toLocaleString()} FCFA</span>
                     <div className="flex gap-2">
                       <Button 
                         variant="outline"
@@ -305,7 +302,15 @@ export const MyCourses = () => {
             </motion.div>
           ))}
         </div>
-      )}
+        </CardContent>
+      </Card>
+
+      <CourseDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        course={selectedCourse}
+        isEnrolled={selectedCourse?.isEnrolled}
+      />
     </motion.div>
   );
 };

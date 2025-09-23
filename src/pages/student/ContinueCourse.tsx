@@ -71,6 +71,9 @@ export const ContinueCourse = () => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [quizAnswers, setQuizAnswers] = useState<number[]>([]);
   const [showLessonsList, setShowLessonsList] = useState(false);
+  const [showExam, setShowExam] = useState(false);
+  const [examAnswers, setExamAnswers] = useState<number[]>([]);
+  const [currentExamQuestion, setCurrentExamQuestion] = useState(0);
 
   const allLessons = [
     { id: '1', title: 'Introduction à l\'allemand', type: 'video', completed: true },
@@ -87,6 +90,27 @@ export const ContinueCourse = () => {
     { id: '24', title: 'Examen final', type: 'exam', completed: false },
   ];
   const lessonQuiz = {
+  const finalExam = {
+    title: 'Examen Final - Allemand pour débutants',
+    questions: [
+      {
+        question: 'Traduisez: "Je voudrais un café, s\'il vous plaît"',
+        options: ['Ich möchte einen Kaffee, bitte', 'Ich will Kaffee haben', 'Ich brauche Kaffee', 'Ich trinke Kaffee'],
+        correct: 0,
+      },
+      {
+        question: 'Quelle est la forme correcte du pluriel de "Kind" (enfant) ?',
+        options: ['Kinds', 'Kinder', 'Kindes', 'Kinden'],
+        correct: 1,
+      },
+      {
+        question: 'Comment dit-on "Hier, j\'ai mangé une pomme" ?',
+        options: ['Gestern esse ich einen Apfel', 'Gestern habe ich einen Apfel gegessen', 'Gestern ich esse Apfel', 'Gestern Apfel essen ich'],
+        correct: 1,
+      },
+    ]
+  };
+  
     title: 'Quiz - Les verbes de modalité',
     questions: [
       {
@@ -110,6 +134,8 @@ export const ContinueCourse = () => {
     
     if (nextLesson?.type === 'quiz') {
       setShowQuiz(true);
+    } else if (nextLesson?.type === 'exam') {
+      setShowExam(true);
     } else {
       toast.success('Leçon terminée ! Passez à la suivante.');
     }
@@ -121,7 +147,9 @@ export const ContinueCourse = () => {
     
     if (nextLesson) {
       if (nextLesson.type === 'exam') {
-        toast.info('Vous êtes prêt pour l\'examen final !');
+        setShowExam(true);
+      } else if (nextLesson.type === 'quiz') {
+        setShowQuiz(true);
       } else {
         toast.success(`Passage à: ${nextLesson.title}`);
       }
@@ -144,6 +172,29 @@ export const ContinueCourse = () => {
     const percentage = Math.round((score / lessonQuiz.questions.length) * 100);
     toast.success(`Quiz terminé ! Score: ${percentage}%`);
     setShowQuiz(false);
+    setQuizAnswers([]);
+  };
+
+  const handleExamAnswer = (questionIndex: number, answerIndex: number) => {
+    const newAnswers = [...examAnswers];
+    newAnswers[questionIndex] = answerIndex;
+    setExamAnswers(newAnswers);
+  };
+
+  const handleSubmitExam = () => {
+    const score = finalExam.questions.reduce((correct, question, index) => {
+      return correct + (examAnswers[index] === question.correct ? 1 : 0);
+    }, 0);
+    
+    const percentage = Math.round((score / finalExam.questions.length) * 100);
+    
+    if (percentage >= 70) {
+      toast.success(`Félicitations ! Examen réussi avec ${percentage}% ! Vous obtiendrez votre certificat.`);
+    } else {
+      toast.error(`Examen échoué (${percentage}%). Vous devez obtenir au moins 70% pour réussir.`);
+    }
+    setShowExam(false);
+    setExamAnswers([]);
   };
   return (
     <motion.div
@@ -345,6 +396,77 @@ export const ContinueCourse = () => {
             </DialogContent>
           </Dialog>
 
+          {/* Final Exam Dialog */}
+          <Dialog open={showExam} onOpenChange={setShowExam}>
+            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle className="flex items-center">
+                  <Award className="w-5 h-5 mr-2 text-red-600" />
+                  {finalExam.title}
+                </DialogTitle>
+              </DialogHeader>
+              
+              <div className="space-y-6">
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <h3 className="font-medium text-red-800 mb-2">Instructions de l'examen</h3>
+                  <ul className="text-sm text-red-700 space-y-1">
+                    <li>• Répondez à toutes les questions</li>
+                    <li>• Note minimale requise: 70%</li>
+                    <li>• Vous obtiendrez un certificat en cas de réussite</li>
+                    <li>• Prenez votre temps pour bien réfléchir</li>
+                  </ul>
+                </div>
+
+                {finalExam.questions.map((question, questionIndex) => (
+                  <div key={questionIndex} className="space-y-3 p-4 border border-gray-200 rounded-lg">
+                    <h3 className="font-medium">
+                      Question {questionIndex + 1}: {question.question}
+                    </h3>
+                    <div className="space-y-2">
+                      {question.options.map((option, optionIndex) => (
+                        <div 
+                          key={optionIndex}
+                          className={`p-3 border rounded-lg cursor-pointer transition-all ${
+                            examAnswers[questionIndex] === optionIndex 
+                              ? 'border-red-500 bg-red-50' 
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                          onClick={() => handleExamAnswer(questionIndex, optionIndex)}
+                        >
+                          <div className="flex items-center">
+                            <div className={`w-4 h-4 rounded-full border-2 mr-3 ${
+                              examAnswers[questionIndex] === optionIndex 
+                                ? 'border-red-500 bg-red-500' 
+                                : 'border-gray-300'
+                            }`}>
+                              {examAnswers[questionIndex] === optionIndex && (
+                                <div className="w-2 h-2 rounded-full bg-white mx-auto mt-0.5" />
+                              )}
+                            </div>
+                            {option}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+                
+                <div className="flex gap-2">
+                  <Button variant="outline" onClick={() => setShowExam(false)}>
+                    Fermer
+                  </Button>
+                  <Button 
+                    onClick={handleSubmitExam}
+                    className="bg-red-600 hover:bg-red-700"
+                    disabled={examAnswers.length !== finalExam.questions.length}
+                  >
+                    Soumettre l'examen
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
+
           {/* Lessons List Dialog */}
           <Dialog open={showLessonsList} onOpenChange={setShowLessonsList}>
             <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
@@ -373,7 +495,8 @@ export const ContinueCourse = () => {
                         <Badge variant="outline" className="text-xs">
                           {lesson.type === 'video' ? 'Vidéo' :
                            lesson.type === 'text' ? 'Texte' :
-                           lesson.type === 'quiz' ? 'Quiz' : 'Examen'}
+                           lesson.type === 'quiz' ? 'Quiz' : 
+                           lesson.type === 'exam' ? 'Examen' : 'Autre'}
                         </Badge>
                       </div>
                     </div>

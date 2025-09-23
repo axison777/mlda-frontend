@@ -49,7 +49,6 @@ const studentMenuItems = [
   { icon: CreditCard, label: 'Abonnements', href: '/student/subscriptions' },
   { icon: MessageCircle, label: 'Messages', href: '/student/messages' },
   { icon: Award, label: 'Achievements', href: '/student/achievements' },
-  { icon: User, label: 'Profil', href: '/student/profile' },
 ];
 
 export const Sidebar = () => {

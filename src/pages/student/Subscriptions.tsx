@@ -277,7 +277,6 @@ export const Subscriptions = () => {
       {activeTab === 'purchases' && (
         <Card>
           <CardHeader>
-            <CardTitle>Historique de mes achats</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
@@ -332,33 +331,7 @@ export const Subscriptions = () => {
               ))}
             </div>
           </CardContent>
-        </Card>
-      )}
-      {/* Available Plans */}
-      {activeTab === 'plans' && (
-        <Card>
-        <CardHeader>
-          <CardTitle>Changer d'Abonnement</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {availablePlans.map((plan) => (
-              <Card 
-                key={plan.name} 
-                className={`relative cursor-pointer transition-all ${
-                  plan.current ? 'border-red-600 bg-red-50' : 
-                  selectedPlan === plan.name ? 'border-red-400' : 'hover:border-gray-300'
-                }`}
-                onClick={() => setSelectedPlan(plan.name)}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                    <Badge className="bg-red-600 text-white">
-                      <Star className="w-3 h-3 mr-1" />
-                      Populaire
-                    </Badge>
                   </div>
-                )}
                 {plan.current && (
                   <div className="absolute -top-3 right-4">
                     <Badge className="bg-green-600 text-white">Actuel</Badge>
@@ -406,54 +379,72 @@ export const Subscriptions = () => {
           </div>
         </CardContent>
         </Card>
-      )}
 
       {/* Billing History */}
-      {activeTab === 'subscription' && (
         <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
             <CreditCard className="w-5 h-5 mr-2" />
-            Historique de Facturation
+            Tous mes Achats ({purchaseHistory.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {billingHistory.map((invoice) => (
-              <div key={invoice.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
+            {purchaseHistory.map((purchase) => (
+              <div key={purchase.id} className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <CreditCard className="w-6 h-6 text-blue-600" />
-                  </div>
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                    purchase.type === 'course' ? 'bg-blue-100' : 'bg-purple-100'
+                  }`}>
+                    {purchase.type === 'course' ? (
+                      <BookOpen className="w-6 h-6 text-blue-600" />
+                    ) : (
+                      <Crown className="w-6 h-6 text-purple-600" />
+                    )}
                   <div>
-                    <p className="font-medium">{invoice.plan}</p>
-                    <p className="text-sm text-gray-600">
-                      {new Date(invoice.date).toLocaleDateString('fr-FR')} • {invoice.method}
+                    <p className="font-medium">{purchase.name}</p>
+                      {new Date(purchase.date).toLocaleDateString('fr-FR')}
                     </p>
+                    {purchase.type === 'course' && purchase.progress !== undefined && (
+                      <div className="flex items-center gap-2 mt-1">
+                        <Progress value={purchase.progress} className="w-20 h-1" />
+                        <span className="text-xs text-gray-500">{purchase.progress}%</span>
+                      </div>
+                    )}
+                    {purchase.type === 'subscription' && purchase.nextBilling && (
+                      <p className="text-xs text-gray-500">
+                        Prochaine facturation: {new Date(purchase.nextBilling).toLocaleDateString('fr-FR')}
+                      </p>
+                    )}
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-medium">{invoice.amount.toLocaleString()} FCFA</p>
-                  <Badge className={getStatusBadge(invoice.status)}>
-                    {invoice.status === 'paid' ? 'Payé' : 'Échoué'}
+                  <p className="font-medium">{purchase.price.toLocaleString()} FCFA</p>
+                  <Badge className={
+                    purchase.status === 'active' ? 'bg-green-100 text-green-800' :
+                    purchase.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                    'bg-gray-100 text-gray-800'
+                  }>
+                    {purchase.status === 'active' ? 'Actif' :
+                     purchase.status === 'completed' ? 'Acheté' : 'Inactif'}
                   </Badge>
+                  {purchase.type === 'course' && (
+                    <div className="mt-2">
+                      <Button 
+                        size="sm" 
+                        className="bg-red-600 hover:bg-red-700"
+                        onClick={() => navigate(`/student/course/${purchase.id.replace('COURSE-', '')}`)}
+                      >
+                        Continuer
+                      </Button>
+                    </div>
+                  )}
                 </div>
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleDownloadInvoice(invoice.id)}
-                >
-                  Télécharger
-                </Button>
               </div>
             ))}
           </div>
-        </CardContent>
         </Card>
-      )}
 
-      {/* Payment Method */}
-      {activeTab === 'subscription' && (
         <Card>
         <CardHeader>
           <CardTitle>Méthode de Paiement</CardTitle>
@@ -493,7 +484,6 @@ export const Subscriptions = () => {
           </Button>
         </CardContent>
         </Card>
-      )}
 
       {/* Payment Dialog */}
       <Dialog open={showPaymentDialog} onOpenChange={setShowPaymentDialog}>

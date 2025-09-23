@@ -124,69 +124,14 @@ const weeklyGoals = [
   { title: 'Quiz de grammaire', progress: 0, current: 0, target: 1 },
 ];
 
-const levelTestQuestions = [
-  {
-    question: 'Comment dit-on "Bonjour" en allemand ?',
-    options: ['Guten Tag', 'Auf Wiedersehen', 'Danke', 'Bitte'],
-    correct: 0,
-  },
-  {
-    question: 'Quel est l\'article défini pour "Buch" (livre) ?',
-    options: ['der', 'die', 'das', 'den'],
-    correct: 2,
-  },
-  {
-    question: 'Comment conjugue-t-on "haben" (avoir) à la troisième personne du singulier ?',
-    options: ['habe', 'hast', 'hat', 'haben'],
-    correct: 2,
-  },
-];
-
 export const StudentDashboard = () => {
   const navigate = useNavigate();
-  const [showLevelTest, setShowLevelTest] = useState(false);
-  const [testAnswers, setTestAnswers] = useState<number[]>([]);
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [testCompleted, setTestCompleted] = useState(false);
-
-  const handleStartLevelTest = () => {
-    setShowLevelTest(true);
-    setTestAnswers([]);
-    setCurrentQuestion(0);
-    setTestCompleted(false);
-  };
-
-  const handleTestAnswer = (answerIndex: number) => {
-    const newAnswers = [...testAnswers];
-    newAnswers[currentQuestion] = answerIndex;
-    setTestAnswers(newAnswers);
-
-    if (currentQuestion < levelTestQuestions.length - 1) {
-      setCurrentQuestion(prev => prev + 1);
-    } else {
-      // Test terminé
-      const score = levelTestQuestions.reduce((correct, question, index) => {
-        return correct + (newAnswers[index] === question.correct ? 1 : 0);
-      }, 0);
-      
-      const percentage = Math.round((score / levelTestQuestions.length) * 100);
-      let level = 'A1';
-      
-      if (percentage >= 90) level = 'C1';
-      else if (percentage >= 80) level = 'B2';
-      else if (percentage >= 70) level = 'B1';
-      else if (percentage >= 60) level = 'A2';
-      
-      setTestCompleted(true);
-      toast.success(`Test terminé ! Votre niveau estimé: ${level} (${percentage}%)`);
-    }
-  };
 
   const handleContinueCourse = (course: any) => {
     if (course.isFinalQuiz) {
       toast.info(`Démarrage du quiz final pour: ${course.title}`);
     } else {
-      toast.success(`Redirection vers: ${course.nextLesson}`);
+      navigate(`/student/course/${course.id}`);
     }
   };
 
@@ -401,63 +346,6 @@ export const StudentDashboard = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Level Test Dialog */}
-      <Dialog open={showLevelTest} onOpenChange={setShowLevelTest}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <DialogTitle className="flex items-center">
-              <GraduationCap className="w-5 h-5 mr-2 text-purple-600" />
-              Test de Niveau Allemand
-            </DialogTitle>
-          </DialogHeader>
-          
-          {!testCompleted ? (
-            <div className="space-y-6">
-              <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">
-                  Question {currentQuestion + 1} sur {levelTestQuestions.length}
-                </span>
-                <Progress value={((currentQuestion + 1) / levelTestQuestions.length) * 100} className="w-32 h-2" />
-              </div>
-              
-              <div className="space-y-4">
-                <h3 className="text-lg font-medium">
-                  {levelTestQuestions[currentQuestion].question}
-                </h3>
-                <div className="space-y-2">
-                  {levelTestQuestions[currentQuestion].options.map((option, optionIndex) => (
-                    <Button
-                      key={optionIndex}
-                      variant="outline"
-                      className="w-full justify-start text-left h-auto p-4"
-                      onClick={() => navigate(`/student/course/${course.id}`)}
-                    >
-                      {option}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <Award className="w-8 h-8 text-green-600" />
-              </div>
-              <h3 className="text-xl font-semibold">Test terminé !</h3>
-              <p className="text-gray-600">
-                Consultez vos résultats et les cours recommandés pour votre niveau.
-              </p>
-              <Button 
-                onClick={() => setShowLevelTest(false)}
-                className="bg-red-600 hover:bg-red-700"
-              >
-                Voir les recommandations
-              </Button>
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
     </motion.div>
   );
 };
