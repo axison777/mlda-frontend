@@ -44,9 +44,9 @@ export const MyCourses = () => {
   };
 
   const filteredEnrolledCourses = enrolledCourses.filter(course => {
-    const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                         course.instructor?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = filterLevel === 'all' || course.level === filterLevel;
+    const matchesSearch = course.course?.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         course.course?.teacher?.firstName?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesLevel = filterLevel === 'all' || course.course?.level === filterLevel;
     return matchesSearch && matchesLevel;
   });
 

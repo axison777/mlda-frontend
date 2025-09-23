@@ -533,6 +533,11 @@ export const ShopPage = () => {
                       id="postalCode"
                       value={paymentData.postalCode}
                       onChange={(e) => setPaymentData(prev => ({ ...prev, postalCode: e.target.value }))}
+                        placeholder="Code postal"
+                      />
+                    </div>
+                  </div>
+                </div>
               )}
 
               {/* Order Total */}

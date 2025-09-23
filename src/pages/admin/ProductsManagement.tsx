@@ -308,6 +308,50 @@ export const ProductsManagement = () => {
                         value={image}
                         onChange={(e) => handleImageChange(index, e.target.value)}
                         placeholder="URL de l'image"
+                        placeholder="Code postal"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Order Total */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Sous-total:</span>
+                  <span>{(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Livraison:</span>
+                  <span>Gratuite</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Total:</span>
+                  <span className="text-red-600">
+                    {(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setShowPayment(false)}>
+                  Annuler
+                </Button>
+                <Button 
+                  onClick={handlePayment}
+                  className="flex-1 bg-red-600 hover:bg-red-700"
+                >
+                  Confirmer la commande
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
                       />
                       <Button type="button" variant="outline" size="sm">
                         <Upload className="w-4 h-4" />
