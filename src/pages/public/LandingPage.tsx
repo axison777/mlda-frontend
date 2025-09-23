@@ -101,7 +101,7 @@ export const LandingPage = () => {
               <span className="ml-2 text-gray-600">Cours d'allemand</span>
             </div>
             <nav className="hidden md:flex space-x-8">
-              <a href="#features" className="text-gray-600 hover:text-gray-900">Fonctionnalités</a>
+              <a href="#about" className="text-gray-600 hover:text-gray-900">À propos</a>
               <Link to="/courses" className="text-gray-600 hover:text-gray-900">Cours</Link>
               <Link to="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
               <a href="#pricing" className="text-gray-600 hover:text-gray-900">Tarifs</a>
@@ -118,9 +118,11 @@ export const LandingPage = () => {
             </div>
           </div>
         </div>
-      </header>
-
-      {/* Hero Section */}
+              <Link to="/courses">
+                <Button size="lg" variant="outline" className="text-lg px-8">
+                  Voir les cours
+                </Button>
+              </Link>
       <section className="min-h-screen py-20 bg-gradient-to-br from-red-50 to-yellow-50 flex items-center">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -189,8 +191,8 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 w-full">
+      {/* About Section */}
+      <section id="about" className="py-20 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
@@ -199,13 +201,43 @@ export const LandingPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Pourquoi choisir MLDA ?
+              À propos de MLDA
             </h2>
             <p className="text-xl text-gray-600">
-              Une plateforme complète pour apprendre l'allemand efficacement
+              Qui sommes-nous et pourquoi nous choisir pour apprendre l'allemand
             </p>
           </motion.div>
 
+          {/* Who We Are */}
+          <div className="mb-16">
+            <Card className="max-w-4xl mx-auto">
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">Qui sommes-nous ?</h3>
+                    <p className="text-gray-600 mb-4">
+                      MLDA (Maîtrise de la Langue Deutsche en Afrique) est une plateforme d'apprentissage 
+                      de l'allemand spécialement conçue pour les étudiants africains. Fondée par des 
+                      experts en linguistique et pédagogie, nous comprenons les défis uniques auxquels 
+                      font face les apprenants africains.
+                    </p>
+                    <p className="text-gray-600">
+                      Notre mission est de démocratiser l'accès à un enseignement de qualité de la 
+                      langue allemande, en proposant des méthodes adaptées à notre contexte culturel 
+                      et linguistique.
+                    </p>
+                  </div>
+                  <div>
+                    <img
+                      src="https://images.pexels.com/photos/5427674/pexels-photo-5427674.jpeg"
+                      alt="Équipe MLDA"
+                      className="w-full h-64 object-cover rounded-lg"
+                    />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {features.map((feature, index) => (
               <motion.div
@@ -232,6 +264,43 @@ export const LandingPage = () => {
                 </Card>
               </motion.div>
             ))}
+          </div>
+
+          {/* Why Choose Us */}
+          <div className="mt-16">
+            <h3 className="text-3xl font-bold text-center text-gray-900 mb-12">
+              Pourquoi choisir MLDA ?
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-red-600" />
+                </div>
+                <h4 className="font-semibold mb-2">+10,000 Étudiants</h4>
+                <p className="text-sm text-gray-600">Une communauté active d'apprenants africains</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="w-8 h-8 text-blue-600" />
+                </div>
+                <h4 className="font-semibold mb-2">Certifications Reconnues</h4>
+                <p className="text-sm text-gray-600">Certificats acceptés par les universités allemandes</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <BookOpen className="w-8 h-8 text-green-600" />
+                </div>
+                <h4 className="font-semibold mb-2">Méthode Adaptée</h4>
+                <p className="text-sm text-gray-600">Approche pédagogique spécialement conçue pour l'Afrique</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Star className="w-8 h-8 text-yellow-600" />
+                </div>
+                <h4 className="font-semibold mb-2">Excellence Pédagogique</h4>
+                <p className="text-sm text-gray-600">Professeurs natifs et certifiés</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Search, ShoppingCart, Filter, Star } from 'lucide-react';
+import { Search, ShoppingCart, Filter, Star, Eye, CreditCard, Truck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '@/hooks/useProducts';
 import {
@@ -13,10 +13,35 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Separator } from '@/components/ui/separator';
+import { toast } from 'sonner';
 
 export const ShopPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [showProductDetails, setShowProductDetails] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('card');
+  const [paymentData, setPaymentData] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvv: '',
+    name: '',
+    email: '',
+    address: '',
+    city: '',
+    postalCode: '',
+  });
   
   const { data: productsData, isLoading } = useProducts({
     search: searchTerm,
@@ -46,6 +71,36 @@ export const ShopPage = () => {
     }
   };
 
+  const handleViewProduct = (product: any) => {
+    setSelectedProduct(product);
+    setShowProductDetails(true);
+  };
+
+  const handleBuyProduct = (product: any) => {
+    setSelectedProduct(product);
+    setShowPayment(true);
+  };
+
+  const handlePayment = () => {
+    if (!paymentData.email || !paymentData.name) {
+      toast.error('Veuillez remplir tous les champs obligatoires');
+      return;
+    }
+
+    // Simulation du paiement
+    toast.success(`Commande confirmée pour ${selectedProduct?.name} !`);
+    setShowPayment(false);
+    setPaymentData({
+      cardNumber: '',
+      expiryDate: '',
+      cvv: '',
+      name: '',
+      email: '',
+      address: '',
+      city: '',
+      postalCode: '',
+    });
+  };
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -176,24 +231,36 @@ export const ShopPage = () => {
                       </Badge>
                     )}
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
+                    <div className="space-y-3">
+                      <div className="text-center">
                         {hasDiscount ? (
-                          <>
-                            <span className="text-2xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</span>
-                            <span className="text-lg text-gray-500 line-through">{(product.price * 655).toLocaleString()} FCFA</span>
-                          </>
+                          <div className="space-y-1">
+                            <p className="text-2xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</p>
+                            <p className="text-sm text-gray-500 line-through">{(product.price * 655).toLocaleString()} FCFA</p>
+                          </div>
                         ) : (
-                          <span className="text-2xl font-bold text-gray-900">{(product.price * 655).toLocaleString()} FCFA</span>
+                          <p className="text-2xl font-bold text-gray-900">{(product.price * 655).toLocaleString()} FCFA</p>
                         )}
                       </div>
-                      <Button 
-                        className="bg-red-600 hover:bg-red-700"
-                        disabled={product.stock === 0}
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        Acheter
-                      </Button>
+                      
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => handleViewProduct(product)}
+                        >
+                          <Eye className="w-4 h-4 mr-2" />
+                          Détails
+                        </Button>
+                        <Button 
+                          className="flex-1 bg-red-600 hover:bg-red-700"
+                          disabled={product.stock === 0}
+                          onClick={() => handleBuyProduct(product)}
+                        >
+                          <ShoppingCart className="w-4 h-4 mr-2" />
+                          Acheter
+                        </Button>
+                      </div>
                     </div>
 
                     {product.stock > 0 && product.stock <= 5 && (
@@ -216,6 +283,292 @@ export const ShopPage = () => {
           </div>
         )}
       </div>
+
+      {/* Product Details Dialog */}
+      <Dialog open={showProductDetails} onOpenChange={setShowProductDetails}>
+        <DialogContent className="max-w-4xl">
+          <DialogHeader>
+            <DialogTitle>Détails du Produit</DialogTitle>
+          </DialogHeader>
+          
+          {selectedProduct && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <img
+                  src={selectedProduct.images[0] || 'https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg'}
+                  alt={selectedProduct.name}
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+                {selectedProduct.images.length > 1 && (
+                  <div className="grid grid-cols-4 gap-2">
+                    {selectedProduct.images.slice(1, 5).map((image: string, index: number) => (
+                      <img
+                        key={index}
+                        src={image}
+                        alt={`${selectedProduct.name} ${index + 2}`}
+                        className="w-full h-16 object-cover rounded cursor-pointer hover:opacity-80"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedProduct.name}</h2>
+                  {selectedProduct.category && (
+                    <Badge variant="outline" className="mt-2">
+                      {selectedProduct.category}
+                    </Badge>
+                  )}
+                </div>
+                
+                <div className="text-center py-4 border border-gray-200 rounded-lg">
+                  {calculateFinalPrice(selectedProduct) !== selectedProduct.price ? (
+                    <div className="space-y-1">
+                      <p className="text-3xl font-bold text-red-600">
+                        {(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA
+                      </p>
+                      <p className="text-lg text-gray-500 line-through">
+                        {(selectedProduct.price * 655).toLocaleString()} FCFA
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-3xl font-bold text-gray-900">
+                      {(selectedProduct.price * 655).toLocaleString()} FCFA
+                    </p>
+                  )}
+                </div>
+                
+                {selectedProduct.description && (
+                  <div>
+                    <h3 className="font-medium mb-2">Description</h3>
+                    <p className="text-gray-600">{selectedProduct.description}</p>
+                  </div>
+                )}
+                
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Stock disponible:</span>
+                    <span className="font-medium">{selectedProduct.stock} unités</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">Livraison:</span>
+                    <span className="font-medium">2-3 jours ouvrés</span>
+                  </div>
+                </div>
+                
+                <Button 
+                  className="w-full bg-red-600 hover:bg-red-700"
+                  disabled={selectedProduct.stock === 0}
+                  onClick={() => {
+                    setShowProductDetails(false);
+                    handleBuyProduct(selectedProduct);
+                  }}
+                >
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Acheter maintenant
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Payment Dialog */}
+      <Dialog open={showPayment} onOpenChange={setShowPayment}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Finaliser votre commande</DialogTitle>
+          </DialogHeader>
+          
+          {selectedProduct && (
+            <div className="space-y-6">
+              {/* Order Summary */}
+              <Card>
+                <CardContent className="p-4">
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={selectedProduct.images[0] || 'https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg'}
+                      alt={selectedProduct.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-medium">{selectedProduct.name}</h3>
+                      <p className="text-sm text-gray-600">Quantité: 1</p>
+                    </div>
+                    <div className="text-right">
+                      {calculateFinalPrice(selectedProduct) !== selectedProduct.price ? (
+                        <div>
+                          <p className="text-lg font-bold text-red-600">
+                            {(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA
+                          </p>
+                          <p className="text-sm text-gray-500 line-through">
+                            {(selectedProduct.price * 655).toLocaleString()} FCFA
+                          </p>
+                        </div>
+                      ) : (
+                        <p className="text-lg font-bold">
+                          {(selectedProduct.price * 655).toLocaleString()} FCFA
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Customer Information */}
+              <div className="space-y-4">
+                <h3 className="font-medium">Informations de livraison</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="customerName">Nom complet *</Label>
+                    <Input
+                      id="customerName"
+                      value={paymentData.name}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, name: e.target.value }))}
+                      placeholder="Votre nom complet"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="customerEmail">Email *</Label>
+                    <Input
+                      id="customerEmail"
+                      type="email"
+                      value={paymentData.email}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, email: e.target.value }))}
+                      placeholder="votre@email.com"
+                      required
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label htmlFor="address">Adresse de livraison</Label>
+                  <Input
+                    id="address"
+                    value={paymentData.address}
+                    onChange={(e) => setPaymentData(prev => ({ ...prev, address: e.target.value }))}
+                    placeholder="Votre adresse complète"
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="city">Ville</Label>
+                    <Input
+                      id="city"
+                      value={paymentData.city}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, city: e.target.value }))}
+                      placeholder="Votre ville"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="postalCode">Code postal</Label>
+                    <Input
+                      id="postalCode"
+                      value={paymentData.postalCode}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, postalCode: e.target.value }))}
+              <Separator />
+                      placeholder="Code postal"
+              {/* Payment Method */}
+              <div className="space-y-4">
+                <h3 className="font-medium">Méthode de paiement</h3>
+                <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg">
+                    <RadioGroupItem value="card" id="card" />
+                    <Label htmlFor="card" className="flex items-center cursor-pointer">
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      Carte bancaire
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg">
+                    <RadioGroupItem value="paypal" id="paypal" />
+                    <Label htmlFor="paypal" className="flex items-center cursor-pointer">
+                      <CreditCard className="w-4 h-4 mr-2" />
+                      PayPal
+                    </Label>
+                  </div>
+                  <div className="flex items-center space-x-2 p-3 border rounded-lg">
+                    <RadioGroupItem value="transfer" id="transfer" />
+                    <Label htmlFor="transfer" className="flex items-center cursor-pointer">
+                      <Truck className="w-4 h-4 mr-2" />
+                      Virement bancaire
+                    </Label>
+                  </div>
+                </RadioGroup>
+              </div>
+                    />
+              {paymentMethod === 'card' && (
+                <div className="space-y-4">
+                  <h3 className="font-medium">Informations de carte</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="md:col-span-2">
+                      <Label htmlFor="cardNumber">Numéro de carte</Label>
+                      <Input
+                        id="cardNumber"
+                        value={paymentData.cardNumber}
+                        onChange={(e) => setPaymentData(prev => ({ ...prev, cardNumber: e.target.value }))}
+                        placeholder="1234 5678 9012 3456"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="expiryDate">Date d'expiration</Label>
+                      <Input
+                        id="expiryDate"
+                        value={paymentData.expiryDate}
+                        onChange={(e) => setPaymentData(prev => ({ ...prev, expiryDate: e.target.value }))}
+                        placeholder="MM/AA"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="cvv">CVV</Label>
+                      <Input
+                        id="cvv"
+                        value={paymentData.cvv}
+                        onChange={(e) => setPaymentData(prev => ({ ...prev, cvv: e.target.value }))}
+                        placeholder="123"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+                  </div>
+              <Separator />
+                </div>
+              {/* Order Total */}
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span>Sous-total:</span>
+                  <span>{(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Livraison:</span>
+                  <span>Gratuite</span>
+                </div>
+                <Separator />
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Total:</span>
+                  <span className="text-red-600">
+                    {(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA
+                  </span>
+                </div>
+              </div>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="outline" onClick={() => setShowPayment(false)}>
+                  Annuler
+                </Button>
+                <Button 
+                  onClick={handlePayment}
+                  className="flex-1 bg-red-600 hover:bg-red-700"
+                >
+                  Confirmer la commande
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
