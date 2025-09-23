@@ -20,6 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Search, MoreHorizontal, MessageCircle, Award, TrendingUp } from 'lucide-react';
+import { StudentDetailsDialog } from '@/components/professor/StudentDetailsDialog';
 
 const mockStudents = [
   {
@@ -75,6 +76,8 @@ const mockStudents = [
 export const MyStudents = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCourse, setFilterCourse] = useState('all');
+  const [showDetailsDialog, setShowDetailsDialog] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState<any>(null);
 
   const filteredStudents = mockStudents.filter(student => {
     const matchesSearch = student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,6 +102,19 @@ export const MyStudents = () => {
   const activeStudents = mockStudents.filter(s => s.status === 'active').length;
   const averageProgress = mockStudents.reduce((sum, s) => sum + s.progress, 0) / totalStudents;
   const averageScore = mockStudents.reduce((sum, s) => sum + s.averageScore, 0) / totalStudents;
+
+  const handleViewStudent = (student: any) => {
+    setSelectedStudent(student);
+    setShowDetailsDialog(true);
+  };
+
+  const handleSendMessage = (student: any) => {
+    toast.success(`Message envoyé à ${student.name}`);
+  };
+
+  const handleViewResults = (student: any) => {
+    toast.info(`Consultation des résultats de ${student.name}`);
+  };
 
   return (
     <motion.div
@@ -231,12 +247,12 @@ export const MyStudents = () => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <MessageCircle className="w-4 h-4 mr-2" />
-                          Envoyer un message
+                          <span onClick={() => handleSendMessage(student)}>Envoyer un message</span>
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => toast.info(`Ouverture du profil de ${student.name}`)}>
+                        <DropdownMenuItem onClick={() => handleViewStudent(student)}>
                           Voir le profil
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => toast.info(`Consultation des résultats de ${student.name}`)}>
+                        <DropdownMenuItem onClick={() => handleViewResults(student)}>
                           Voir les résultats
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -248,6 +264,12 @@ export const MyStudents = () => {
           </Table>
         </CardContent>
       </Card>
+
+      <StudentDetailsDialog
+        isOpen={showDetailsDialog}
+        onClose={() => setShowDetailsDialog(false)}
+        student={selectedStudent}
+      />
     </motion.div>
   );
 };

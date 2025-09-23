@@ -38,8 +38,6 @@ const adminMenuItems = [
 const professorMenuItems = [
   { icon: Home, label: 'Accueil', href: '/professor' },
   { icon: BookOpen, label: 'Mes cours', href: '/professor/courses' },
-  { icon: PlusCircle, label: 'Ajouter un cours', href: '/professor/create-course' },
-  { icon: Calendar, label: 'Leçons & Quiz', href: '/professor/lessons' },
   { icon: Users, label: 'Étudiants', href: '/professor/students' },
   { icon: MessageCircle, label: 'Messages', href: '/professor/messages' },
   { icon: FileText, label: 'Rapports', href: '/professor/reports' },

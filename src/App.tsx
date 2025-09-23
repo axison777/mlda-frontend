@@ -97,8 +97,6 @@ function App() {
           >
             <Route index element={<ProfessorDashboard />} />
             <Route path="courses" element={<ProfessorCourses />} />
-            <Route path="create-course" element={<CreateCourse />} />
-            <Route path="lessons" element={<LessonsQuiz />} />
             <Route path="students" element={<MyStudents />} />
             <Route path="profile" element={<ProfessorProfile />} />
             <Route path="reports" element={<ReportsPage />} />

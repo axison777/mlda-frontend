@@ -13,12 +13,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { User, Settings, LogOut, ChevronDown } from 'lucide-react';
+import { User, Settings, LogOut, ChevronDown, Eye } from 'lucide-react';
 
 export const Header = () => {
   const { user, logout } = useAuth();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
+
+  const handleViewProfile = () => {
+    const basePath = user?.role === 'admin' ? '/admin' : 
+                     user?.role === 'professor' ? '/professor' : '/student';
+    window.location.href = `${basePath}/profile`;
+  };
 
   return (
     <>
@@ -68,12 +74,8 @@ export const Header = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem>
-              <User className="w-4 h-4 mr-2" />
-              Mon profil
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Settings className="w-4 h-4 mr-2" />
-              Paramètres
+              <Eye className="w-4 h-4 mr-2" />
+              <span onClick={handleViewProfile}>Détails</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <div className="px-2 py-1.5">
