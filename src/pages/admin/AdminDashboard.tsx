@@ -2,6 +2,9 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, BookOpen, CreditCard, TrendingUp } from 'lucide-react';
 import { useStats } from '@/hooks/useStats';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { Settings } from 'lucide-react';
 import {
   LineChart,
   Line,
@@ -180,7 +183,30 @@ export const AdminDashboard = () => {
             <CardTitle>Actions Rapides</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            <Button className="w-full justify-start bg-red-600 hover:bg-red-700" asChild>
+            <Link to="/admin/users">
+              <Button className="w-full justify-start bg-red-600 hover:bg-red-700">
+                <Users className="w-4 h-4 mr-2" />
+                Gérer les utilisateurs
+              </Button>
+            </Link>
+            <Link to="/admin/courses">
+              <Button variant="outline" className="w-full justify-start">
+                <BookOpen className="w-4 h-4 mr-2" />
+                Gérer les cours
+              </Button>
+            </Link>
+            <Link to="/admin/payments">
+              <Button variant="outline" className="w-full justify-start">
+                <CreditCard className="w-4 h-4 mr-2" />
+                Voir les paiements
+              </Button>
+            </Link>
+            <Link to="/admin/settings">
+              <Button variant="outline" className="w-full justify-start">
+                <Settings className="w-4 h-4 mr-2" />
+                Paramètres
+              </Button>
+            </Link>
               <Link to="/admin/users">
                 <Users className="w-4 h-4 mr-2" />
                 Gérer les utilisateurs

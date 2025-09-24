@@ -285,6 +285,12 @@ export const ProfessorDashboard = () => {
                   Rapports
                 </Button>
               </Link>
+              <Link to="/professor/profile">
+                <Button variant="outline" className="w-full justify-start">
+                  <User className="w-4 h-4 mr-2" />
+                  Mon profil
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

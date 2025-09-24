@@ -47,10 +47,11 @@ const professorMenuItems = [
 const studentMenuItems = [
   { icon: Home, label: 'Accueil', href: '/student' },
   { icon: BookOpen, label: 'Mes cours', href: '/student/courses' },
-  { icon: Calendar, label: 'Test de niveau', href: '/student/level-test' },
   { icon: CreditCard, label: 'Mes achats', href: '/student/purchases' },
+  { icon: Calendar, label: 'Test de niveau', href: '/student/level-test' },
   { icon: MessageCircle, label: 'Messages', href: '/student/messages' },
   { icon: Award, label: 'Achievements', href: '/student/achievements' },
+  { icon: User, label: 'Profil', href: '/student/profile' },
 ];
 
 export const Sidebar = () => {

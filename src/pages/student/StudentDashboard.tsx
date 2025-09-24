@@ -181,17 +181,17 @@ export const StudentDashboard = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+        <Card className="bg-gradient-to-r from-red-50 to-red-100 border-red-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-blue-900">Continuer l'apprentissage</h3>
-                <p className="text-sm text-blue-700">Reprenez là où vous vous êtes arrêté</p>
+                <h3 className="font-semibold text-red-900">Continuer l'apprentissage</h3>
+                <p className="text-sm text-red-700">Reprenez là où vous vous êtes arrêté</p>
               </div>
-              <BookOpen className="w-8 h-8 text-blue-600" />
+              <BookOpen className="w-8 h-8 text-red-600" />
             </div>
             <Link to="/student/courses" className="block mt-4">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700">
+              <Button className="w-full bg-red-600 hover:bg-red-700">
                 Mes cours
               </Button>
             </Link>
@@ -215,17 +215,17 @@ export const StudentDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+        <Card className="bg-gradient-to-r from-yellow-50 to-yellow-100 border-yellow-200">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-purple-900">Achievements</h3>
-                <p className="text-sm text-purple-700">Suivez vos progrès</p>
+                <h3 className="font-semibold text-yellow-900">Achievements</h3>
+                <p className="text-sm text-yellow-700">Suivez vos progrès</p>
               </div>
-              <Award className="w-8 h-8 text-purple-600" />
+              <Award className="w-8 h-8 text-yellow-600" />
             </div>
             <Link to="/student/achievements" className="block mt-4">
-              <Button className="w-full bg-purple-600 hover:bg-purple-700">
+              <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
                 Voir mes achievements
               </Button>
             </Link>

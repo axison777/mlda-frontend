@@ -234,16 +234,16 @@ export const ShopPage = () => {
                     <div className="space-y-3">
                       <div className="text-center">
                         {hasDiscount ? (
-                          <div className="space-y-1">
-                            <p className="text-xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</p>
-                            <p className="text-sm text-gray-500 line-through">{(product.price * 655).toLocaleString()} FCFA</p>
+                          <div className="space-y-2">
+                            <p className="text-2xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</p>
+                            <p className="text-lg text-gray-500 line-through">{(product.price * 655).toLocaleString()} FCFA</p>
                           </div>
                         ) : (
-                          <p className="text-xl font-bold text-gray-900">{(product.price * 655).toLocaleString()} FCFA</p>
+                          <p className="text-2xl font-bold text-gray-900">{(product.price * 655).toLocaleString()} FCFA</p>
                         )}
                       </div>
                       
-                      <div className="flex gap-2 mt-3">
+                      <div className="flex gap-2">
                         <Button 
                           variant="outline"
                           size="sm"
@@ -253,12 +253,12 @@ export const ShopPage = () => {
                           Détails
                         </Button>
                         <Button 
-                          className="flex-1 bg-red-600 hover:bg-red-700"
+                          className="flex-1 bg-red-600 hover:bg-red-700 font-medium"
                           disabled={product.stock === 0}
                           onClick={() => handleBuyProduct(product)}
                         >
                           <ShoppingCart className="w-4 h-4 mr-2" />
-                          Acheter
+                          {product.stock === 0 ? 'Rupture' : 'Acheter'}
                         </Button>
                       </div>
                     </div>
@@ -400,15 +400,15 @@ export const ShopPage = () => {
                     <div className="text-right">
                       {calculateFinalPrice(selectedProduct) !== selectedProduct.price ? (
                         <div>
-                          <p className="text-lg font-bold text-red-600">
+                          <p className="text-2xl font-bold text-red-600">
                             {(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA
                           </p>
-                          <p className="text-sm text-gray-500 line-through">
+                          <p className="text-lg text-gray-500 line-through">
                             {(selectedProduct.price * 655).toLocaleString()} FCFA
                           </p>
                         </div>
                       ) : (
-                        <p className="text-lg font-bold">
+                        <p className="text-2xl font-bold text-gray-900">
                           {(selectedProduct.price * 655).toLocaleString()} FCFA
                         </p>
                       )}
