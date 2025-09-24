@@ -19,7 +19,8 @@ import {
   Subtitles,
   HelpCircle,
   ArrowLeft,
-  List
+  List,
+  Award
 } from 'lucide-react';
 
 const currentLesson = {
@@ -224,9 +225,6 @@ export const ContinueCourse = () => {
           <List className="w-4 h-4 mr-2" />
           Toutes les leçons
         </Button>
-      </div>
-        <h1 className="text-3xl font-bold text-gray-900">Continuer le Cours</h1>
-        <p className="text-gray-600">{currentLesson.course}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">

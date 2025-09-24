@@ -476,68 +476,69 @@ export const ShopPage = () => {
               </div>
 
               {paymentMethod === 'card' && (
-                <div className="space-y-4">
-                  <h3 className="font-medium">Informations de carte</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-2">
-                      <Label htmlFor="cardNumber">Numéro de carte</Label>
-                      <Input
-                        id="cardNumber"
-                        value={paymentData.cardNumber}
-                        onChange={(e) => setPaymentData(prev => ({ ...prev, cardNumber: e.target.value }))}
-                        placeholder="1234 5678 9012 3456"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="expiryDate">Date d'expiration</Label>
-                      <Input
-                        id="expiryDate"
-                        value={paymentData.expiryDate}
-                        onChange={(e) => setPaymentData(prev => ({ ...prev, expiryDate: e.target.value }))}
-                        placeholder="MM/AA"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="cvv">CVV</Label>
-                      <Input
-                        id="cvv"
-                        value={paymentData.cvv}
-                        onChange={(e) => setPaymentData(prev => ({ ...prev, cvv: e.target.value }))}
-                        placeholder="123"
-                      />
+                <>
+                  <div className="space-y-4">
+                    <h3 className="font-medium">Informations de carte</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="md:col-span-2">
+                        <Label htmlFor="cardNumber">Numéro de carte</Label>
+                        <Input
+                          id="cardNumber"
+                          value={paymentData.cardNumber}
+                          onChange={(e) => setPaymentData(prev => ({ ...prev, cardNumber: e.target.value }))}
+                          placeholder="1234 5678 9012 3456"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="expiryDate">Date d'expiration</Label>
+                        <Input
+                          id="expiryDate"
+                          value={paymentData.expiryDate}
+                          onChange={(e) => setPaymentData(prev => ({ ...prev, expiryDate: e.target.value }))}
+                          placeholder="MM/AA"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="cvv">CVV</Label>
+                        <Input
+                          id="cvv"
+                          value={paymentData.cvv}
+                          onChange={(e) => setPaymentData(prev => ({ ...prev, cvv: e.target.value }))}
+                          placeholder="123"
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div>
-                  <Label htmlFor="address">Adresse de livraison</Label>
-                  <Input
-                    id="address"
-                    value={paymentData.address}
-                    onChange={(e) => setPaymentData(prev => ({ ...prev, address: e.target.value }))}
-                    placeholder="Votre adresse complète"
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="city">Ville</Label>
+                    <Label htmlFor="address">Adresse de livraison</Label>
                     <Input
-                      id="city"
-                      value={paymentData.city}
-                      onChange={(e) => setPaymentData(prev => ({ ...prev, city: e.target.value }))}
-                      placeholder="Votre ville"
+                      id="address"
+                      value={paymentData.address}
+                      onChange={(e) => setPaymentData(prev => ({ ...prev, address: e.target.value }))}
+                      placeholder="Votre adresse complète"
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="postalCode">Code postal</Label>
-                    <Input
-                      id="postalCode"
-                      value={paymentData.postalCode}
-                      onChange={(e) => setPaymentData(prev => ({ ...prev, postalCode: e.target.value }))}
-                        placeholder="Code postal"
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="city">Ville</Label>
+                      <Input
+                        id="city"
+                        value={paymentData.city}
+                        onChange={(e) => setPaymentData(prev => ({ ...prev, city: e.target.value }))}
+                        placeholder="Votre ville"
                       />
                     </div>
-                  </div>
-                </div>
+                    <div>
+                      <Label htmlFor="postalCode">Code postal</Label>
+                      <Input
+                        id="postalCode"
+                        value={paymentData.postalCode}
+                        onChange={(e) => setPaymentData(prev => ({ ...prev, postalCode: e.target.value }))}
+                        placeholder="Code postal"
+                        />
+                      </div>
+                    </div>
+                </>
               )}
 
               {/* Order Total */}
