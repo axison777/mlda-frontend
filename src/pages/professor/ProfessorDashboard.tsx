@@ -194,6 +194,29 @@ export const ProfessorDashboard = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Performance Overview */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Aperçu des Performances</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Taux de satisfaction</span>
+                  <span className="font-medium">4.8/5</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Taux de rétention</span>
+                  <span className="font-medium">92%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Temps de réponse moyen</span>
+                  <span className="font-medium">2h</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
         
         {/* Sidebar */}
@@ -235,25 +258,31 @@ export const ProfessorDashboard = () => {
           {/* Quick Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Actions Rapides</CardTitle>
+              <CardTitle>Navigation Rapide</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Link to="/professor/courses">
-                <Button className="w-full justify-start bg-red-600 hover:bg-red-700">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Gérer mes cours
-                </Button>
-              </Link>
               <Link to="/professor/students">
                 <Button variant="outline" className="w-full justify-start">
                   <Users className="w-4 h-4 mr-2" />
                   Voir mes étudiants
                 </Button>
               </Link>
+              <Link to="/professor/courses">
+                <Button variant="outline" className="w-full justify-start">
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Mes cours
+                </Button>
+              </Link>
               <Link to="/professor/messages">
                 <Button variant="outline" className="w-full justify-start">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Messages
+                </Button>
+              </Link>
+              <Link to="/professor/reports">
+                <Button variant="outline" className="w-full justify-start">
+                  <TrendingUp className="w-4 h-4 mr-2" />
+                  Rapports
                 </Button>
               </Link>
             </CardContent>

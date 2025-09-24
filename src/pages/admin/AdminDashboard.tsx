@@ -148,6 +148,65 @@ export const AdminDashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Activité Récente</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { type: 'user', message: 'Nouvel utilisateur inscrit: Marie Dubois', time: 'Il y a 2h' },
+                { type: 'course', message: 'Nouveau cours publié: Allemand Business', time: 'Il y a 4h' },
+                { type: 'payment', message: 'Paiement reçu: 25,000 FCFA', time: 'Il y a 6h' },
+                { type: 'teacher', message: 'Nouveau professeur approuvé: Dr. Weber', time: 'Hier' },
+              ].map((activity, index) => (
+                <div key={index} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <div>
+                    <p className="text-sm font-medium">{activity.message}</p>
+                    <p className="text-xs text-gray-600">{activity.time}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Actions Rapides</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <Button className="w-full justify-start bg-red-600 hover:bg-red-700" asChild>
+              <Link to="/admin/users">
+                <Users className="w-4 h-4 mr-2" />
+                Gérer les utilisateurs
+              </Link>
+            </Button>
+            <Button variant="outline" className="w-full justify-start" asChild>
+              <Link to="/admin/courses">
+                <BookOpen className="w-4 h-4 mr-2" />
+                Gérer les cours
+              </Link>
+            </Button>
+            <Button variant="outline" className="w-full justify-start" asChild>
+              <Link to="/admin/payments">
+                <CreditCard className="w-4 h-4 mr-2" />
+                Voir les paiements
+              </Link>
+            </Button>
+            <Button variant="outline" className="w-full justify-start" asChild>
+              <Link to="/admin/settings">
+                <Settings className="w-4 h-4 mr-2" />
+                Paramètres
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </motion.div>
   );
 };

@@ -118,9 +118,10 @@ export const ProfessorProfile = () => {
       </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">Profil</TabsTrigger>
           <TabsTrigger value="professional">Informations Professionnelles</TabsTrigger>
+          <TabsTrigger value="preferences">Préférences</TabsTrigger>
           <TabsTrigger value="security">Sécurité</TabsTrigger>
         </TabsList>
 
@@ -285,6 +286,51 @@ export const ProfessorProfile = () => {
 
               <Button onClick={handleChangePassword} className="bg-red-600 hover:bg-red-700">
                 Changer le mot de passe
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="preferences">
+          <Card>
+            <CardHeader>
+              <CardTitle>Préférences d'Enseignement</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <Label>Méthodes d'enseignement préférées</Label>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {['Interactif', 'Visuel', 'Auditif', 'Pratique'].map((method, index) => (
+                    <Badge key={index} variant="outline">
+                      {method}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <Label>Disponibilités</Label>
+                <div className="grid grid-cols-2 gap-4 mt-2">
+                  <div>
+                    <Label className="text-sm text-gray-600">Jours de la semaine</Label>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {['Lun', 'Mar', 'Mer', 'Jeu', 'Ven'].map((day) => (
+                        <Badge key={day} className="bg-green-100 text-green-800">
+                          {day}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <Label className="text-sm text-gray-600">Horaires</Label>
+                    <p className="text-sm font-medium mt-1">9h00 - 18h00</p>
+                  </div>
+                </div>
+              </div>
+
+              <Button onClick={handleSaveProfile} className="bg-red-600 hover:bg-red-700">
+                <Save className="w-4 h-4 mr-2" />
+                Sauvegarder les préférences
               </Button>
             </CardContent>
           </Card>

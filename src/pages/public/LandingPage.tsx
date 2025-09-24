@@ -89,6 +89,7 @@ export const LandingPage = () => {
             <nav className="hidden md:flex space-x-8">
               <Link to="/" className="text-red-600 font-medium">Accueil</Link>
               <Link to="/courses" className="text-gray-600 hover:text-gray-900">Cours</Link>
+              <a href="#about" className="text-gray-600 hover:text-gray-900">À propos</a>
               <Link to="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
               <Link to="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
             </nav>
@@ -128,10 +129,9 @@ export const LandingPage = () => {
                 </Button>
               </Link>
               <Link to="/courses">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-3">
+                <Button size="lg" variant="outline" className="text-lg px-8 py-3" asChild>
                   <Play className="w-5 h-5 mr-2" />
                   Voir les Cours
-                </Button>
               </Link>
             </div>
           </motion.div>
@@ -157,16 +157,35 @@ export const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="w-full px-4 sm:px-6 lg:px-8 py-20 bg-gray-50">
+      <section className="w-full px-4 sm:px-6 lg:px-8 py-20 bg-gray-50" id="about">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Pourquoi Choisir MLDA ?
+            À Propos de MLDA
           </h2>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Une approche moderne et efficace pour apprendre l'allemand
+            Qui sommes-nous et pourquoi nous choisir pour apprendre l'allemand
           </p>
         </div>
 
+        {/* About Us Section */}
+        <div className="max-w-4xl mx-auto mb-16">
+          <Card>
+            <CardContent className="p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Qui sommes-nous ?</h3>
+              <p className="text-gray-700 mb-6">
+                MLDA (Maîtrise de la Langue Deutsche Académie) est une plateforme d'apprentissage 
+                de l'allemand fondée par des professeurs natifs allemands et des experts en pédagogie. 
+                Notre mission est de rendre l'apprentissage de l'allemand accessible, efficace et 
+                passionnant pour tous.
+              </p>
+              <p className="text-gray-700">
+                Avec plus de 15 ans d'expérience dans l'enseignement de l'allemand, notre équipe 
+                a développé une méthode unique qui combine tradition pédagogique allemande et 
+                technologies modernes d'apprentissage.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
             <motion.div

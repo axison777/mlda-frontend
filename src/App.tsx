@@ -115,7 +115,7 @@ function App() {
             <Route path="course/:courseId" element={<ContinueCourse />} />
             <Route path="payment" element={<PaymentPage />} />
             <Route path="level-test" element={<LevelTest />} />
-            <Route path="subscriptions" element={<Subscriptions />} />
+            <Route path="purchases" element={<Subscriptions />} />
             <Route path="profile" element={<StudentProfile />} />
             <Route path="messages" element={<MessagesPage />} />
             <Route path="achievements" element={<AchievementsPage />} />

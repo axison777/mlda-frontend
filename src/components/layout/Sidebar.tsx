@@ -36,6 +36,8 @@ const adminMenuItems = [
 ];
 
 const professorMenuItems = [
+  { icon: Home, label: 'Accueil', href: '/professor' },
+  { icon: BookOpen, label: 'Mes cours', href: '/professor/courses' },
   { icon: Users, label: 'Étudiants', href: '/professor/students' },
   { icon: MessageCircle, label: 'Messages', href: '/professor/messages' },
   { icon: FileText, label: 'Rapports', href: '/professor/reports' },
@@ -46,7 +48,7 @@ const studentMenuItems = [
   { icon: Home, label: 'Accueil', href: '/student' },
   { icon: BookOpen, label: 'Mes cours', href: '/student/courses' },
   { icon: Calendar, label: 'Test de niveau', href: '/student/level-test' },
-  { icon: CreditCard, label: 'Abonnements', href: '/student/subscriptions' },
+  { icon: CreditCard, label: 'Mes achats', href: '/student/purchases' },
   { icon: MessageCircle, label: 'Messages', href: '/student/messages' },
   { icon: Award, label: 'Achievements', href: '/student/achievements' },
 ];

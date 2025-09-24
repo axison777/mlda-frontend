@@ -235,18 +235,18 @@ export const ShopPage = () => {
                       <div className="text-center">
                         {hasDiscount ? (
                           <div className="space-y-1">
-                            <p className="text-2xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</p>
+                            <p className="text-xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</p>
                             <p className="text-sm text-gray-500 line-through">{(product.price * 655).toLocaleString()} FCFA</p>
                           </div>
                         ) : (
-                          <p className="text-2xl font-bold text-gray-900">{(product.price * 655).toLocaleString()} FCFA</p>
+                          <p className="text-xl font-bold text-gray-900">{(product.price * 655).toLocaleString()} FCFA</p>
                         )}
                       </div>
                       
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 mt-3">
                         <Button 
                           variant="outline"
-                          className="flex-1"
+                          size="sm"
                           onClick={() => handleViewProduct(product)}
                         >
                           <Eye className="w-4 h-4 mr-2" />

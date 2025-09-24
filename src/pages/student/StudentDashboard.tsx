@@ -179,6 +179,59 @@ export const StudentDashboard = () => {
         ))}
       </div>
 
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card className="bg-gradient-to-r from-blue-50 to-blue-100 border-blue-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-blue-900">Continuer l'apprentissage</h3>
+                <p className="text-sm text-blue-700">Reprenez là où vous vous êtes arrêté</p>
+              </div>
+              <BookOpen className="w-8 h-8 text-blue-600" />
+            </div>
+            <Link to="/student/courses" className="block mt-4">
+              <Button className="w-full bg-blue-600 hover:bg-blue-700">
+                Mes cours
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-green-50 to-green-100 border-green-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-green-900">Découvrir</h3>
+                <p className="text-sm text-green-700">Explorez de nouveaux cours</p>
+              </div>
+              <Star className="w-8 h-8 text-green-600" />
+            </div>
+            <Link to="/student/courses" className="block mt-4">
+              <Button className="w-full bg-green-600 hover:bg-green-700">
+                Parcourir
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gradient-to-r from-purple-50 to-purple-100 border-purple-200">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-purple-900">Achievements</h3>
+                <p className="text-sm text-purple-700">Suivez vos progrès</p>
+              </div>
+              <Award className="w-8 h-8 text-purple-600" />
+            </div>
+            <Link to="/student/achievements" className="block mt-4">
+              <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                Voir mes achievements
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
       {/* Current Courses */}
       <Card>
         <CardHeader>

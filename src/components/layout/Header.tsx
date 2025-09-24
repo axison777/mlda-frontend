@@ -59,7 +59,7 @@ export const Header = () => {
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100 px-3 py-2 rounded-lg">
+            <Button variant="ghost" className="flex items-center space-x-2 hover:bg-gray-100 px-3 py-2 rounded-lg h-auto">
               <Avatar className="w-8 h-8">
                 <AvatarFallback className="bg-red-600 text-white text-sm font-medium">
                   {user?.name.charAt(0)}
@@ -75,7 +75,7 @@ export const Header = () => {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem onClick={handleViewProfile}>
               <UserCircle className="w-4 h-4 mr-2" />
-              <span>Profil</span>
+              <span>Voir le profil</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <div className="px-2 py-1.5">
