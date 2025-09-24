@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { User, Settings, LogOut, ChevronDown, Eye, UserCircle } from 'lucide-react';
+import { Settings, LogOut, ChevronDown, UserCircle } from 'lucide-react';
 
 export const Header = () => {
   const { user, logout } = useAuth();

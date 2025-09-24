@@ -116,6 +116,10 @@ export const MyStudents = () => {
     toast.info(`Consultation des résultats de ${student.name}`);
   };
 
+  const handleSendMessage = (student: any) => {
+    toast.success(`Message envoyé à ${student.name}`);
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
