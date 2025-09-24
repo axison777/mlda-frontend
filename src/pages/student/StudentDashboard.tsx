@@ -219,14 +219,14 @@ export const StudentDashboard = () => {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-yellow-900">Achievements</h3>
-                <p className="text-sm text-yellow-700">Suivez vos progrès</p>
+                <h3 className="font-semibold text-yellow-900">Test de Niveau</h3>
+                <p className="text-sm text-yellow-700">Évaluez votre niveau</p>
               </div>
-              <Award className="w-8 h-8 text-yellow-600" />
+              <GraduationCap className="w-8 h-8 text-yellow-600" />
             </div>
-            <Link to="/student/achievements" className="block mt-4">
+            <Link to="/student/level-test" className="block mt-4">
               <Button className="w-full bg-yellow-600 hover:bg-yellow-700">
-                Voir mes achievements
+                Passer le test
               </Button>
             </Link>
           </CardContent>

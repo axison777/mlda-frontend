@@ -257,8 +257,14 @@ export const ShopPage = () => {
                           disabled={product.stock === 0}
                           onClick={() => handleBuyProduct(product)}
                         >
-                          <ShoppingCart className="w-4 h-4 mr-2" />
-                          {product.stock === 0 ? 'Rupture' : 'Acheter'}
+                          {product.stock === 0 ? (
+                            'Rupture de stock'
+                          ) : (
+                            <>
+                              <ShoppingCart className="w-4 h-4 mr-2" />
+                              Acheter maintenant
+                            </>
+                          )}
                         </Button>
                       </div>
                     </div>
@@ -404,14 +410,12 @@ export const ShopPage = () => {
                             {(calculateFinalPrice(selectedProduct) * 655).toLocaleString()} FCFA
                           </p>
                           <p className="text-lg text-gray-500 line-through">
-                            {(selectedProduct.price * 655).toLocaleString()} FCFA
-                          </p>
-                        </div>
-                      ) : (
-                        <p className="text-2xl font-bold text-gray-900">
-                          {(selectedProduct.price * 655).toLocaleString()} FCFA
-                        </p>
-                      )}
+                      <div className="space-y-1">
+                        <p className="text-2xl font-bold text-red-600">{(finalPrice * 655).toLocaleString()} FCFA</p>
+                        {hasDiscount && (
+                          <p className="text-sm text-gray-500 line-through">{(product.price * 655).toLocaleString()} FCFA</p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </CardContent>
