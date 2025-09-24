@@ -160,7 +160,7 @@ export const StudentProfile = () => {
       </div>
 
       <Tabs defaultValue="profile" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">Profil</TabsTrigger>
           <TabsTrigger value="learning">Apprentissage</TabsTrigger>
           <TabsTrigger value="achievements">Achievements</TabsTrigger>

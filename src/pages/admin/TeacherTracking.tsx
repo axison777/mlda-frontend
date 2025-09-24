@@ -102,23 +102,24 @@ export const TeacherTracking = () => {
   };
 
   const handleEditTeacher = (teacher: any) => {
-    console.log('Modifier professeur:', teacher);
+    toast.info(`Modification du professeur: ${teacher.name}`);
   };
 
   const handleSendMessage = (teacher: any) => {
-    console.log('Envoyer message à:', teacher);
+    toast.success(`Message envoyé à ${teacher.name}`);
   };
 
   const handleGenerateReport = (teacher: any) => {
-    console.log('Générer rapport pour:', teacher);
+    toast.success(`Rapport généré pour ${teacher.name}`);
   };
 
   const handleSendWarning = (teacher: any) => {
-    console.log('Envoyer avertissement à:', teacher);
+    toast.success(`Avertissement envoyé à ${teacher.name}`);
   };
 
   const handleSuspend = (teacher: any) => {
-    console.log('Suspendre professeur:', teacher);
+    const action = teacher.status === 'active' ? 'suspendu' : 'activé';
+    toast.success(`Professeur ${action} avec succès`);
   };
   const totalTeachers = mockTeachers.length;
   const activeTeachers = mockTeachers.filter(t => t.status === 'active').length;

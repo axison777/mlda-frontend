@@ -125,23 +125,24 @@ export const StudentTracking = () => {
   };
 
   const handleEditStudent = (student: any) => {
-    console.log('Modifier étudiant:', student);
+    toast.info(`Modification de l'étudiant: ${student.name}`);
   };
 
   const handleSendMessage = (student: any) => {
-    console.log('Envoyer message à:', student);
+    toast.success(`Message envoyé à ${student.name}`);
   };
 
   const handleGenerateReport = (student: any) => {
-    console.log('Générer rapport pour:', student);
+    toast.success(`Rapport généré pour ${student.name}`);
   };
 
   const handleSendReminder = (student: any) => {
-    console.log('Envoyer rappel à:', student);
+    toast.success(`Rappel envoyé à ${student.name}`);
   };
 
   const handleSuspend = (student: any) => {
-    console.log('Suspendre étudiant:', student);
+    const action = student.status === 'active' ? 'suspendu' : 'activé';
+    toast.success(`Étudiant ${action} avec succès`);
   };
   const totalStudents = mockStudents.length;
   const activeStudents = mockStudents.filter(s => s.status === 'active').length;

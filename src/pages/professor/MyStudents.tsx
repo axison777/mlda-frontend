@@ -116,9 +116,6 @@ export const MyStudents = () => {
     toast.info(`Consultation des résultats de ${student.name}`);
   };
 
-  const handleSendMessage = (student: any) => {
-    toast.success(`Message envoyé à ${student.name}`);
-  };
 
   return (
     <motion.div
@@ -251,7 +248,7 @@ export const MyStudents = () => {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>
                           <MessageCircle className="w-4 h-4 mr-2" />
-                          <span onClick={() => handleSendMessage(student)}>Envoyer un message</span>
+                          <button onClick={() => handleSendMessage(student)}>Envoyer un message</button>
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleViewStudent(student)}>
                           Voir le profil

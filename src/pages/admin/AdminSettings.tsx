@@ -91,7 +91,7 @@ export const AdminSettings = () => {
 
   const handleSave = () => {
     // Simulation de sauvegarde
-    console.log('Paramètres sauvegardés:', settings);
+    toast.success('Paramètres sauvegardés avec succès !');
   };
 
   const handleAddCategory = () => {

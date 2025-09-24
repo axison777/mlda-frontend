@@ -69,7 +69,7 @@ export const UsersManagement = () => {
   };
 
   const handleSendMessage = (user: any) => {
-    console.log('Envoyer message à:', user);
+    toast.success(`Message envoyé à ${user.firstName} ${user.lastName}`);
   };
 
   const handleSuspendUser = async (user: any) => {

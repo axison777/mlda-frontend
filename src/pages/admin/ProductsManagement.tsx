@@ -106,7 +106,9 @@ export const ProductsManagement = () => {
   };
 
   const handleDeleteProduct = (productId: string) => {
-    toast.success('Produit supprimé avec succès !');
+    if (confirm('Êtes-vous sûr de vouloir supprimer ce produit ?')) {
+      toast.success('Produit supprimé avec succès !');
+    }
   };
 
   const filteredProducts = products.filter(product => {
