@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Save, Globe, Mail, Shield, Database, Plus, Edit, Trash2, Tag, BookOpen, BarChart3, Settings } from 'lucide-react';
+import { Save, Globe, Mail, Shield, Database, Plus, CreditCard as Edit, Trash2, Tag, BookOpen, ChartBar as BarChart3, Settings } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {
   Dialog,

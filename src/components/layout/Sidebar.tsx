@@ -2,24 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import {
-  Home,
-  Users,
-  BookOpen,
-  Package,
-  CreditCard,
-  Settings,
-  PlusCircle,
-  BarChart3,
-  GraduationCap,
-  User,
-  Calendar,
-  UserCheck,
-  UserCog,
-  MessageCircle,
-  Award,
-  FileText,
-} from 'lucide-react';
+import { Chrome as Home, Users, BookOpen, Package, CreditCard, Settings, CirclePlus as PlusCircle, ChartBar as BarChart3, GraduationCap, User, Calendar, UserCheck, UserCog, MessageCircle, Award, FileText } from 'lucide-react';
 
 const adminMenuItems = [
   { icon: Home, label: 'Accueil', href: '/admin' },

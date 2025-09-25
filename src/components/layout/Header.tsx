@@ -13,9 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Settings, LogOut, ChevronDown, UserCircle, User } from 'lucide-react';
-
-export const Header = () => {
+import { Settings, LogOut, ChevronDown, CircleUser as UserCircle, User } from 'lucide-react'ort const Header = () => {
   const { user, logout } = useAuth();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -28,7 +26,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-70 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-30">
+      <header className="fixed top-0 left-70 right-0 h-16 bg-white border-b border-gray-200 flex items-center justify-between px-6 z-30 w-full">
         <div className="flex items-center space-x-4">
           <Button variant="ghost" size="sm" className="lg:hidden">
             <Menu className="w-5 h-5" />

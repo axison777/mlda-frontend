@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, UserPlus, Filter, Eye, Edit, Ban, MessageCircle } from 'lucide-react';
+import { Search, MoveHorizontal as MoreHorizontal, UserPlus, Filter, Eye, CreditCard as Edit, Ban, MessageCircle } from 'lucide-react';
 
 import { useUsers, useUpdateUser, useDeleteUser } from '@/hooks/useUsers';
 import { CreateUserDialog } from '@/components/admin/CreateUserDialog';

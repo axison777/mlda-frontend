@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, Plus, BookOpen, Users, Star } from 'lucide-react';
+import { Search, MoveHorizontal as MoreHorizontal, Plus, BookOpen, Users, Star } from 'lucide-react';
 
 import { useCourses, useDeleteCourse } from '@/hooks/useCourses';
 import { CreateCourseDialog } from '@/components/admin/CreateCourseDialog';

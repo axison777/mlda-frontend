@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, Plus, Eye, BarChart3, Target, DollarSign, Edit, Copy, Play, Pause, Trash2 } from 'lucide-react';
+import { Search, MoveHorizontal as MoreHorizontal, Plus, Eye, ChartBar as BarChart3, Target, DollarSign, CreditCard as Edit, Copy, Play, Pause, Trash2 } from 'lucide-react';
 import { CreateCampaignDialog } from '@/components/admin/CreateCampaignDialog';
 import { AdDetailsDialog } from '@/components/admin/AdDetailsDialog';
 import { toast } from 'sonner';
