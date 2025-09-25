@@ -14,6 +14,7 @@ app.use(express.json()); // Pour parser les corps de requête en JSON
 
 // Importer les routes
 import authRoutes from './api/routes/auth.routes';
+import courseRoutes from './api/routes/course.routes';
 
 // Route de test
 app.get('/api/health', (req: Request, res: Response) => {
@@ -22,6 +23,7 @@ app.get('/api/health', (req: Request, res: Response) => {
 
 // Utiliser les routes de l'API
 app.use('/api/auth', authRoutes);
+app.use('/api/courses', courseRoutes);
 
 // Démarrer le serveur
 app.listen(port, () => {
