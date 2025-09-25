@@ -34,10 +34,10 @@ export const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white w-full">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-gray-200 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
+      <header className="border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <Link to="/" className="flex items-center">
               <h1 className="text-2xl font-bold text-black">
@@ -66,7 +66,7 @@ export const ContactPage = () => {
         </div>
       </header>
 
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

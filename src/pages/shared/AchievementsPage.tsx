@@ -83,11 +83,12 @@ export const AchievementsPage = () => {
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6"
-    >
+    <div className="min-h-screen w-full">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="space-y-6 max-w-7xl mx-auto"
+      >
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Mes Achievements</h1>
         <p className="text-gray-600">Débloquez des récompenses en progressant dans vos cours</p>
@@ -258,6 +259,7 @@ export const AchievementsPage = () => {
       </Card>
 
       <AchievementSystem />
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };

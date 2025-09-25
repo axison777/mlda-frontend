@@ -137,11 +137,12 @@ export const LevelTest = () => {
 
   if (!testStarted) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="space-y-6"
-      >
+      <div className="min-h-screen w-full">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-6 max-w-4xl mx-auto"
+        >
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Test de Niveau Allemand</h1>
           <p className="text-gray-600 max-w-2xl mx-auto">
@@ -197,17 +198,19 @@ export const LevelTest = () => {
             </Button>
           </CardContent>
         </Card>
-      </motion.div>
+        </motion.div>
+      </div>
     );
   }
 
   if (testCompleted) {
     return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="space-y-6"
-      >
+      <div className="min-h-screen w-full">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-6 max-w-4xl mx-auto"
+        >
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Résultats du Test</h1>
         </div>
@@ -262,16 +265,18 @@ export const LevelTest = () => {
             </div>
           </CardContent>
         </Card>
-      </motion.div>
+        </motion.div>
+      </div>
     );
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6"
-    >
+    <div className="min-h-screen w-full">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="space-y-6 max-w-4xl mx-auto"
+      >
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Test de Niveau</h1>
@@ -317,6 +322,7 @@ export const LevelTest = () => {
           </div>
         </CardContent>
       </Card>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };

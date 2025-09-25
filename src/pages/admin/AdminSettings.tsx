@@ -24,6 +24,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
+import { toast } from 'sonner';
+
 export const AdminSettings = () => {
   const [settings, setSettings] = useState({
     siteName: 'MLDA',

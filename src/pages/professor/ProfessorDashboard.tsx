@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { BookOpen, Users, Star, TrendingUp, Calendar, MessageCircle, Award, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import {
@@ -235,11 +236,11 @@ export const ProfessorDashboard = () => {
                   <div key={task.id} className="p-3 border border-gray-200 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
                       <h4 className="font-medium text-sm">{task.title}</h4>
-                      <Badge className={
+                      <Badge className={`${
                         task.priority === 'high' ? 'bg-red-100 text-red-800' :
                         task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
                         'bg-green-100 text-green-800'
-                      }>
+                      }`}>
                         {task.priority === 'high' ? 'Urgent' :
                          task.priority === 'medium' ? 'Moyen' : 'Faible'}
                       </Badge>

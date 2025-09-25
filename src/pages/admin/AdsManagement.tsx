@@ -125,11 +125,12 @@ export const AdsManagement = () => {
   const averageCTR = totalClicks / totalImpressions * 100;
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      className="space-y-6"
-    >
+    <div className="min-h-screen w-full">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="space-y-6 max-w-7xl mx-auto"
+      >
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Publicités</h1>
@@ -313,6 +314,7 @@ export const AdsManagement = () => {
         onClose={() => setShowDetailsDialog(false)}
         ad={selectedAd}
       />
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
