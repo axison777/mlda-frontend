@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Award, Download, Calendar, Trophy, Medal, Star, CircleCheck as CheckCircle, FileText, Eye } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { AchievementSystem } from '@/components/gamification/AchievementSystem';
 import { toast } from 'sonner';
 import { useAuth } from '@/hooks/useAuth';

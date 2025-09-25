@@ -14,6 +14,8 @@ import {
 import { useAuth } from '@/hooks/useAuth';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Settings, LogOut, ChevronDown, CircleUser as UserCircle, User } from 'lucide-react'ort const Header = () => {
+
+export const Header = () => {
   const { user, logout } = useAuth();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [showNotifications, setShowNotifications] = useState(false);

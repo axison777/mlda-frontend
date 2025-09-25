@@ -13,7 +13,8 @@ import {
   Zap,
   Crown,
   Trophy,
-  Medal
+  Medal,
+  CheckCircle
 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
