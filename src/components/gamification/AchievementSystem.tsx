@@ -3,19 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { 
-  Award, 
-  Star, 
-  Target, 
-  Calendar, 
-  BookOpen, 
-  TrendingUp,
-  Zap,
-  Crown,
-  Trophy,
-  Medal,
-  CheckCircle
-} from 'lucide-react';
+import { Award, Star, Target, Calendar, BookOpen, TrendingUp, Zap, Crown, Trophy, Medal, CircleCheck as CheckCircle } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 

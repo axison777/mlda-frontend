@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, MessageCircle, Award, TrendingUp } from 'lucide-react';
+import { Search, MoveHorizontal as MoreHorizontal, MessageCircle, Award, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
 import { StudentDetailsDialog } from '@/components/professor/StudentDetailsDialog';
 
