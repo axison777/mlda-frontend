@@ -1,17 +1,19 @@
 import { Router } from 'express';
 import * as courseController from '@/api/controllers/course.controller';
 import { authenticateToken, authorizeRoles } from '@/api/middlewares/auth.middleware';
+import { validate } from '@/api/middlewares/validation.middleware';
+import { createCourseSchema, updateCourseSchema, courseIdParamSchema } from '@/api/validations/course.validation';
 import { UserRole } from '@prisma/client';
 
 const router = Router();
 
 // --- Routes Publiques ---
 
-// GET /api/courses - Récupérer tous les cours
+// GET /api/courses - Récupérer tous les cours (pas de validation nécessaire pour les query params optionnels)
 router.get('/', courseController.getAll);
 
 // GET /api/courses/:id - Récupérer un cours par son ID
-router.get('/:id', courseController.getById);
+router.get('/:id', validate(courseIdParamSchema), courseController.getById);
 
 
 // --- Routes Protégées (Authentification requise) ---
@@ -23,6 +25,7 @@ router.post(
   '/',
   authenticateToken,
   authorizeRoles(authorizedRoles),
+  validate(createCourseSchema),
   courseController.create
 );
 
@@ -31,6 +34,7 @@ router.put(
   '/:id',
   authenticateToken,
   authorizeRoles(authorizedRoles),
+  validate(updateCourseSchema),
   courseController.update
 );
 
@@ -39,6 +43,7 @@ router.delete(
   '/:id',
   authenticateToken,
   authorizeRoles(authorizedRoles),
+  validate(courseIdParamSchema),
   courseController.remove
 );
 

@@ -20,9 +20,6 @@ export const updateLessonProgress = async (req: AuthenticatedRequest, res: Respo
     if (!studentId) {
       return res.status(401).json({ message: 'User not authenticated' });
     }
-    if (typeof completed !== 'boolean') {
-      return res.status(400).json({ message: 'The "completed" field (boolean) is required' });
-    }
 
     const progress = await progressService.updateLessonProgress(studentId, lessonId, { completed, timeSpent });
     res.status(200).json({ progress, message: 'Progress updated successfully' });

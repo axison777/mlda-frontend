@@ -4,13 +4,6 @@ import { registerUser, loginUser } from '@/api/services/auth.service';
 // --- Contrôleur pour l'inscription ---
 export const register = async (req: Request, res: Response) => {
   try {
-    const { email, password, firstName, lastName } = req.body;
-
-    // Validation simple
-    if (!email || !password || !firstName || !lastName) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-
     const newUser = await registerUser(req.body);
     res.status(201).json({ user: newUser, message: 'User created successfully' });
 
@@ -28,12 +21,6 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
-    // Validation simple
-    if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
-    }
-
     const { user, token } = await loginUser({ email, password });
     res.status(200).json({ user, token, message: 'Login successful' });
 

@@ -19,9 +19,6 @@ export const enroll = async (req: AuthenticatedRequest, res: Response) => {
     if (!studentId) {
       return res.status(401).json({ message: 'User not authenticated' });
     }
-    if (!courseId) {
-      return res.status(400).json({ message: 'courseId is required' });
-    }
 
     const enrollment = await enrollmentService.enrollStudentInCourse(studentId, courseId);
     res.status(201).json({ enrollment, message: 'Successfully enrolled in course' });

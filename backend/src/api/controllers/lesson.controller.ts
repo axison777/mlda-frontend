@@ -5,9 +5,6 @@ import * as lessonService from '@/api/services/lesson.service';
 export const create = async (req: Request, res: Response) => {
   try {
     const { courseId, ...lessonData } = req.body;
-    if (!courseId) {
-      return res.status(400).json({ message: 'courseId is required' });
-    }
     const lesson = await lessonService.createLesson(lessonData, courseId);
     res.status(201).json(lesson);
   } catch (error: any) {
