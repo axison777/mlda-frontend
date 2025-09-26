@@ -20,6 +20,7 @@ import enrollmentRoutes from './api/routes/enrollment.routes';
 import progressRoutes from './api/routes/progress.routes';
 import userRoutes from './api/routes/user.routes';
 import quizRoutes from './api/routes/quiz.routes';
+import messageRoutes from './api/routes/message.routes';
 
 // Route de test
 app.get('/api/health', (req: Request, res: Response) => {
@@ -34,6 +35,7 @@ app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/quiz', quizRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Démarrer le serveur
 app.listen(port, () => {
