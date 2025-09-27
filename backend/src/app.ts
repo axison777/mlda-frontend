@@ -22,6 +22,9 @@ import userRoutes from './api/routes/user.routes';
 import quizRoutes from './api/routes/quiz.routes';
 import messageRoutes from './api/routes/message.routes';
 import achievementRoutes from './api/routes/achievement.routes';
+import profileRoutes from './api/routes/profile.routes';
+import productRoutes from './api/routes/product.routes';
+import paymentRoutes from './api/routes/payment.routes';
 
 // Route de test
 app.get('/api/health', (req: Request, res: Response) => {
@@ -38,6 +41,9 @@ app.use('/api/users', userRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/achievements', achievementRoutes);
+app.use('/api/profiles', profileRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Démarrer le serveur
 app.listen(port, () => {
