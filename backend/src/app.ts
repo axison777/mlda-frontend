@@ -26,6 +26,8 @@ import profileRoutes from './api/routes/profile.routes';
 import productRoutes from './api/routes/product.routes';
 import paymentRoutes from './api/routes/payment.routes';
 import statsRoutes from './api/routes/stats.routes';
+import announcementRoutes from './api/routes/announcement.routes';
+import campaignRoutes from './api/routes/campaign.routes';
 
 // Route de test
 app.get('/api/health', (req: Request, res: Response) => {
@@ -46,6 +48,8 @@ app.use('/api/profiles', profileRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/stats', statsRoutes);
+app.use('/api/announcements', announcementRoutes);
+app.use('/api/campaigns', campaignRoutes);
 
 // Démarrer le serveur
 app.listen(port, () => {
