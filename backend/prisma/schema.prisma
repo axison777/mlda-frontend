@@ -254,12 +254,13 @@ model Message {
 }
 
 model Achievement {
-  id           String    @id @default(cuid())
-  name         String
-  description  String
-  iconUrl      String?
+  id            String    @id @default(cuid())
+  code          String    @unique // Un code unique pour l'identifier par programme, ex: "COMPLETE_A1_COURSE"
+  name          String
+  description   String
+  iconUrl       String?
 
-  users        UserAchievement[]
+  users         UserAchievement[]
 }
 
 model UserAchievement {

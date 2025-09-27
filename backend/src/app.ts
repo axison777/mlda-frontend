@@ -21,6 +21,7 @@ import progressRoutes from './api/routes/progress.routes';
 import userRoutes from './api/routes/user.routes';
 import quizRoutes from './api/routes/quiz.routes';
 import messageRoutes from './api/routes/message.routes';
+import achievementRoutes from './api/routes/achievement.routes';
 
 // Route de test
 app.get('/api/health', (req: Request, res: Response) => {
@@ -36,6 +37,7 @@ app.use('/api/progress', progressRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/quiz', quizRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/achievements', achievementRoutes);
 
 // Démarrer le serveur
 app.listen(port, () => {

@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+import { awardAchievementToUser } from './achievement.service';
 
 // Type pour la création d'un quiz avec ses questions et choix
 type QuizWithQuestionsAndChoices = Prisma.QuizCreateInput & {
@@ -86,7 +87,7 @@ export const submitQuizAttempt = async (
         score++;
       }
     }
-    const finalScore = (score / correctChoices.length) * 100;
+    const finalScore = correctChoices.length > 0 ? (score / correctChoices.length) * 100 : 0;
 
     // 3. Créer la tentative de quiz
     const attempt = await tx.quizAttempt.create({
@@ -107,7 +108,19 @@ export const submitQuizAttempt = async (
       },
     });
 
-    // 4. Retourner le résultat complet
+    // 4. Si le score est parfait, tenter d'attribuer un succès
+    if (finalScore >= 100) {
+      const achievement = await tx.achievement.findUnique({
+        where: { code: 'PERFECT_QUIZ_SCORE' }, // L'admin doit créer ce succès
+        select: { id: true },
+      });
+
+      if (achievement) {
+        await awardAchievementToUser(studentId, achievement.id, tx);
+      }
+    }
+
+    // 5. Retourner le résultat complet
     return {
       attemptId: attempt.id,
       score: attempt.score,
