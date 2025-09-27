@@ -25,6 +25,7 @@ import achievementRoutes from './api/routes/achievement.routes';
 import profileRoutes from './api/routes/profile.routes';
 import productRoutes from './api/routes/product.routes';
 import paymentRoutes from './api/routes/payment.routes';
+import statsRoutes from './api/routes/stats.routes';
 
 // Route de test
 app.get('/api/health', (req: Request, res: Response) => {
@@ -44,6 +45,7 @@ app.use('/api/achievements', achievementRoutes);
 app.use('/api/profiles', profileRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/stats', statsRoutes);
 
 // Démarrer le serveur
 app.listen(port, () => {
