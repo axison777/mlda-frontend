@@ -11,19 +11,68 @@ import { UserRole } from '@prisma/client';
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: API de gestion des produits de la boutique
+ */
 
 // --- Routes Publiques ---
 
-// GET /api/products - Récupérer tous les produits
+/**
+ * @swagger
+ * /products:
+ *   get:
+ *     summary: Récupère la liste des produits disponibles
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Une liste de produits
+ */
 router.get('/', productController.getAll);
 
-// GET /api/products/:id - Récupérer un produit par son ID
+/**
+ * @swagger
+ * /products/{id}:
+ *   get:
+ *     summary: Récupère un produit par son ID
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Détails du produit
+ *       404:
+ *         description: Produit non trouvé
+ */
 router.get('/:id', validate(productIdParamSchema), productController.getById);
 
 
 // --- Routes de gestion (Admin seulement) ---
 
-// POST /api/products - Créer un nouveau produit
+/**
+ * @swagger
+ * /products:
+ *   post:
+ *     summary: Crée un nouveau produit (Admin)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       201:
+ *         description: Produit créé
+ */
 router.post(
   '/',
   authenticateToken,
@@ -32,7 +81,32 @@ router.post(
   productController.create
 );
 
-// PUT /api/products/:id - Mettre à jour un produit
+/**
+ * @swagger
+ * /products/{id}:
+ *   put:
+ *     summary: Met à jour un produit (Admin)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Product'
+ *     responses:
+ *       200:
+ *         description: Produit mis à jour
+ *       404:
+ *         description: Produit non trouvé
+ */
 router.put(
   '/:id',
   authenticateToken,
@@ -41,7 +115,26 @@ router.put(
   productController.update
 );
 
-// DELETE /api/products/:id - Supprimer un produit
+/**
+ * @swagger
+ * /products/{id}:
+ *   delete:
+ *     summary: Supprime un produit (Admin)
+ *     tags: [Products]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Produit supprimé
+ *       404:
+ *         description: Produit non trouvé
+ */
 router.delete(
   '/:id',
   authenticateToken,

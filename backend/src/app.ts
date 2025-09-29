@@ -51,9 +51,18 @@ app.use('/api/stats', statsRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/campaigns', campaignRoutes);
 
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './config/swagger.config';
+
+// ... (previous routes)
+
+// --- Swagger Docs ---
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // Démarrer le serveur
 app.listen(port, () => {
   console.log(`🚀 Server is running at http://localhost:${port}`);
+  console.log(`📚 API Docs available at http://localhost:${port}/api-docs`);
 });
 
 export default app;

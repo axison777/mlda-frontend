@@ -11,30 +11,151 @@ import { UserRole } from '@prisma/client';
 
 const router = Router();
 
-// --- Routes de gestion des succès (Admin seulement) ---
+/**
+ * @swagger
+ * tags:
+ *   name: Achievements
+ *   description: API de gestion des succès et de la gamification
+ */
 
-// Appliquer l'authentification et l'autorisation d'administrateur à la plupart des routes
+// Appliquer l'authentification à toutes les routes
 router.use(authenticateToken);
 
-// GET /api/achievements - Récupérer tous les succès (accessible à tous les utilisateurs connectés)
+/**
+ * @swagger
+ * /achievements:
+ *   get:
+ *     summary: Récupère la liste de tous les succès disponibles
+ *     tags: [Achievements]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Une liste de succès
+ */
 router.get('/', achievementController.getAll);
 
-// GET /api/achievements/my-achievements - Récupérer les succès de l'utilisateur connecté
+/**
+ * @swagger
+ * /achievements/my-achievements:
+ *   get:
+ *     summary: Récupère les succès débloqués par l'utilisateur connecté
+ *     tags: [Achievements]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: La liste des succès de l'utilisateur
+ */
 router.get('/my-achievements', achievementController.getMyAchievements);
 
-// Le reste des routes est pour les Admins seulement
-router.use(authorizeRoles([UserRole.ADMIN]));
 
-// POST /api/achievements - Créer un nouveau succès
-router.post('/', validate(createAchievementSchema), achievementController.create);
+// --- Routes de gestion (Admin seulement) ---
+const adminOnly = Router();
+adminOnly.use(authorizeRoles([UserRole.ADMIN]));
 
-// GET /api/achievements/:id - Récupérer un succès par son ID
-router.get('/:id', validate(achievementIdParamSchema), achievementController.getById);
+/**
+ * @swagger
+ * /achievements:
+ *   post:
+ *     summary: Crée un nouveau succès (Admin)
+ *     tags: [Achievements]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name: { type: string }
+ *               description: { type: string }
+ *               iconUrl: { type: string }
+ *               code: { type: string }
+ *     responses:
+ *       201:
+ *         description: Succès créé
+ */
+adminOnly.post('/', validate(createAchievementSchema), achievementController.create);
 
-// PUT /api/achievements/:id - Mettre à jour un succès
-router.put('/:id', validate(updateAchievementSchema), achievementController.update);
+/**
+ * @swagger
+ * /achievements/{id}:
+ *   get:
+ *     summary: Récupère un succès par son ID (Admin)
+ *     tags: [Achievements]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Détails du succès
+ *       404:
+ *         description: Succès non trouvé
+ */
+adminOnly.get('/:id', validate(achievementIdParamSchema), achievementController.getById);
 
-// DELETE /api/achievements/:id - Supprimer un succès
-router.delete('/:id', validate(achievementIdParamSchema), achievementController.remove);
+/**
+ * @swagger
+ * /achievements/{id}:
+ *   put:
+ *     summary: Met à jour un succès (Admin)
+ *     tags: [Achievements]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name: { type: string }
+ *               description: { type: string }
+ *               iconUrl: { type: string }
+ *               code: { type: string }
+ *     responses:
+ *       200:
+ *         description: Succès mis à jour
+ *       404:
+ *         description: Succès non trouvé
+ */
+adminOnly.put('/:id', validate(updateAchievementSchema), achievementController.update);
+
+/**
+ * @swagger
+ * /achievements/{id}:
+ *   delete:
+ *     summary: Supprime un succès (Admin)
+ *     tags: [Achievements]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Succès supprimé
+ *       404:
+ *         description: Succès non trouvé
+ */
+adminOnly.delete('/:id', validate(achievementIdParamSchema), achievementController.remove);
+
+router.use(adminOnly);
 
 export default router;

@@ -12,12 +12,63 @@ import { UserRole } from '@prisma/client';
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Lessons
+ *   description: API de gestion des leçons
+ */
+
 // --- Routes Publiques ---
 
-// GET /api/lessons/course/:courseId - Récupérer les leçons d'un cours
+/**
+ * @swagger
+ * /lessons/course/{courseId}:
+ *   get:
+ *     summary: Récupère toutes les leçons d'un cours spécifique
+ *     tags: [Lessons]
+ *     parameters:
+ *       - in: path
+ *         name: courseId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID du cours
+ *     responses:
+ *       200:
+ *         description: Une liste de leçons
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Lesson'
+ */
 router.get('/course/:courseId', validate(courseIdParamSchema), lessonController.getByCourse);
 
-// GET /api/lessons/:id - Récupérer une leçon par son ID
+/**
+ * @swagger
+ * /lessons/{id}:
+ *   get:
+ *     summary: Récupère une leçon par son ID
+ *     tags: [Lessons]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID de la leçon
+ *     responses:
+ *       200:
+ *         description: Détails de la leçon
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Lesson'
+ *       404:
+ *         description: Leçon non trouvée
+ */
 router.get('/:id', validate(lessonIdParamSchema), lessonController.getById);
 
 
@@ -25,7 +76,31 @@ router.get('/:id', validate(lessonIdParamSchema), lessonController.getById);
 
 const authorizedRoles: UserRole[] = [UserRole.ADMIN, UserRole.TEACHER];
 
-// POST /api/lessons - Créer une nouvelle leçon
+/**
+ * @swagger
+ * /lessons:
+ *   post:
+ *     summary: Crée une nouvelle leçon (Admin, Teacher)
+ *     tags: [Lessons]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title: { type: string }
+ *               content: { type: string }
+ *               order: { type: integer }
+ *               courseId: { type: string }
+ *     responses:
+ *       201:
+ *         description: Leçon créée avec succès
+ *       401:
+ *         description: Non autorisé
+ */
 router.post(
   '/',
   authenticateToken,
@@ -34,7 +109,32 @@ router.post(
   lessonController.create
 );
 
-// PUT /api/lessons/:id - Mettre à jour une leçon
+/**
+ * @swagger
+ * /lessons/{id}:
+ *   put:
+ *     summary: Met à jour une leçon (Admin, Teacher)
+ *     tags: [Lessons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Lesson'
+ *     responses:
+ *       200:
+ *         description: Leçon mise à jour
+ *       404:
+ *         description: Leçon non trouvée
+ */
 router.put(
   '/:id',
   authenticateToken,
@@ -43,7 +143,26 @@ router.put(
   lessonController.update
 );
 
-// DELETE /api/lessons/:id - Supprimer une leçon
+/**
+ * @swagger
+ * /lessons/{id}:
+ *   delete:
+ *     summary: Supprime une leçon (Admin, Teacher)
+ *     tags: [Lessons]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Leçon supprimée avec succès
+ *       404:
+ *         description: Leçon non trouvée
+ */
 router.delete(
   '/:id',
   authenticateToken,

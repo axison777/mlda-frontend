@@ -11,12 +11,51 @@ import { UserRole } from '@prisma/client';
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Announcements
+ *   description: API de gestion des annonces
+ */
+
 // --- Routes Publiques ---
 
-// GET /api/announcements - Récupérer toutes les annonces (peut être filtré par courseId)
+/**
+ * @swagger
+ * /announcements:
+ *   get:
+ *     summary: Récupère la liste des annonces
+ *     tags: [Announcements]
+ *     parameters:
+ *       - in: query
+ *         name: courseId
+ *         schema:
+ *           type: string
+ *         description: Filtre les annonces pour un cours spécifique (inclut aussi les annonces globales)
+ *     responses:
+ *       200:
+ *         description: Une liste d'annonces
+ */
 router.get('/', announcementController.getAll);
 
-// GET /api/announcements/:id - Récupérer une annonce par son ID
+/**
+ * @swagger
+ * /announcements/{id}:
+ *   get:
+ *     summary: Récupère une annonce par son ID
+ *     tags: [Announcements]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Détails de l'annonce
+ *       404:
+ *         description: Annonce non trouvée
+ */
 router.get('/:id', validate(announcementIdParamSchema), announcementController.getById);
 
 
@@ -24,7 +63,28 @@ router.get('/:id', validate(announcementIdParamSchema), announcementController.g
 
 const authorizedRoles: UserRole[] = [UserRole.ADMIN, UserRole.TEACHER];
 
-// POST /api/announcements - Créer une nouvelle annonce
+/**
+ * @swagger
+ * /announcements:
+ *   post:
+ *     summary: Crée une nouvelle annonce (Admin, Teacher)
+ *     tags: [Announcements]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title: { type: string }
+ *               content: { type: string }
+ *               courseId: { type: string }
+ *     responses:
+ *       201:
+ *         description: Annonce créée
+ */
 router.post(
   '/',
   authenticateToken,
@@ -33,7 +93,36 @@ router.post(
   announcementController.create
 );
 
-// PUT /api/announcements/:id - Mettre à jour une annonce
+/**
+ * @swagger
+ * /announcements/{id}:
+ *   put:
+ *     summary: Met à jour une annonce (Admin, Teacher)
+ *     tags: [Announcements]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title: { type: string }
+ *               content: { type: string }
+ *               courseId: { type: string }
+ *     responses:
+ *       200:
+ *         description: Annonce mise à jour
+ *       404:
+ *         description: Annonce non trouvée
+ */
 router.put(
   '/:id',
   authenticateToken,
@@ -42,7 +131,26 @@ router.put(
   announcementController.update
 );
 
-// DELETE /api/announcements/:id - Supprimer une annonce
+/**
+ * @swagger
+ * /announcements/{id}:
+ *   delete:
+ *     summary: Supprime une annonce (Admin, Teacher)
+ *     tags: [Announcements]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Annonce supprimée
+ *       404:
+ *         description: Annonce non trouvée
+ */
 router.delete(
   '/:id',
   authenticateToken,

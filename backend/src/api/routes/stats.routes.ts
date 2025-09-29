@@ -5,27 +5,64 @@ import { UserRole } from '@prisma/client';
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Stats
+ *   description: API de récupération des statistiques des tableaux de bord
+ */
+
 // Toutes les routes ici nécessitent une authentification
 router.use(authenticateToken);
 
-// --- Route pour les statistiques de l'Admin ---
-// GET /api/stats/admin
+/**
+ * @swagger
+ * /stats/admin:
+ *   get:
+ *     summary: Récupère les statistiques pour le tableau de bord de l'administrateur
+ *     tags: [Stats]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistiques de l'administrateur
+ */
 router.get(
   '/admin',
   authorizeRoles([UserRole.ADMIN]),
   statsController.getAdminDashboardStats
 );
 
-// --- Route pour les statistiques du Professeur ---
-// GET /api/stats/teacher
+/**
+ * @swagger
+ * /stats/teacher:
+ *   get:
+ *     summary: Récupère les statistiques pour le tableau de bord du professeur connecté
+ *     tags: [Stats]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistiques du professeur
+ */
 router.get(
   '/teacher',
   authorizeRoles([UserRole.TEACHER]),
   statsController.getTeacherDashboardStats
 );
 
-// --- Route pour les statistiques de l'Étudiant ---
-// GET /api/stats/student
+/**
+ * @swagger
+ * /stats/student:
+ *   get:
+ *     summary: Récupère les statistiques pour le tableau de bord de l'étudiant connecté
+ *     tags: [Stats]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistiques de l'étudiant
+ */
 router.get(
   '/student',
   authorizeRoles([UserRole.STUDENT]),

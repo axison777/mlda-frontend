@@ -7,11 +7,34 @@ import { UserRole } from '@prisma/client';
 
 const router = Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Quizzes
+ *   description: API de gestion des quiz
+ */
+
 // Toutes les routes ici nécessitent une authentification
 router.use(authenticateToken);
 
-// --- Route pour la création de Quiz (Professeurs/Admins) ---
-// POST /api/quiz
+/**
+ * @swagger
+ * /quiz:
+ *   post:
+ *     summary: Crée un nouveau quiz (Admin, Teacher)
+ *     tags: [Quizzes]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Quiz'
+ *     responses:
+ *       201:
+ *         description: Quiz créé avec succès
+ */
 router.post(
   '/',
   authorizeRoles([UserRole.ADMIN, UserRole.TEACHER]),
@@ -19,8 +42,39 @@ router.post(
   quizController.create
 );
 
-// --- Route pour la soumission d'une tentative (Étudiants) ---
-// POST /api/quiz/:quizId/attempt
+/**
+ * @swagger
+ * /quiz/{quizId}/attempt:
+ *   post:
+ *     summary: Soumet une tentative de réponse à un quiz (Student)
+ *     tags: [Quizzes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: quizId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               answers:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     questionId: { type: string }
+ *                     choiceId: { type: string }
+ *               timeSpent: { type: integer }
+ *     responses:
+ *       200:
+ *         description: Tentative soumise avec succès
+ */
 router.post(
   '/:quizId/attempt',
   authorizeRoles([UserRole.STUDENT]),
@@ -28,9 +82,26 @@ router.post(
   quizController.submitAttempt
 );
 
-// --- Route pour récupérer un Quiz (Tous les utilisateurs authentifiés) ---
-// GET /api/quiz/:id
-// Note: Le contrôleur gère déjà la logique de ce qu'il faut montrer en fonction du rôle.
+/**
+ * @swagger
+ * /quiz/{id}:
+ *   get:
+ *     summary: Récupère un quiz par son ID
+ *     tags: [Quizzes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Détails du quiz (les réponses sont masquées pour les étudiants)
+ *       404:
+ *         description: Quiz non trouvé
+ */
 router.get('/:id', validate(quizIdParamSchema), quizController.getById);
 
 
