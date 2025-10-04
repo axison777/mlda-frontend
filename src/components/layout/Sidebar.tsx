@@ -60,7 +60,7 @@ export const Sidebar = () => {
     <motion.div
       initial={{ x: -280 }}
       animate={{ x: 0 }}
-      className="fixed left-0 top-0 h-full w-70 bg-black text-white z-40"
+      className="fixed left-0 top-0 h-full w-64 bg-black text-white z-40"
     >
       <div className="p-6 border-b border-gray-800">
         <h1 className="text-2xl font-bold text-yellow-400">MLDA</h1>
