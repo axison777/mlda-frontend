@@ -18,7 +18,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Search, MoreHorizontal, CreditCard, TrendingUp, DollarSign, Calendar } from 'lucide-react';
+import { Search, MoveHorizontal as MoreHorizontal, CreditCard, TrendingUp, DollarSign, Calendar } from 'lucide-react';
 import {
   LineChart,
   Line,

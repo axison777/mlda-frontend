@@ -11,19 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  Eye, 
-  Package,
-  TrendingUp,
-  DollarSign,
-  ShoppingCart,
-  AlertTriangle
-} from 'lucide-react';
+import { Plus, Search, Filter, CreditCard as Edit, Trash2, Eye, Package, TrendingUp, DollarSign, ShoppingCart, TriangleAlert as AlertTriangle } from 'lucide-react';
 
 export const ProductsManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
