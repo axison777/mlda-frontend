@@ -130,7 +130,7 @@ export const TeacherTracking = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-6"
+      className="space-y-6 w-full"
     >
       <div>
         <h1 className="text-3xl font-bold text-gray-900">Suivi des Professeurs</h1>

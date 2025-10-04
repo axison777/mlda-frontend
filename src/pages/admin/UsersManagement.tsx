@@ -87,12 +87,11 @@ export const UsersManagement = () => {
     }
   };
   return (
-    <div className="min-h-screen w-full">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="space-y-6 max-w-7xl mx-auto"
-      >
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="space-y-6 w-full"
+    >
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Gestion des Utilisateurs</h1>
@@ -292,7 +291,6 @@ export const UsersManagement = () => {
         onClose={() => setShowEditDialog(false)}
         user={selectedUser}
       />
-      </motion.div>
-    </div>
+    </motion.div>
   );
 };
