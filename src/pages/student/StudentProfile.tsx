@@ -56,13 +56,19 @@ export const StudentProfile = () => {
   };
 
   const handlePreferenceChange = (category: string, field: string, value: boolean) => {
-    setPreferences(prev => ({
-      ...prev,
-      [category]: {
-        ...prev[category as keyof typeof prev],
-        [field]: value,
-      },
-    }));
+    setPreferences(prev => {
+      const categoryObj = prev[category as keyof typeof prev];
+      if (typeof categoryObj === 'object' && categoryObj !== null) {
+        return {
+          ...prev,
+          [category]: {
+            ...categoryObj,
+            [field]: value,
+          },
+        };
+      }
+      return prev;
+    });
   };
 
   const handleSaveProfile = () => {

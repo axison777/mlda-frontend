@@ -38,11 +38,11 @@ export const UsersManagement = () => {
     search: searchTerm,
     role: filterRole !== 'all' ? filterRole : undefined,
   });
-  
+
   const updateUserMutation = useUpdateUser();
   const deleteUserMutation = useDeleteUser();
 
-  const users = usersData?.users || [];
+  const users = (usersData as any)?.users || [];
 
   const getRoleBadge = (role: string) => {
     const colors = {

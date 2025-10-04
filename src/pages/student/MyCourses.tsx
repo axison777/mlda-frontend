@@ -43,18 +43,17 @@ export const MyCourses = () => {
     setShowDetailsDialog(true);
   };
 
-  const filteredEnrolledCourses = enrolledCourses.filter(course => {
-    const matchesSearch = course.course?.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  const filteredEnrolledCourses = enrolledCourses.filter((course: any) => {
+    const matchesSearch = course.course?.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          course.course?.teacher?.firstName?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLevel = filterLevel === 'all' || course.course?.level === filterLevel;
     return matchesSearch && matchesLevel;
   });
 
-  const filteredAvailableCourses = availableCourses.filter(course => {
-    const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+  const filteredAvailableCourses = availableCourses.filter((course: any) => {
+    const matchesSearch = course.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          course.instructor?.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesLevel = filterLevel === 'all' || course.level === filterLevel;
-    // Exclure les cours déjà inscrits
     const isNotEnrolled = !enrolledCourses.some((enrollment: any) => enrollment.course.id === course.id);
     return matchesSearch && matchesLevel && isNotEnrolled;
   });

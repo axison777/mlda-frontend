@@ -10,6 +10,8 @@ export interface User {
   email: string;
   role: UserRole;
   avatar?: string;
+  firstName?: string;
+  lastName?: string;
 }
 
 interface AuthStore {
