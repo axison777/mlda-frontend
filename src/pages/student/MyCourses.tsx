@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-import { Search, Play, BookOpen, Clock, Star, Filter, HelpCircle } from 'lucide-react';
+import { Search, Play, BookOpen, Clock, Star, Filter, CircleHelp as HelpCircle } from 'lucide-react';
 import { useCourses, useUserEnrollments } from '@/hooks/useCourses';
 import { toast } from 'sonner';
 import { CourseDetailsDialog } from '@/components/student/CourseDetailsDialog';
