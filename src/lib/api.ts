@@ -121,25 +121,25 @@ class ApiClient {
   }
 
   async getCourseById(id: string) {
-    return this.request<{ course: any }>(`/courses/${id}`);
+    return this.request<any>(`/courses/${id}`);
   }
 
   async createCourse(courseData: any) {
-    return this.request<{ course: any; message: string }>('/courses', {
+    return this.request<any>('/courses', {
       method: 'POST',
       body: JSON.stringify(courseData),
     });
   }
 
   async updateCourse(id: string, updates: any) {
-    return this.request<{ course: any; message: string }>(`/courses/${id}`, {
+    return this.request<any>(`/courses/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
     });
   }
 
   async deleteCourse(id: string) {
-    return this.request<{ message: string }>(`/courses/${id}`, {
+    return this.request<any>(`/courses/${id}`, {
       method: 'DELETE',
     });
   }
@@ -175,14 +175,14 @@ class ApiClient {
 
   // Enrollment endpoints
   async enrollInCourse(courseId: string) {
-    return this.request<{ enrollment: any; message: string }>('/enrollments', {
+    return this.request<any>('/enrollments', {
       method: 'POST',
       body: JSON.stringify({ courseId }),
     });
   }
 
   async getUserEnrollments() {
-    return this.request<{ enrollments: any[] }>('/enrollments/my-courses');
+    return this.request<any>('/enrollments/my-courses');
   }
 
   // Progress endpoints
