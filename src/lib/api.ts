@@ -146,29 +146,29 @@ class ApiClient {
 
   // Lesson endpoints
   async getLessonsByCourse(courseId: string) {
-    return this.request<{ lessons: any[] }>(`/lessons/course/${courseId}`);
+    return this.request<any[]>(`/lessons/course/${courseId}`);
   }
 
   async getLessonById(id: string) {
-    return this.request<{ lesson: any }>(`/lessons/${id}`);
+    return this.request<any>(`/lessons/${id}`);
   }
 
   async createLesson(lessonData: any) {
-    return this.request<{ lesson: any; message: string }>('/lessons', {
+    return this.request<any>('/lessons', {
       method: 'POST',
       body: JSON.stringify(lessonData),
     });
   }
 
   async updateLesson(id: string, updates: any) {
-    return this.request<{ lesson: any; message: string }>(`/lessons/${id}`, {
+    return this.request<any>(`/lessons/${id}`, {
       method: 'PUT',
       body: JSON.stringify(updates),
     });
   }
 
   async deleteLesson(id: string) {
-    return this.request<{ message: string }>(`/lessons/${id}`, {
+    return this.request<any>(`/lessons/${id}`, {
       method: 'DELETE',
     });
   }
