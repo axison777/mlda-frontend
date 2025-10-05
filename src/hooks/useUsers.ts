@@ -12,7 +12,7 @@ export const useUsers = (params?: {
   return useQuery({
     queryKey: ['users', params],
     queryFn: () => apiClient.getUsers(params),
-    keepPreviousData: true,
+    placeholderData: (prev) => prev,
   });
 };
 
@@ -31,7 +31,7 @@ export const useUpdateUser = () => {
     mutationFn: ({ id, updates }: { id: string; updates: any }) =>
       apiClient.updateUser(id, updates),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
+      queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Utilisateur mis à jour !');
     },
     onError: (error: any) => {
@@ -46,7 +46,7 @@ export const useDeleteUser = () => {
   return useMutation({
     mutationFn: (id: string) => apiClient.deleteUser(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['users']);
+      queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Utilisateur supprimé !');
     },
     onError: (error: any) => {

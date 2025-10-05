@@ -70,7 +70,6 @@ class ApiClient {
     password: string;
     firstName: string;
     lastName: string;
-    role?: string;
   }) {
     return this.request<{ user: any; token: string; message: string }>('/auth/register', {
       method: 'POST',
@@ -78,12 +77,18 @@ class ApiClient {
     });
   }
 
-  async getProfile() {
-    return this.request<{ user: any }>('/auth/profile');
+  async logout() {
+    return this.request<{ message: string }>('/auth/logout', {
+      method: 'POST',
+    });
   }
 
-  async updateProfile(updates: any) {
-    return this.request<{ user: any; message: string }>('/auth/profile', {
+  async getProfile() {
+    return this.request<any>('/auth/profile');
+  }
+
+  async updateProfile(updates: { bio?: string; avatarUrl?: string }) {
+    return this.request<any>('/auth/profile', {
       method: 'PUT',
       body: JSON.stringify(updates),
     });
@@ -173,30 +178,8 @@ class ApiClient {
   }
 
   async getUserEnrollments() {
-    try {
-      return await this.request<{ enrollments: any[] }>('/enrollments/my-courses');
-    } catch (error) {
-      // Retourner des données mock si l'API n'est pas disponible
-      return {
-        enrollments: [
-          {
-            id: '1',
-            progress: 75,
-            completedLessons: 18,
-            course: {
-              id: '1',
-              title: 'Allemand pour débutants',
-              level: 'A1',
-              price: 25000,
-              thumbnail: 'https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg',
-              teacher: { firstName: 'Dr. Hans', lastName: 'Mueller' },
-              _count: { lessons: 24 }
-            }
-          }
-        ]
-      };
-    }
-  };
+    return this.request<{ enrollments: any[] }>('/enrollments/my-courses');
+  }
 
   // Progress endpoints
   async updateLessonProgress(lessonId: string, data: { completed: boolean; timeSpent?: number }) {

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,19 +9,38 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Save, Upload, Star, Users, BookOpen, Award } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 export const ProfessorProfile = () => {
+  const { user, profile, updateProfile } = useAuth();
+
   const [profileData, setProfileData] = useState({
-    firstName: 'Hans',
-    lastName: 'Mueller',
-    email: 'h.mueller@mlda.de',
-    phone: '+33 1 23 45 67 89',
-    bio: 'Professeur d\'allemand avec plus de 15 ans d\'expérience. Spécialisé dans l\'enseignement aux débutants et la préparation aux examens officiels.',
-    specialties: ['Grammaire', 'Conversation', 'Préparation aux examens'],
-    education: 'Doctorat en Linguistique Allemande - Université de Berlin',
-    experience: '15 ans d\'enseignement',
-    languages: ['Allemand (Natif)', 'Français (Courant)', 'Anglais (Courant)'],
+    firstName: '',
+    lastName: '',
+    email: '',
+    bio: '',
+    avatarUrl: '',
   });
+
+  useEffect(() => {
+    if (profile) {
+      setProfileData({
+        firstName: profile.firstName || '',
+        lastName: profile.lastName || '',
+        email: profile.email || '',
+        bio: profile.bio || '',
+        avatarUrl: profile.avatarUrl || '',
+      });
+    } else if (user) {
+      setProfileData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        bio: user.bio || '',
+        avatarUrl: user.avatarUrl || '',
+      });
+    }
+  }, [profile, user]);
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -38,7 +57,10 @@ export const ProfessorProfile = () => {
   };
 
   const handleSaveProfile = () => {
-    toast.success('Profil sauvegardé avec succès !');
+    updateProfile({
+      bio: profileData.bio,
+      avatarUrl: profileData.avatarUrl,
+    });
   };
 
   const handleChangePassword = () => {

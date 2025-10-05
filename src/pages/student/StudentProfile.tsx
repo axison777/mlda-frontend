@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,21 +10,38 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Save, Upload, Star, Users, BookOpen, Award, Target, Calendar, TrendingUp } from 'lucide-react';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/useAuth';
 
 export const StudentProfile = () => {
+  const { user, profile, updateProfile } = useAuth();
+
   const [profileData, setProfileData] = useState({
-    firstName: 'Marie',
-    lastName: 'Dubois',
-    email: 'marie.dubois@email.com',
-    phone: '+33 6 12 34 56 78',
-    bio: 'Étudiante en commerce international, passionnée par les langues et la culture allemande.',
-    dateOfBirth: '1995-03-15',
-    nationality: 'Française',
-    currentLevel: 'B1',
-    targetLevel: 'C1',
-    learningGoals: ['Obtenir une certification', 'Travailler en Allemagne', 'Améliorer la conversation'],
-    interests: ['Business', 'Culture', 'Voyages'],
+    firstName: '',
+    lastName: '',
+    email: '',
+    bio: '',
+    avatarUrl: '',
   });
+
+  useEffect(() => {
+    if (profile) {
+      setProfileData({
+        firstName: profile.firstName || '',
+        lastName: profile.lastName || '',
+        email: profile.email || '',
+        bio: profile.bio || '',
+        avatarUrl: profile.avatarUrl || '',
+      });
+    } else if (user) {
+      setProfileData({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        bio: user.bio || '',
+        avatarUrl: user.avatarUrl || '',
+      });
+    }
+  }, [profile, user]);
 
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
@@ -72,7 +89,10 @@ export const StudentProfile = () => {
   };
 
   const handleSaveProfile = () => {
-    toast.success('Profil sauvegardé avec succès !');
+    updateProfile({
+      bio: profileData.bio,
+      avatarUrl: profileData.avatarUrl,
+    });
   };
 
   const handleChangePassword = () => {

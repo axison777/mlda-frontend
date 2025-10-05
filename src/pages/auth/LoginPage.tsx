@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,32 +12,10 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login, isLoading } = useAuth();
-  const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    
-    try {
-      await login({ email, password });
-      
-      // La redirection sera gérée par le hook useAuth
-      const user = JSON.parse(localStorage.getItem('mlda-auth') || '{}').state?.user;
-      if (user) {
-        switch (user.role) {
-          case 'admin':
-            navigate('/admin');
-            break;
-          case 'professor':
-            navigate('/professor');
-            break;
-          default:
-            navigate('/student');
-        }
-      }
-    } catch (error) {
-      // L'erreur est déjà gérée par le hook
-    }
+    login({ email, password });
   };
 
   return (
@@ -146,16 +124,6 @@ export const LoginPage = () => {
               </p>
             </div>
 
-            {/* Demo accounts info */}
-            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <p className="text-xs text-gray-600 mb-2 font-medium">Comptes de démonstration:</p>
-              <div className="text-xs text-gray-600 space-y-1">
-                <p>• admin@mlda.de (Admin)</p>
-                <p>• prof@mlda.de (Professeur)</p>
-                <p>• student@mlda.de (Étudiant)</p>
-                <p className="mt-2 italic">Mot de passe: n'importe lequel</p>
-              </div>
-            </div>
           </CardContent>
         </Card>
 

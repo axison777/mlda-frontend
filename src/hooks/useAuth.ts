@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore, User, UserRole } from '@/store/authStore';
 import { apiClient } from '@/lib/api';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -13,20 +13,27 @@ export const useAuth = () => {
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       apiClient.login(email, password),
     onSuccess: (data) => {
-      const userData = {
-        id: data.user.id,
-        name: `${data.user.firstName} ${data.user.lastName}`,
-        email: data.user.email,
-        role: data.user.role.toLowerCase() === 'teacher' ? 'professor' : data.user.role.toLowerCase() as any,
-        avatar: data.user.avatar,
+      const roleMap: { [key: string]: UserRole } = {
+        'ADMIN': 'admin',
+        'TEACHER': 'professor',
+        'STUDENT': 'student',
       };
-      
+
+      const userData: User = {
+        id: data.user.id,
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        role: roleMap[data.user.role] || 'student',
+        bio: data.user.bio,
+        avatarUrl: data.user.avatarUrl,
+      };
+
       apiClient.setToken(data.token);
       login(userData, data.token);
-      
-      toast.success('Connexion réussie !');
-      
-      // Redirect based on role
+
+      toast.success(data.message || 'Connexion réussie !');
+
       setTimeout(() => {
         switch (userData.role) {
           case 'admin':
@@ -51,23 +58,29 @@ export const useAuth = () => {
       password: string;
       firstName: string;
       lastName: string;
-      role?: string;
     }) => apiClient.register(userData),
     onSuccess: (data) => {
-      const userData = {
-        id: data.user.id,
-        name: `${data.user.firstName} ${data.user.lastName}`,
-        email: data.user.email,
-        role: data.user.role.toLowerCase() === 'teacher' ? 'professor' : data.user.role.toLowerCase() as any,
-        avatar: data.user.avatar,
+      const roleMap: { [key: string]: UserRole } = {
+        'ADMIN': 'admin',
+        'TEACHER': 'professor',
+        'STUDENT': 'student',
       };
-      
+
+      const userData: User = {
+        id: data.user.id,
+        email: data.user.email,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        role: roleMap[data.user.role] || 'student',
+        bio: data.user.bio,
+        avatarUrl: data.user.avatarUrl,
+      };
+
       apiClient.setToken(data.token);
       login(userData, data.token);
-      
-      toast.success('Inscription réussie !');
-      
-      // Redirect based on role
+
+      toast.success(data.message || 'Inscription réussie !');
+
       setTimeout(() => {
         switch (userData.role) {
           case 'admin':
@@ -91,18 +104,12 @@ export const useAuth = () => {
     queryFn: () => apiClient.getProfile(),
     enabled: !!user,
     retry: false,
-    onError: (error: any) => {
-      if (error.message.includes('token') || error.message.includes('401')) {
-        logout();
-        navigate('/login');
-      }
-    },
   });
 
   const updateProfileMutation = useMutation({
     mutationFn: (updates: any) => apiClient.updateProfile(updates),
     onSuccess: () => {
-      queryClient.invalidateQueries(['profile']);
+      queryClient.invalidateQueries({ queryKey: ['profile'] });
       toast.success('Profil mis à jour !');
     },
     onError: (error: any) => {
@@ -110,11 +117,17 @@ export const useAuth = () => {
     },
   });
 
-  const handleLogout = () => {
-    logout();
-    queryClient.clear();
-    navigate('/login');
-    toast.success('Déconnexion réussie');
+  const handleLogout = async () => {
+    try {
+      await apiClient.logout();
+    } catch (error) {
+      console.error('Logout API error:', error);
+    } finally {
+      logout();
+      queryClient.clear();
+      navigate('/login');
+      toast.success('Déconnexion réussie');
+    }
   };
 
   return {
@@ -125,6 +138,6 @@ export const useAuth = () => {
     logout: handleLogout,
     updateProfile: updateProfileMutation.mutate,
     isLoading: loginMutation.isPending || registerMutation.isPending,
-    profile: profileQuery.data?.user,
+    profile: profileQuery.data || user,
   };
 };

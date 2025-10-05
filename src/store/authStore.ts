@@ -6,12 +6,12 @@ export type UserRole = 'admin' | 'professor' | 'student';
 
 export interface User {
   id: string;
-  name: string;
   email: string;
+  firstName: string;
+  lastName: string;
   role: UserRole;
-  avatar?: string;
-  firstName?: string;
-  lastName?: string;
+  bio?: string;
+  avatarUrl?: string;
 }
 
 interface AuthStore {

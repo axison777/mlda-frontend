@@ -104,7 +104,7 @@ export const MessageCenter = () => {
     const message: Message = {
       id: Date.now().toString(),
       senderId: user?.id || '1',
-      senderName: user?.name || 'Utilisateur',
+      senderName: `${user?.firstName} ${user?.lastName}` || 'Utilisateur',
       senderRole: user?.role || 'student',
       content: newMessage,
       timestamp: new Date(),
@@ -146,7 +146,7 @@ export const MessageCenter = () => {
         {
           id: Date.now().toString(),
           senderId: user?.id || '1',
-          senderName: user?.name || 'Utilisateur',
+          senderName: `${user?.firstName} ${user?.lastName}` || 'Utilisateur',
           senderRole: user?.role || 'student',
           content: newConversation.message,
           timestamp: new Date(),

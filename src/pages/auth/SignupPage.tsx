@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { Eye, EyeOff, User, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
-import type { UserRole } from '@/store/authStore';
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -17,17 +15,15 @@ export const SignupPage = () => {
     email: '',
     password: '',
     confirmPassword: '',
-    role: 'student' as UserRole,
   });
   const [showPassword, setShowPassword] = useState(false);
   const { register, isLoading } = useAuth();
-  const navigate = useNavigate();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
@@ -35,26 +31,12 @@ export const SignupPage = () => {
       return;
     }
 
-    try {
-      await register({
-        email: formData.email,
-        password: formData.password,
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        role: formData.role.toUpperCase(),
-      });
-      
-      // Redirection basée sur le rôle
-      switch (formData.role) {
-        case 'professor':
-          navigate('/professor');
-          break;
-        default:
-          navigate('/student');
-      }
-    } catch (error) {
-      // L'erreur est déjà gérée par le hook
-    }
+    register({
+      email: formData.email,
+      password: formData.password,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+    });
   };
 
   return (
@@ -129,51 +111,6 @@ export const SignupPage = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Je souhaite m'inscrire en tant que
-                </label>
-                <div className="space-y-3">
-                  <div 
-                    className={`flex items-center space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      formData.role === 'student' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    onClick={() => handleInputChange('role', 'student')}
-                  >
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                      formData.role === 'student' ? 'border-red-500 bg-red-500' : 'border-gray-300'
-                    }`}>
-                      {formData.role === 'student' && <div className="w-2 h-2 rounded-full bg-white" />}
-                    </div>
-                    <div className="flex items-center flex-1">
-                      <GraduationCap className="w-5 h-5 mr-3 text-blue-600" />
-                      <div>
-                        <p className="font-medium">Étudiant</p>
-                        <p className="text-sm text-gray-600">Apprendre l'allemand</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div 
-                    className={`flex items-center space-x-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      formData.role === 'professor' ? 'border-red-500 bg-red-50' : 'border-gray-200 hover:border-gray-300'
-                    }`}
-                    onClick={() => handleInputChange('role', 'professor')}
-                  >
-                    <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                      formData.role === 'professor' ? 'border-red-500 bg-red-500' : 'border-gray-300'
-                    }`}>
-                      {formData.role === 'professor' && <div className="w-2 h-2 rounded-full bg-white" />}
-                    </div>
-                    <div className="flex items-center flex-1">
-                      <User className="w-5 h-5 mr-3 text-green-600" />
-                      <div>
-                        <p className="font-medium">Professeur</p>
-                        <p className="text-sm text-gray-600">Enseigner l'allemand</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">

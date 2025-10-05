@@ -13,7 +13,7 @@ export const useCourses = (params?: {
   return useQuery({
     queryKey: ['courses', params],
     queryFn: () => apiClient.getCourses(params),
-    keepPreviousData: true,
+    placeholderData: (prev) => prev,
   });
 };
 
@@ -31,7 +31,7 @@ export const useCreateCourse = () => {
   return useMutation({
     mutationFn: (courseData: any) => apiClient.createCourse(courseData),
     onSuccess: () => {
-      queryClient.invalidateQueries(['courses']);
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
       toast.success('Cours créé avec succès !');
     },
     onError: (error: any) => {
@@ -47,7 +47,7 @@ export const useUpdateCourse = () => {
     mutationFn: ({ id, updates }: { id: string; updates: any }) =>
       apiClient.updateCourse(id, updates),
     onSuccess: () => {
-      queryClient.invalidateQueries(['courses']);
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
       toast.success('Cours mis à jour !');
     },
     onError: (error: any) => {
@@ -62,7 +62,7 @@ export const useDeleteCourse = () => {
   return useMutation({
     mutationFn: (id: string) => apiClient.deleteCourse(id),
     onSuccess: () => {
-      queryClient.invalidateQueries(['courses']);
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
       toast.success('Cours supprimé !');
     },
     onError: (error: any) => {
@@ -77,8 +77,8 @@ export const useEnrollInCourse = () => {
   return useMutation({
     mutationFn: (courseId: string) => apiClient.enrollInCourse(courseId),
     onSuccess: () => {
-      queryClient.invalidateQueries(['enrollments']);
-      queryClient.invalidateQueries(['courses']);
+      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
+      queryClient.invalidateQueries({ queryKey: ['courses'] });
       toast.success('Inscription réussie !');
     },
     onError: (error: any) => {
@@ -90,44 +90,6 @@ export const useEnrollInCourse = () => {
 export const useUserEnrollments = () => {
   return useQuery({
     queryKey: ['enrollments'],
-    queryFn: async () => {
-      try {
-        return await apiClient.getUserEnrollments();
-      } catch (error) {
-        // Retourner des données mock en cas d'erreur
-        return {
-          enrollments: [
-            {
-              id: '1',
-              progress: 75,
-              completedLessons: 18,
-              course: {
-                id: '1',
-                title: 'Allemand pour débutants',
-                level: 'A1',
-                price: 25000,
-                thumbnail: 'https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg',
-                teacher: { firstName: 'Dr. Hans', lastName: 'Mueller' },
-                _count: { lessons: 24 }
-              }
-            },
-            {
-              id: '2',
-              progress: 45,
-              completedLessons: 8,
-              course: {
-                id: '2',
-                title: 'Grammaire allemande avancée',
-                level: 'B2',
-                price: 35000,
-                thumbnail: 'https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg',
-                teacher: { firstName: 'Prof. Anna', lastName: 'Schmidt' },
-                _count: { lessons: 18 }
-              }
-            }
-          ]
-        };
-      }
-    },
+    queryFn: () => apiClient.getUserEnrollments(),
   });
 };
