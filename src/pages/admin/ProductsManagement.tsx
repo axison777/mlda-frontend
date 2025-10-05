@@ -211,13 +211,6 @@ export const ProductsManagement = () => {
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
-              {product.discount && (
-                <div className="absolute top-4 left-4">
-                  <Badge className="bg-red-600 text-white">
-                    -{product.discountType === 'percentage' ? `${product.discount}%` : `${product.discount} FCFA`}
-                  </Badge>
-                </div>
-              )}
               {!product.active && (
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                   <Badge className="bg-gray-800 text-white">Inactif</Badge>

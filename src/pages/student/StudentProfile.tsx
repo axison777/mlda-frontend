@@ -149,8 +149,8 @@ export const StudentProfile = () => {
               </h2>
               <p className="text-gray-600">Étudiant en allemand</p>
               <div className="flex items-center gap-4 mt-2">
-                <Badge className="bg-blue-100 text-blue-800">Niveau {profileData.currentLevel}</Badge>
-                <Badge className="bg-green-100 text-green-800">Objectif: {profileData.targetLevel}</Badge>
+                <Badge className="bg-blue-100 text-blue-800">Étudiant</Badge>
+                <Badge className="bg-green-100 text-green-800">Actif</Badge>
                 <Badge className="bg-yellow-100 text-yellow-800">Étudiant actif</Badge>
               </div>
             </div>
@@ -229,34 +229,6 @@ export const StudentProfile = () => {
                     onChange={(e) => handleProfileChange('email', e.target.value)}
                   />
                 </div>
-                <div>
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <Input
-                    id="phone"
-                    value={profileData.phone}
-                    onChange={(e) => handleProfileChange('phone', e.target.value)}
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <Label htmlFor="dateOfBirth">Date de naissance</Label>
-                  <Input
-                    id="dateOfBirth"
-                    type="date"
-                    value={profileData.dateOfBirth}
-                    onChange={(e) => handleProfileChange('dateOfBirth', e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="nationality">Nationalité</Label>
-                  <Input
-                    id="nationality"
-                    value={profileData.nationality}
-                    onChange={(e) => handleProfileChange('nationality', e.target.value)}
-                  />
-                </div>
               </div>
 
               <div>
@@ -279,50 +251,6 @@ export const StudentProfile = () => {
 
         <TabsContent value="learning">
           <div className="space-y-6">
-            {/* Learning Goals */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Objectifs d'Apprentissage</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <Label>Niveau actuel</Label>
-                    <Badge className="bg-blue-100 text-blue-800 text-lg px-4 py-2">
-                      {profileData.currentLevel}
-                    </Badge>
-                  </div>
-                  <div>
-                    <Label>Niveau cible</Label>
-                    <Badge className="bg-green-100 text-green-800 text-lg px-4 py-2">
-                      {profileData.targetLevel}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Mes objectifs</Label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {profileData.learningGoals.map((goal, index) => (
-                      <Badge key={index} variant="outline">
-                        {goal}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Centres d'intérêt</Label>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {profileData.interests.map((interest, index) => (
-                      <Badge key={index} className="bg-yellow-100 text-yellow-800">
-                        {interest}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
             {/* Learning Progress */}
             <Card>

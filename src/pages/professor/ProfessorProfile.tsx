@@ -182,14 +182,6 @@ export const ProfessorProfile = () => {
                     onChange={(e) => handleProfileChange('email', e.target.value)}
                   />
                 </div>
-                <div>
-                  <Label htmlFor="phone">Téléphone</Label>
-                  <Input
-                    id="phone"
-                    value={profileData.phone}
-                    onChange={(e) => handleProfileChange('phone', e.target.value)}
-                  />
-                </div>
               </div>
 
               <div>
@@ -210,65 +202,6 @@ export const ProfessorProfile = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="professional">
-          <Card>
-            <CardHeader>
-              <CardTitle>Informations Professionnelles</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <Label htmlFor="education">Formation</Label>
-                <Input
-                  id="education"
-                  value={profileData.education}
-                  onChange={(e) => handleProfileChange('education', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="experience">Expérience</Label>
-                <Input
-                  id="experience"
-                  value={profileData.experience}
-                  onChange={(e) => handleProfileChange('experience', e.target.value)}
-                />
-              </div>
-
-              <div>
-                <Label>Spécialités</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {profileData.specialties.map((specialty, index) => (
-                    <Badge key={index} variant="secondary">
-                      {specialty}
-                    </Badge>
-                  ))}
-                </div>
-                <Button variant="outline" size="sm" className="mt-2">
-                  Ajouter une spécialité
-                </Button>
-              </div>
-
-              <div>
-                <Label>Langues parlées</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {profileData.languages.map((language, index) => (
-                    <Badge key={index} variant="outline">
-                      {language}
-                    </Badge>
-                  ))}
-                </div>
-                <Button variant="outline" size="sm" className="mt-2">
-                  Ajouter une langue
-                </Button>
-              </div>
-
-              <Button onClick={handleSaveProfile} className="bg-red-600 hover:bg-red-700">
-                <Save className="w-4 h-4 mr-2" />
-                Sauvegarder les modifications
-              </Button>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         <TabsContent value="security">
           <Card>

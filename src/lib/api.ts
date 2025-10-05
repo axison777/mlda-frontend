@@ -84,14 +84,18 @@ class ApiClient {
   }
 
   async getProfile() {
-    return this.request<any>('/auth/profile');
+    return this.request<any>('/profiles/me');
   }
 
   async updateProfile(updates: { bio?: string; avatarUrl?: string }) {
-    return this.request<any>('/auth/profile', {
+    return this.request<any>('/profiles/me', {
       method: 'PUT',
       body: JSON.stringify(updates),
     });
+  }
+
+  async getUserProfile(id: string) {
+    return this.request<any>(`/profiles/${id}`);
   }
 
   // Course endpoints
