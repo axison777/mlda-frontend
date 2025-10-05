@@ -7,15 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { 
-  MessageCircle, 
-  Send, 
-  Search, 
-  Plus, 
-  MoreHorizontal,
-  Paperclip,
-  Smile
-} from 'lucide-react';
+import { MessageCircle, Send, Search, Plus, MoveHorizontal as MoreHorizontal, Paperclip, Smile } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 
