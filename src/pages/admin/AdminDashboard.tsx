@@ -161,10 +161,10 @@ export const AdminDashboard = () => {
           <CardContent>
             <div className="space-y-4">
               {[
-                { type: 'user', message: 'Nouvel utilisateur inscrit: Marie Dubois', time: 'Il y a 2h' },
-                { type: 'course', message: 'Nouveau cours publié: Allemand Business', time: 'Il y a 4h' },
-                { type: 'payment', message: 'Paiement reçu: 25,000 FCFA', time: 'Il y a 6h' },
-                { type: 'teacher', message: 'Nouveau professeur approuvé: Dr. Weber', time: 'Hier' },
+                { type: 'user', message: 'Nouvel utilisateur inscrit: Aïcha Kouyaté', time: 'Il y a 2h' },
+                { type: 'course', message: 'Nouveau cours publié: Allemand des Affaires', time: 'Il y a 4h' },
+                { type: 'payment', message: 'Paiement reçu: 85,000 FCFA', time: 'Il y a 6h' },
+                { type: 'teacher', message: 'Nouveau professeur approuvé: Fatou Diop', time: 'Hier' },
               ].map((activity, index) => (
                 <div key={index} className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>

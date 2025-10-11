@@ -73,10 +73,10 @@ export const CoursesPage = () => {
             className="text-center"
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Cours de Français
+              Cours d'Allemand
             </h1>
             <p className="text-xl md:text-2xl mb-8">
-              Apprenez le français avec nos professeurs experts
+              Apprenez l'allemand avec nos professeurs experts
             </p>
             <div className="max-w-2xl mx-auto">
               <div className="relative">

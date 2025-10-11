@@ -564,7 +564,7 @@ class MockApiClient {
       {
         id: '1',
         title: 'Nouveau cours disponible !',
-        content: 'Découvrez notre nouveau cours de français avancé.',
+        content: 'Découvrez notre nouveau cours d\'allemand avancé.',
         type: 'info',
         createdAt: '2024-01-15T00:00:00Z'
       },
