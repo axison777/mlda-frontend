@@ -5,7 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Info } from 'lucide-react';
+import { TEST_CREDENTIALS } from '@/lib/testCredentials';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -16,6 +18,12 @@ export const LoginPage = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     login({ email, password });
+  };
+
+  const handleTestLogin = (credentials: typeof TEST_CREDENTIALS.admin) => {
+    setEmail(credentials.email);
+    setPassword(credentials.password);
+    login({ email: credentials.email, password: credentials.password });
   };
 
   return (
@@ -45,6 +53,14 @@ export const LoginPage = () => {
           </Link>
           <p className="text-gray-600 mt-2">Connectez-vous à votre compte</p>
         </div>
+
+        {/* Alert pour les identifiants de test */}
+        <Alert className="mb-6">
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Mode Démonstration :</strong> Utilisez les boutons ci-dessous pour vous connecter avec des comptes de test.
+          </AlertDescription>
+        </Alert>
 
         <Card>
           <CardHeader>
@@ -114,6 +130,40 @@ export const LoginPage = () => {
                 {isLoading ? 'Connexion...' : 'Se connecter'}
               </Button>
             </form>
+
+            {/* Boutons de connexion rapide pour la démonstration */}
+            <div className="mt-6 space-y-3">
+              <div className="text-sm font-medium text-gray-700 text-center">Connexion rapide (Démo)</div>
+              <div className="grid grid-cols-1 gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleTestLogin(TEST_CREDENTIALS.admin)}
+                  className="text-xs"
+                >
+                  👩‍💼 {TEST_CREDENTIALS.admin.name}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleTestLogin(TEST_CREDENTIALS.professor)}
+                  className="text-xs"
+                >
+                  👩‍🏫 {TEST_CREDENTIALS.professor.name}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleTestLogin(TEST_CREDENTIALS.student)}
+                  className="text-xs"
+                >
+                  👩‍🎓 {TEST_CREDENTIALS.student.name}
+                </Button>
+              </div>
+            </div>
 
             <div className="mt-6 text-center">
               <p className="text-sm text-gray-600">

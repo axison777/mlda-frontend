@@ -42,7 +42,7 @@ export const UsersManagement = () => {
   const updateUserMutation = useUpdateUser();
   const deleteUserMutation = useDeleteUser();
 
-  const users = (usersData as any)?.users || [];
+  const users = usersData?.users || [];
 
   const getRoleBadge = (role: string) => {
     const colors = {
@@ -54,7 +54,7 @@ export const UsersManagement = () => {
   };
 
   const getStatusBadge = (status: string) => {
-    return status 
+    return status === 'active'
       ? 'bg-green-100 text-green-800' 
       : 'bg-gray-100 text-gray-800';
   };
@@ -74,10 +74,10 @@ export const UsersManagement = () => {
   };
 
   const handleSuspendUser = async (user: any) => {
-    if (confirm(`Êtes-vous sûr de vouloir ${user.isActive ? 'suspendre' : 'activer'} cet utilisateur ?`)) {
+    if (confirm(`Êtes-vous sûr de vouloir ${user.status === 'active' ? 'suspendre' : 'activer'} cet utilisateur ?`)) {
       await updateUserMutation.mutateAsync({ 
         id: user.id, 
-        updates: { isActive: !user.isActive } 
+        updates: { status: user.status === 'active' ? 'inactive' : 'active' } 
       });
     }
   };
@@ -120,7 +120,7 @@ export const UsersManagement = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-green-600">
-                {users.filter((u: any) => u.role === 'STUDENT').length}
+                {users.filter((u: any) => u.role === 'student').length}
               </p>
               <p className="text-sm text-gray-600">Étudiants</p>
             </div>
@@ -130,7 +130,7 @@ export const UsersManagement = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-blue-600">
-                {users.filter((u: any) => u.role === 'TEACHER').length}
+                {users.filter((u: any) => u.role === 'professor').length}
               </p>
               <p className="text-sm text-gray-600">Professeurs</p>
             </div>
@@ -140,7 +140,7 @@ export const UsersManagement = () => {
           <CardContent className="p-6">
             <div className="text-center">
               <p className="text-3xl font-bold text-yellow-600">
-                {users.filter((u: any) => u.isActive).length}
+                {users.filter((u: any) => u.status === 'active').length}
               </p>
               <p className="text-sm text-gray-600">Actifs ce mois</p>
             </div>
@@ -212,24 +212,24 @@ export const UsersManagement = () => {
                     </TableCell>
                     <TableCell>
                       <Badge className={getRoleBadge(user.role.toLowerCase())}>
-                        {user.role === 'STUDENT' ? 'Étudiant' : 
-                         user.role === 'TEACHER' ? 'Professeur' : 'Admin'}
+                        {user.role === 'student' ? 'Étudiant' : 
+                         user.role === 'professor' ? 'Professeur' : 'Admin'}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge className={getStatusBadge(user.isActive)}>
-                        {user.isActive ? 'Actif' : 'Inactif'}
+                      <Badge className={getStatusBadge(user.status)}>
+                        {user.status === 'active' ? 'Actif' : 'Inactif'}
                       </Badge>
                     </TableCell>
                     <TableCell>{new Date(user.createdAt).toLocaleDateString('fr-FR')}</TableCell>
                     <TableCell>
-                      {user.role === 'TEACHER' ? (
+                      {user.role === 'professor' ? (
                         <span className="text-sm text-gray-600">
-                          {user._count?.courses || 0} cours
+                          {user.coursesCount || 0} cours
                         </span>
                       ) : (
                         <span className="text-sm text-gray-600">
-                          {user._count?.enrollments || 0} inscriptions
+                          {user.enrollmentsCount || 0} inscriptions
                         </span>
                       )}
                     </TableCell>
@@ -255,7 +255,7 @@ export const UsersManagement = () => {
                           </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleSuspendUser(user)}>
                             <Ban className="w-4 h-4 mr-2" />
-                            {user.isActive ? 'Suspendre' : 'Activer'}
+                            {user.status === 'active' ? 'Suspendre' : 'Activer'}
                           </DropdownMenuItem>
                           <DropdownMenuItem 
                             className="text-red-600"

@@ -60,8 +60,8 @@ export const CoursesManagement = () => {
     return colors[status.toLowerCase() as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
 
-  const totalStudents = courses.reduce((sum: number, course: any) => sum + (course._count?.enrollments || 0), 0);
-  const publishedCourses = courses.filter((course: any) => course.status === 'PUBLISHED').length;
+  const totalStudents = courses.reduce((sum: number, course: any) => sum + (course.enrollmentCount || 0), 0);
+  const publishedCourses = courses.filter((course: any) => course.status === 'published').length;
 
   const handleDeleteCourse = async (id: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
@@ -197,19 +197,19 @@ export const CoursesManagement = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {course.teacher?.firstName} {course.teacher?.lastName}
+                      {course.instructorName}
                     </TableCell>
                     <TableCell>
                       <Badge className={getLevelBadge(course.level)}>
                         {course.level}
                       </Badge>
                     </TableCell>
-                    <TableCell>{course._count?.enrollments || 0}</TableCell>
-                    <TableCell>{course.price.toLocaleString()} FCFA</TableCell>
+                    <TableCell>{course.enrollmentCount || 0}</TableCell>
+                    <TableCell>{course.price.toLocaleString()} {course.currency}</TableCell>
                     <TableCell>
                       <Badge className={getStatusBadge(course.status)}>
-                        {course.status === 'PUBLISHED' ? 'Publié' :
-                         course.status === 'DRAFT' ? 'Brouillon' : 'En attente'}
+                        {course.status === 'published' ? 'Publié' :
+                         course.status === 'draft' ? 'Brouillon' : 'En attente'}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
