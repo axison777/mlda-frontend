@@ -116,10 +116,7 @@ export const LandingPage = () => {
           <div className="flex justify-between items-center py-6">
             <Link to="/" className="flex items-center">
               <h1 className="text-2xl font-bold text-black">
-                <span className="text-red-600">M</span>
-                <span className="text-yellow-500">L</span>
-                <span className="text-red-600">D</span>
-                <span className="text-yellow-500">A</span>
+                
               </h1>
               <span className="ml-2 text-gray-600">Cours d'allemand</span>
             </Link>
@@ -488,10 +485,7 @@ export const LandingPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <h3 className="text-2xl font-bold mb-4">
-                <span className="text-red-600">M</span>
-                <span className="text-yellow-500">L</span>
-                <span className="text-red-600">D</span>
-                <span className="text-yellow-500">A</span>
+                
               </h3>
               <p className="text-gray-400">
                 La plateforme de référence pour apprendre l'allemand en ligne.
@@ -523,7 +517,7 @@ export const LandingPage = () => {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 MLDA. Tous droits réservés.</p>
+            <p>&copy; 2024 MDLA. Tous droits réservés.</p>
           </div>
         </div>
       </footer>
