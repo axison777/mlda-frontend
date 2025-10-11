@@ -12,6 +12,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { PublicNavbar } from '@/components/layout/PublicNavbar';
+import { PublicFooter } from '@/components/layout/PublicFooter';
+import { PurchaseModal } from '@/components/PurchaseModal';
+import { ProductDetailsModal } from '@/components/ProductDetailsModal';
 
 const mockProducts = [
   {
@@ -65,6 +69,9 @@ const mockProducts = [
 export const ShopPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const filteredProducts = mockProducts.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -75,36 +82,7 @@ export const ShopPage = () => {
 
   return (
     <div className="min-h-screen bg-white w-full">
-      {/* Header */}
-      <header className="border-b border-gray-200 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <Link to="/" className="flex items-center">
-              <h1 className="text-2xl font-bold text-black">
-                <span className="text-red-600">M</span>
-                <span className="text-yellow-500">L</span>
-                <span className="text-red-600">D</span>
-                <span className="text-yellow-500">A</span>
-              </h1>
-              <span className="ml-2 text-gray-600">Cours d'allemand</span>
-            </Link>
-            <nav className="hidden md:flex space-x-8">
-              <Link to="/" className="text-gray-600 hover:text-gray-900">Accueil</Link>
-              <Link to="/courses" className="text-gray-600 hover:text-gray-900">Cours</Link>
-              <Link to="/shop" className="text-red-600 font-medium">Boutique</Link>
-              <Link to="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
-            </nav>
-            <div className="flex space-x-4">
-              <Link to="/login">
-                <Button variant="outline">Connexion</Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-red-600 hover:bg-red-700">S'inscrire</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PublicNavbar />
 
       <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
         <motion.div
@@ -222,6 +200,10 @@ export const ShopPage = () => {
                           variant="outline" 
                           size="sm"
                           className="flex-1"
+                          onClick={() => {
+                            setSelectedProduct(product);
+                            setShowDetailsModal(true);
+                          }}
                         >
                           <Eye className="w-4 h-4 mr-2" />
                           Voir
@@ -230,6 +212,12 @@ export const ShopPage = () => {
                           size="sm"
                           className="flex-1 bg-red-600 hover:bg-red-700"
                           disabled={!product.inStock}
+                          onClick={() => {
+                            if (product.inStock) {
+                              setSelectedProduct(product);
+                              setShowPurchaseModal(true);
+                            }
+                          }}
                         >
                           <ShoppingCart className="w-4 h-4 mr-2" />
                           {product.inStock ? 'Acheter' : 'Indisponible'}
@@ -251,6 +239,22 @@ export const ShopPage = () => {
           </div>
         )}
       </div>
+
+      <PublicFooter />
+
+      {/* Modals */}
+      <ProductDetailsModal
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        product={selectedProduct}
+        onBuy={() => setShowPurchaseModal(true)}
+      />
+      <PurchaseModal
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+        item={selectedProduct}
+        type="product"
+      />
     </div>
   );
 };

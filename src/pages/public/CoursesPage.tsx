@@ -13,11 +13,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useCourses } from '@/hooks/useCourses';
+import { PublicNavbar } from '@/components/layout/PublicNavbar';
+import { PublicFooter } from '@/components/layout/PublicFooter';
+import { CourseDetailsModal } from '@/components/CourseDetailsModal';
+import { PurchaseModal } from '@/components/PurchaseModal';
 
 export const CoursesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLevel, setFilterLevel] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
+  const [selectedCourse, setSelectedCourse] = useState<any>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
 
   const { data: coursesData, isLoading } = useCourses({
     search: searchTerm,
@@ -64,6 +71,8 @@ export const CoursesPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <PublicNavbar />
+      
       {/* Header */}
       <div className="bg-gradient-to-r from-red-600 to-yellow-500 text-white py-16">
         <div className="container mx-auto px-4">
@@ -204,12 +213,23 @@ export const CoursesPage = () => {
                     </div>
                     
                     <div className="flex gap-2">
-                      <Button asChild className="flex-1 bg-red-600 hover:bg-red-700">
-                        <Link to={`/courses/${course.id}`}>
-                          Voir le cours
-                        </Link>
+                      <Button 
+                        onClick={() => {
+                          setSelectedCourse(course);
+                          setShowDetailsModal(true);
+                        }}
+                        className="flex-1 bg-red-600 hover:bg-red-700"
+                      >
+                        Voir le cours
                       </Button>
-                      <Button variant="outline" className="px-4">
+                      <Button 
+                        variant="outline" 
+                        className="px-4"
+                        onClick={() => {
+                          setSelectedCourse(course);
+                          setShowPurchaseModal(true);
+                        }}
+                      >
                         <Star className="w-4 h-4" />
                       </Button>
                     </div>
@@ -232,6 +252,22 @@ export const CoursesPage = () => {
           </div>
         )}
       </div>
+
+      <PublicFooter />
+
+      {/* Modals */}
+      <CourseDetailsModal
+        isOpen={showDetailsModal}
+        onClose={() => setShowDetailsModal(false)}
+        course={selectedCourse}
+        onBuy={() => setShowPurchaseModal(true)}
+      />
+      <PurchaseModal
+        isOpen={showPurchaseModal}
+        onClose={() => setShowPurchaseModal(false)}
+        item={selectedCourse}
+        type="course"
+      />
     </div>
   );
 };

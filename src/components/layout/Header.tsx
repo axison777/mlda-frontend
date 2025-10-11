@@ -26,6 +26,14 @@ export const Header = () => {
             {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
           
+          <div className="flex items-center space-x-4">
+            <img 
+              src="/assets/images/logo.png" 
+              alt="MLDA Logo" 
+              className="h-10 w-auto"
+            />
+          </div>
+          
           <div className="hidden md:flex items-center space-x-4">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
