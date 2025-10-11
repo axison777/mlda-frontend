@@ -63,7 +63,11 @@ export const Sidebar = () => {
       className="fixed left-0 top-0 h-full w-64 bg-black text-white z-40"
     >
       <div className="p-6 border-b border-gray-800">
-        <h1 className="text-2xl font-bold text-yellow-400">MLDA</h1>
+        <img 
+          src="/assets/images/logo.png" 
+          alt="MLDA Logo" 
+          className="h-12 w-auto mb-2"
+        />
         <p className="text-sm text-gray-400">Cours d'allemand</p>
       </div>
 

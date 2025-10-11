@@ -44,12 +44,11 @@ export const LoginPage = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
-            <h1 className="text-4xl font-bold">
-              <span className="text-red-600">M</span>
-              <span className="text-yellow-500">L</span>
-              <span className="text-red-600">D</span>
-              <span className="text-yellow-500">A</span>
-            </h1>
+            <img 
+              src="/assets/images/logo.png" 
+              alt="MLDA Logo" 
+              className="h-20 w-auto mx-auto"
+            />
           </Link>
           <p className="text-gray-600 mt-2">Connectez-vous à votre compte</p>
         </div>
@@ -124,7 +123,7 @@ export const LoginPage = () => {
 
               <Button
                 type="submit"
-                className="w-full bg-red-600 hover:bg-red-700"
+                className="w-full bg-yellow-500 hover:bg-yellow-600"
                 disabled={isLoading}
               >
                 {isLoading ? 'Connexion...' : 'Se connecter'}

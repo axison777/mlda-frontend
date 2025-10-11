@@ -8,6 +8,8 @@ import { Label } from '@/components/ui/label';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { PublicNavbar } from '@/components/layout/PublicNavbar';
+import { PublicFooter } from '@/components/layout/PublicFooter';
 
 export const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -35,36 +37,7 @@ export const ContactPage = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
-      <header className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <Link to="/" className="flex items-center">
-              <h1 className="text-2xl font-bold text-black">
-                <span className="text-red-600">M</span>
-                <span className="text-yellow-500">L</span>
-                <span className="text-red-600">D</span>
-                <span className="text-yellow-500">A</span>
-              </h1>
-              <span className="ml-2 text-gray-600">Cours d'allemand</span>
-            </Link>
-            <nav className="hidden md:flex space-x-8">
-              <Link to="/" className="text-gray-600 hover:text-gray-900">Accueil</Link>
-              <Link to="/courses" className="text-gray-600 hover:text-gray-900">Cours</Link>
-              <Link to="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
-              <Link to="/contact" className="text-red-600 font-medium">Contact</Link>
-            </nav>
-            <div className="flex space-x-4">
-              <Link to="/login">
-                <Button variant="outline">Connexion</Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-red-600 hover:bg-red-700">S'inscrire</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PublicNavbar />
 
       <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
         <motion.div
@@ -184,8 +157,21 @@ export const ContactPage = () => {
                   </div>
                   <div>
                     <p className="font-medium">Adresse</p>
-                    <p className="text-gray-600">123 Rue de l'Éducation<br />75001 Paris, France</p>
+                    <p className="text-gray-600">Ouagadougou<br />Burkina Faso</p>
                   </div>
+                </div>
+
+                {/* Google Maps */}
+                <div className="mt-6 rounded-lg overflow-hidden h-64">
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.4398739799447!2d-1.4287669!3d12.3900518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDIzJzI0LjIiTiAxwrAyNSczNC4zIlc!5e0!3m2!1sfr!2sbf!4v1234567890"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
                 </div>
 
                 <div className="flex items-center space-x-4">
@@ -228,6 +214,8 @@ export const ContactPage = () => {
           </motion.div>
         </div>
       </div>
+
+      <PublicFooter />
     </div>
   );
 };

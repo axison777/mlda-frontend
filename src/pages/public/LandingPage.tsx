@@ -18,6 +18,9 @@ import {
   Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { PublicNavbar } from '@/components/layout/PublicNavbar';
+import { PublicFooter } from '@/components/layout/PublicFooter';
+import { HeroCarousel } from '@/components/HeroCarousel';
 
 const features = [
   {
@@ -110,96 +113,10 @@ const whyChooseUs = [
 export const LandingPage = () => {
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="border-b border-gray-200 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <Link to="/" className="flex items-center">
-              <h1 className="text-2xl font-bold text-black">
-                
-              </h1>
-              <span className="ml-2 text-gray-600">Cours d'allemand</span>
-            </Link>
-            <nav className="hidden md:flex space-x-8">
-              <Link to="/" className="text-red-600 font-medium">Accueil</Link>
-              <Link to="/courses" className="text-gray-600 hover:text-gray-900">Cours</Link>
-              <Link to="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
-              <Link to="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
-            </nav>
-            <div className="flex space-x-4">
-              <Link to="/login">
-                <Button variant="outline">Connexion</Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-red-600 hover:bg-red-700">S'inscrire</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PublicNavbar />
 
-      {/* Hero Section */}
-      <section className="bg-gradient-to-r from-red-50 to-yellow-50 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h1 className="text-5xl font-bold text-gray-900 mb-6">
-                Apprenez l'<span className="text-red-600">Allemand</span> avec les 
-                <span className="text-yellow-500"> Meilleurs</span> Professeurs
-              </h1>
-              <p className="text-xl text-gray-600 mb-8">
-                Maîtrisez l'allemand grâce à nos cours interactifs, nos professeurs natifs 
-                et notre méthode d'apprentissage innovante. De A1 à C2, nous vous accompagnons 
-                dans votre parcours.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/courses">
-                  <Button size="lg" className="bg-red-600 hover:bg-red-700">
-                    <BookOpen className="w-5 h-5 mr-2" />
-                    Voir les Cours
-                  </Button>
-                </Link>
-                <Link to="/signup">
-                  <Button size="lg" variant="outline">
-                    Commencer Gratuitement
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </Link>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative"
-            >
-              <div className="relative">
-                <img
-                  src="https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg"
-                  alt="Apprentissage de l'allemand"
-                  className="rounded-2xl shadow-2xl"
-                />
-                <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                      <CheckCircle className="w-6 h-6 text-green-600" />
-                    </div>
-                    <div>
-                      <p className="font-semibold">+10,000 étudiants</p>
-                      <p className="text-sm text-gray-600">nous font confiance</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Carousel */}
+      <HeroCarousel />
 
       {/* Stats Section */}
       <section className="py-16 bg-gray-50 w-full">
@@ -479,48 +396,7 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-black text-white py-12 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-2xl font-bold mb-4">
-                
-              </h3>
-              <p className="text-gray-400">
-                La plateforme de référence pour apprendre l'allemand en ligne.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Cours</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/courses" className="hover:text-white">Allemand débutant</Link></li>
-                <li><Link to="/courses" className="hover:text-white">Allemand business</Link></li>
-                <li><Link to="/courses" className="hover:text-white">Préparation examens</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link to="/contact" className="hover:text-white">Contact</Link></li>
-                <li><Link to="/contact" className="hover:text-white">FAQ</Link></li>
-                <li><Link to="/contact" className="hover:text-white">Aide</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Légal</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Conditions d'utilisation</a></li>
-                <li><a href="#" className="hover:text-white">Politique de confidentialité</a></li>
-                <li><a href="#" className="hover:text-white">Mentions légales</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 MDLA. Tous droits réservés.</p>
-          </div>
-        </div>
-      </footer>
+      <PublicFooter />
     </div>
   );
 };
