@@ -1,0 +1,386 @@
+#!/usr/bin/env node
+
+/**
+ * Script pour restaurer le mode production
+ * Ce script restaure le fichier api.ts original et supprime les fichiers de démonstration
+ */
+
+const fs = require('fs');
+const path = require('path');
+
+console.log('🔄 Restauration du mode production...\n');
+
+// Contenu original du fichier api.ts
+const originalApiContent = `const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
+class ApiClient {
+  private baseURL: string;
+  private token: string | null = null;
+
+  constructor(baseURL: string) {
+    this.baseURL = baseURL;
+    // Initialize token from localStorage
+    this.initializeToken();
+  }
+
+  private initializeToken() {
+    try {
+      const authData = localStorage.getItem('mlda-auth');
+      if (authData) {
+        const parsed = JSON.parse(authData);
+        this.token = parsed.state?.token || null;
+      }
+    } catch (error) {
+      console.error('Error parsing auth data:', error);
+      this.token = null;
+    }
+  }
+
+  setToken(token: string) {
+    this.token = token;
+  }
+
+  private async request<T>(
+    endpoint: string, 
+    options: RequestInit = {}
+  ): Promise<T> {
+    const url = \`\${this.baseURL}\${endpoint}\`;
+    
+    const config: RequestInit = {
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.token && { Authorization: \`Bearer \${this.token}\` }),
+        ...options.headers,
+      },
+      ...options,
+    };
+
+    try {
+      const response = await fetch(url, config);
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || \`HTTP error! status: \${response.status}\`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('API request failed:', error);
+      throw error;
+    }
+  }
+
+  // Auth endpoints
+  async login(email: string, password: string) {
+    return this.request<{ user: any; token: string; message: string }>('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+    });
+  }
+
+  async register(userData: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+  }) {
+    return this.request<{ user: any; token: string; message: string }>('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  }
+
+  async logout() {
+    return this.request<{ message: string }>('/auth/logout', {
+      method: 'POST',
+    });
+  }
+
+  async getProfile() {
+    return this.request<any>('/profiles/me');
+  }
+
+  async updateProfile(updates: { bio?: string; avatarUrl?: string }) {
+    return this.request<any>('/profiles/me', {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async getUserProfile(id: string) {
+    return this.request<any>(\`/profiles/\${id}\`);
+  }
+
+  // Course endpoints
+  async getCourses(params?: {
+    page?: number;
+    limit?: number;
+    level?: string;
+    status?: string;
+    featured?: boolean;
+    search?: string;
+  }) {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          searchParams.append(key, value.toString());
+        }
+      });
+    }
+    
+    const query = searchParams.toString();
+    return this.request<{ courses: any[]; pagination: any }>(\`/courses\${query ? \`?\${query}\` : ''}\`);
+  }
+
+  async getCourseById(id: string) {
+    return this.request<any>(\`/courses/\${id}\`);
+  }
+
+  async createCourse(courseData: any) {
+    return this.request<any>('/courses', {
+      method: 'POST',
+      body: JSON.stringify(courseData),
+    });
+  }
+
+  async updateCourse(id: string, updates: any) {
+    return this.request<any>(\`/courses/\${id}\`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async deleteCourse(id: string) {
+    return this.request<any>(\`/courses/\${id}\`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Lesson endpoints
+  async getLessonsByCourse(courseId: string) {
+    return this.request<any[]>(\`/lessons/course/\${courseId}\`);
+  }
+
+  async getLessonById(id: string) {
+    return this.request<any>(\`/lessons/\${id}\`);
+  }
+
+  async createLesson(lessonData: any) {
+    return this.request<any>('/lessons', {
+      method: 'POST',
+      body: JSON.stringify(lessonData),
+    });
+  }
+
+  async updateLesson(id: string, updates: any) {
+    return this.request<any>(\`/lessons/\${id}\`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async deleteLesson(id: string) {
+    return this.request<any>(\`/lessons/\${id}\`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Enrollment endpoints
+  async enrollInCourse(courseId: string) {
+    return this.request<any>('/enrollments', {
+      method: 'POST',
+      body: JSON.stringify({ courseId }),
+    });
+  }
+
+  async getUserEnrollments() {
+    return this.request<any>('/enrollments/my-courses');
+  }
+
+  // Progress endpoints
+  async updateLessonProgress(lessonId: string, data: { completed: boolean; timeSpent?: number }) {
+    return this.request<{ progress: any; message: string }>(\`/progress/lesson/\${lessonId}\`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async getCourseProgress(courseId: string) {
+    return this.request<{ progress: any[] }>(\`/progress/course/\${courseId}\`);
+  }
+
+  // Quiz endpoints
+  async getQuizById(id: string) {
+    return this.request<{ quiz: any }>(\`/quiz/\${id}\`);
+  }
+
+  async submitQuizAttempt(quizId: string, data: { answers: string[]; timeSpent: number }) {
+    return this.request<{ result: any; message: string }>(\`/quiz/\${quizId}/attempt\`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  // Stats endpoints
+  async getAdminStats() {
+    return this.request<{ stats: any }>('/stats/admin');
+  }
+
+  async getTeacherStats() {
+    return this.request<{ stats: any }>('/stats/teacher');
+  }
+
+  async getStudentStats() {
+    return this.request<{ stats: any }>('/stats/student');
+  }
+
+  // User management (Admin)
+  async getUsers(params?: {
+    page?: number;
+    limit?: number;
+    role?: string;
+    status?: string;
+    search?: string;
+  }) {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          searchParams.append(key, value.toString());
+        }
+      });
+    }
+    
+    const query = searchParams.toString();
+    return this.request<{ users: any[]; pagination: any }>(\`/users\${query ? \`?\${query}\` : ''}\`);
+  }
+
+  async getUserById(id: string) {
+    return this.request<{ user: any }>(\`/users/\${id}\`);
+  }
+
+  async updateUser(id: string, updates: any) {
+    return this.request<{ user: any; message: string }>(\`/users/\${id}\`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async deleteUser(id: string) {
+    return this.request<{ message: string }>(\`/users/\${id}\`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Product endpoints
+  async getProducts(params?: {
+    page?: number;
+    limit?: number;
+    category?: string;
+    search?: string;
+    active?: boolean;
+  }) {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) {
+          searchParams.append(key, value.toString());
+        }
+      });
+    }
+    
+    const query = searchParams.toString();
+    return this.request<{ products: any[]; pagination: any }>(\`/products\${query ? \`?\${query}\` : ''}\`);
+  }
+
+  async getProductById(id: string) {
+    return this.request<{ product: any }>(\`/products/\${id}\`);
+  }
+
+  async createProduct(productData: any) {
+    return this.request<{ product: any; message: string }>('/products', {
+      method: 'POST',
+      body: JSON.stringify(productData),
+    });
+  }
+
+  async updateProduct(id: string, updates: any) {
+    return this.request<{ product: any; message: string }>(\`/products/\${id}\`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async deleteProduct(id: string) {
+    return this.request<{ message: string }>(\`/products/\${id}\`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Announcements endpoints
+  async getAnnouncements() {
+    return this.request<{ announcements: any[] }>('/announcements');
+  }
+
+  async createAnnouncement(data: any) {
+    return this.request<{ announcement: any; message: string }>('/announcements', {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+  }
+
+  async updateAnnouncement(id: string, updates: any) {
+    return this.request<{ announcement: any; message: string }>(\`/announcements/\${id}\`, {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    });
+  }
+
+  async deleteAnnouncement(id: string) {
+    return this.request<{ message: string }>(\`/announcements/\${id}\`, {
+      method: 'DELETE',
+    });
+  }
+}
+
+export const apiClient = new ApiClient(API_BASE_URL);`;
+
+try {
+  // Restaurer le fichier api.ts original
+  fs.writeFileSync(path.join(__dirname, 'src/lib/api.ts'), originalApiContent);
+  console.log('✅ Fichier api.ts restauré');
+
+  // Supprimer les fichiers de démonstration
+  const filesToRemove = [
+    'src/lib/mockApi.ts',
+    'src/lib/mockData.ts',
+    'src/lib/testCredentials.ts',
+    'src/components/DemoBanner.tsx',
+    'test-demo.js',
+    'DEMO_README.md'
+  ];
+
+  filesToRemove.forEach(file => {
+    const filePath = path.join(__dirname, file);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      console.log(\`✅ Fichier \${file} supprimé\`);
+    }
+  });
+
+  // Restaurer les pages d'authentification
+  console.log('\\n⚠️  Note: Vous devrez restaurer manuellement les pages d\'authentification');
+  console.log('   - Supprimez les boutons de connexion rapide de LoginPage.tsx');
+  console.log('   - Supprimez les alertes de démonstration de SignupPage.tsx');
+  console.log('   - Supprimez le DemoBanner du AppLayout.tsx');
+
+  console.log('\\n🎉 Restauration terminée ! La plateforme est maintenant en mode production.');
+  console.log('\\n📋 Prochaines étapes:');
+  console.log('   1. Démarrer votre serveur backend');
+  console.log('   2. Configurer les variables d\'environnement');
+  console.log('   3. Tester la connexion avec le vrai backend');
+
+} catch (error) {
+  console.error('❌ Erreur lors de la restauration:', error.message);
+}

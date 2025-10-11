@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/hooks/useAuth';
-import { Eye, EyeOff, User, GraduationCap } from 'lucide-react';
+import { Eye, EyeOff, User, GraduationCap, Info } from 'lucide-react';
 import { toast } from 'sonner';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 export const SignupPage = () => {
   const [formData, setFormData] = useState({
@@ -66,6 +67,14 @@ export const SignupPage = () => {
           </Link>
           <p className="text-gray-600 mt-2">Créez votre compte</p>
         </div>
+
+        {/* Alert pour les identifiants de test */}
+        <Alert className="mb-6">
+          <Info className="h-4 w-4" />
+          <AlertDescription>
+            <strong>Mode Démonstration :</strong> Pour tester rapidement, utilisez les comptes de démonstration sur la page de connexion.
+          </AlertDescription>
+        </Alert>
 
         <Card>
           <CardHeader>

@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import { DemoBanner } from '../DemoBanner';
 
 export const AppLayout = () => {
   return (
@@ -9,6 +10,7 @@ export const AppLayout = () => {
       <div className="flex-1 flex flex-col ml-64">
         <Header />
         <main className="flex-1 p-6 overflow-auto">
+          <DemoBanner />
           <Outlet />
         </main>
       </div>
