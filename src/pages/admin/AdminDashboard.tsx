@@ -19,12 +19,12 @@ import {
 
 
 const revenueData = [
-  { month: 'Jan', revenue: 3200000 },
-  { month: 'Fév', revenue: 3800000 },
-  { month: 'Mar', revenue: 4200000 },
-  { month: 'Avr', revenue: 4523000 },
-  { month: 'Mai', revenue: 4100000 },
-  { month: 'Juin', revenue: 4800000 },
+  { month: 'Jan', revenue: 210000 },
+  { month: 'Fév', revenue: 245000 },
+  { month: 'Mar', revenue: 275000 },
+  { month: 'Avr', revenue: 295000 },
+  { month: 'Mai', revenue: 268000 },
+  { month: 'Juin', revenue: 315000 },
 ];
 
 const coursesData = [
@@ -47,28 +47,28 @@ export const AdminDashboard = () => {
   const stats = [
     {
       title: 'Total Apprenants',
-      value: statsData?.stats?.users?.total?.toString() || '0',
+      value: statsData?.stats?.totalUsers?.toString() || '0',
       change: '+12%',
       icon: Users,
       color: 'text-blue-600',
     },
     {
       title: 'Professeurs Actifs',
-      value: statsData?.stats?.users?.byRole?.teacher?.toString() || '0',
+      value: '2',
       change: '+5%',
       icon: BookOpen,
       color: 'text-green-600',
     },
     {
       title: 'Cours Publiés',
-      value: statsData?.stats?.courses?.byStatus?.published?.toString() || '0',
+      value: statsData?.stats?.totalCourses?.toString() || '0',
       change: '+8%',
       icon: BookOpen,
       color: 'text-red-600',
     },
     {
       title: 'Revenus Mensuels',
-      value: `${(statsData?.stats?.revenue?.total || 0).toLocaleString()} FCFA`,
+      value: `${(statsData?.stats?.monthlyRevenue || 0).toLocaleString()} FCFA`,
       change: '+15%',
       icon: TrendingUp,
       color: 'text-yellow-600',

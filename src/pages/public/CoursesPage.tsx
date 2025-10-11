@@ -12,268 +12,223 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-const mockCourses = [
-  {
-    id: '1',
-    title: 'Allemand pour débutants',
-    description: 'Apprenez les bases de la langue allemande avec des méthodes interactives',
-    level: 'A1',
-    price: 25000,
-    instructor: 'Dr. Hans Mueller',
-    duration: '8 semaines',
-    students: 245,
-    rating: 4.8,
-    reviews: 89,
-    image: 'https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg',
-    category: 'Général',
-    lessons: 24,
-  },
-  {
-    id: '2',
-    title: 'Allemand des affaires',
-    description: 'Perfectionnez votre allemand professionnel pour le monde du travail',
-    level: 'B2',
-    price: 45000,
-    instructor: 'Prof. Anna Schmidt',
-    duration: '12 semaines',
-    students: 156,
-    rating: 4.9,
-    reviews: 67,
-    image: 'https://images.pexels.com/photos/416405/pexels-photo-416405.jpeg',
-    category: 'Business',
-    lessons: 36,
-  },
-  {
-    id: '3',
-    title: 'Grammaire allemande avancée',
-    description: 'Maîtrisez les subtilités de la grammaire allemande',
-    level: 'C1',
-    price: 35000,
-    instructor: 'Dr. Klaus Weber',
-    duration: '10 semaines',
-    students: 98,
-    rating: 4.7,
-    reviews: 45,
-    image: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg',
-    category: 'Grammaire',
-    lessons: 30,
-  },
-  {
-    id: '4',
-    title: 'Conversation allemande',
-    description: 'Améliorez votre expression orale avec des sessions pratiques',
-    level: 'B1',
-    price: 30000,
-    instructor: 'Mme. Lisa Weber',
-    duration: '6 semaines',
-    students: 189,
-    rating: 4.6,
-    reviews: 78,
-    image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg',
-    category: 'Conversation',
-    lessons: 18,
-  },
-];
+import { useCourses } from '@/hooks/useCourses';
 
 export const CoursesPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterLevel, setFilterLevel] = useState('all');
   const [filterCategory, setFilterCategory] = useState('all');
 
-  const filteredCourses = mockCourses.filter(course => {
-    const matchesSearch = course.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         course.instructor.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesLevel = filterLevel === 'all' || course.level === filterLevel;
-    const matchesCategory = filterCategory === 'all' || course.category === filterCategory;
-    return matchesSearch && matchesLevel && matchesCategory;
+  const { data: coursesData, isLoading } = useCourses({
+    search: searchTerm,
+    level: filterLevel !== 'all' ? filterLevel : undefined,
   });
+
+  const courses = coursesData?.courses || [];
 
   const getLevelBadge = (level: string) => {
     const colors = {
-      'A1': 'bg-green-100 text-green-800',
-      'A2': 'bg-green-100 text-green-800',
-      'B1': 'bg-yellow-100 text-yellow-800',
-      'B2': 'bg-yellow-100 text-yellow-800',
-      'C1': 'bg-red-100 text-red-800',
-      'C2': 'bg-red-100 text-red-800',
+      'beginner': 'bg-green-100 text-green-800',
+      'intermediate': 'bg-yellow-100 text-yellow-800',
+      'advanced': 'bg-red-100 text-red-800',
     };
     return colors[level as keyof typeof colors] || 'bg-gray-100 text-gray-800';
   };
 
+  const getLevelLabel = (level: string) => {
+    const labels = {
+      'beginner': 'Débutant',
+      'intermediate': 'Intermédiaire',
+      'advanced': 'Avancé',
+    };
+    return labels[level as keyof typeof labels] || level;
+  };
+
+  const getCategoryBadge = (category: string) => {
+    const colors = {
+      'Langue': 'bg-blue-100 text-blue-800',
+      'Professionnel': 'bg-purple-100 text-purple-800',
+      'Business': 'bg-orange-100 text-orange-800',
+    };
+    return colors[category as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+  };
+
+  const formatDuration = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    if (hours > 0) {
+      return `${hours}h${mins > 0 ? ` ${mins}min` : ''}`;
+    }
+    return `${mins}min`;
+  };
+
   return (
-    <div className="min-h-screen bg-white w-full">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="border-b border-gray-200 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <Link to="/" className="flex items-center">
-              <h1 className="text-2xl font-bold text-black">
-                <span className="text-red-600">M</span>
-                <span className="text-yellow-500">L</span>
-                <span className="text-red-600">D</span>
-                <span className="text-yellow-500">A</span>
-              </h1>
-              <span className="ml-2 text-gray-600">Cours d'allemand</span>
-            </Link>
-            <nav className="hidden md:flex space-x-8">
-              <Link to="/" className="text-gray-600 hover:text-gray-900">Accueil</Link>
-              <Link to="/courses" className="text-red-600 font-medium">Cours</Link>
-              <Link to="/shop" className="text-gray-600 hover:text-gray-900">Boutique</Link>
-              <Link to="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link>
-            </nav>
-            <div className="flex space-x-4">
-              <Link to="/login">
-                <Button variant="outline">Connexion</Button>
-              </Link>
-              <Link to="/signup">
-                <Button className="bg-red-600 hover:bg-red-700">S'inscrire</Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Nos Cours d'Allemand</h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Découvrez notre catalogue complet de cours d'allemand, du niveau débutant au niveau avancé
-          </p>
-        </motion.div>
-
-        {/* Filters */}
-        <Card className="mb-8">
-          <CardContent className="p-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <div className="bg-gradient-to-r from-red-600 to-yellow-500 text-white py-16">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+              Cours de Français
+            </h1>
+            <p className="text-xl md:text-2xl mb-8">
+              Apprenez le français avec nos professeurs experts
+            </p>
+            <div className="max-w-2xl mx-auto">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <Input
-                  placeholder="Rechercher un cours..."
+                  placeholder="Rechercher un cours ou un professeur..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
+                  className="pl-10 py-3 text-lg"
                 />
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    <Filter className="w-4 h-4 mr-2" />
-                    Niveau: {filterLevel === 'all' ? 'Tous' : filterLevel}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => setFilterLevel('all')}>
-                    Tous les niveaux
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterLevel('A1')}>A1 - Débutant</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterLevel('A2')}>A2 - Élémentaire</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterLevel('B1')}>B1 - Intermédiaire</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterLevel('B2')}>B2 - Intermédiaire supérieur</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterLevel('C1')}>C1 - Avancé</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterLevel('C2')}>C2 - Maîtrise</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline">
-                    <Filter className="w-4 h-4 mr-2" />
-                    Catégorie: {filterCategory === 'all' ? 'Toutes' : filterCategory}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem onClick={() => setFilterCategory('all')}>
-                    Toutes les catégories
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterCategory('Général')}>Général</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterCategory('Business')}>Business</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterCategory('Grammaire')}>Grammaire</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setFilterCategory('Conversation')}>Conversation</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
             </div>
-          </CardContent>
-        </Card>
+          </motion.div>
+        </div>
+      </div>
 
-        {/* Courses Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredCourses.map((course, index) => (
-            <motion.div
-              key={course.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-            >
-              <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300">
-                <div className="aspect-video bg-gray-200 relative overflow-hidden">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <Badge className={getLevelBadge(course.level)}>
-                      {course.level}
-                    </Badge>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <Badge variant="outline" className="bg-white/90">
-                      {course.category}
-                    </Badge>
-                  </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <h3 className="font-semibold text-lg mb-2 line-clamp-2">{course.title}</h3>
-                  <p className="text-gray-600 text-sm mb-3 line-clamp-2">{course.description}</p>
-                  <p className="text-sm text-gray-600 mb-4">Par {course.instructor}</p>
-                  
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                    <div className="flex items-center">
-                      <Clock className="w-4 h-4 mr-1" />
-                      {course.duration}
-                    </div>
-                    <div className="flex items-center">
-                      <BookOpen className="w-4 h-4 mr-1" />
-                      {course.lessons} leçons
-                    </div>
-                  </div>
+      {/* Filters */}
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-wrap gap-4 mb-8">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                Niveau: {filterLevel === 'all' ? 'Tous' : getLevelLabel(filterLevel)}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setFilterLevel('all')}>
+                Tous les niveaux
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFilterLevel('beginner')}>
+                Débutant
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFilterLevel('intermediate')}>
+                Intermédiaire
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFilterLevel('advanced')}>
+                Avancé
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 mr-1 text-yellow-400" />
-                      <span className="text-sm font-medium">{course.rating}</span>
-                      <span className="text-sm text-gray-600 ml-1">({course.reviews})</span>
-                    </div>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Users className="w-4 h-4 mr-1" />
-                      {course.students}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <span className="text-2xl font-bold text-red-600">{course.price.toLocaleString()} FCFA</span>
-                    <Link to="/signup">
-                      <Button className="bg-red-600 hover:bg-red-700">
-                        S'inscrire
-                      </Button>
-                    </Link>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Filter className="w-4 h-4" />
+                Catégorie: {filterCategory === 'all' ? 'Toutes' : filterCategory}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem onClick={() => setFilterCategory('all')}>
+                Toutes les catégories
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFilterCategory('Langue')}>
+                Langue
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setFilterCategory('Professionnel')}>
+                Professionnel
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
-        {filteredCourses.length === 0 && (
+        {/* Courses Grid */}
+        {isLoading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {courses.map((course: any, index: number) => (
+              <motion.div
+                key={course.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+                  <div className="relative">
+                    <img
+                      src={course.thumbnailUrl || 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=250&fit=crop'}
+                      alt={course.title}
+                      className="w-full h-48 object-cover rounded-t-lg"
+                    />
+                    <div className="absolute top-4 left-4">
+                      <Badge className={getLevelBadge(course.level)}>
+                        {getLevelLabel(course.level)}
+                      </Badge>
+                    </div>
+                    <div className="absolute top-4 right-4">
+                      <Badge className={getCategoryBadge(course.category)}>
+                        {course.category}
+                      </Badge>
+                    </div>
+                  </div>
+                  
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-bold mb-2 line-clamp-2">
+                      {course.title}
+                    </h3>
+                    <p className="text-gray-600 mb-4 line-clamp-3">
+                      {course.description}
+                    </p>
+                    
+                    <div className="flex items-center text-sm text-gray-500 mb-4">
+                      <BookOpen className="w-4 h-4 mr-1" />
+                      <span className="mr-4">{course.instructorName}</span>
+                      <Clock className="w-4 h-4 mr-1" />
+                      <span className="mr-4">{formatDuration(course.duration)}</span>
+                      <Users className="w-4 h-4 mr-1" />
+                      <span>{course.enrollmentCount} étudiants</span>
+                    </div>
+                    
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="ml-1 font-semibold">{course.rating}</span>
+                        <span className="text-gray-500 ml-1">({course.reviewCount})</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-red-600">
+                          {course.price.toLocaleString()} {course.currency}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-2">
+                      <Button asChild className="flex-1 bg-red-600 hover:bg-red-700">
+                        <Link to={`/courses/${course.id}`}>
+                          Voir le cours
+                        </Link>
+                      </Button>
+                      <Button variant="outline" className="px-4">
+                        <Star className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        )}
+
+        {courses.length === 0 && !isLoading && (
           <div className="text-center py-12">
             <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-900 mb-2">Aucun cours trouvé</h3>
-            <p className="text-gray-600">Essayez de modifier vos critères de recherche</p>
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+              Aucun cours trouvé
+            </h3>
+            <p className="text-gray-500">
+              Essayez de modifier vos critères de recherche
+            </p>
           </div>
         )}
       </div>

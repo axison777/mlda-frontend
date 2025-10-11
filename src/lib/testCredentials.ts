@@ -3,17 +3,20 @@ export const TEST_CREDENTIALS = {
   admin: {
     email: 'admin@mlda.com',
     password: 'password123',
-    role: 'admin' as const
+    role: 'admin' as const,
+    name: 'Aminata Traoré'
   },
   professor: {
     email: 'prof1@mlda.com',
     password: 'password123',
-    role: 'professor' as const
+    role: 'professor' as const,
+    name: 'Fatou Diop'
   },
   student: {
     email: 'student1@mlda.com',
     password: 'password123',
-    role: 'student' as const
+    role: 'student' as const,
+    name: 'Aïcha Kouyaté'
   }
 };
 

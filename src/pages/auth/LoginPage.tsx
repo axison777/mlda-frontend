@@ -142,7 +142,7 @@ export const LoginPage = () => {
                   onClick={() => handleTestLogin(TEST_CREDENTIALS.admin)}
                   className="text-xs"
                 >
-                  👨‍💼 Admin
+                  👩‍💼 {TEST_CREDENTIALS.admin.name}
                 </Button>
                 <Button
                   type="button"
@@ -151,7 +151,7 @@ export const LoginPage = () => {
                   onClick={() => handleTestLogin(TEST_CREDENTIALS.professor)}
                   className="text-xs"
                 >
-                  👨‍🏫 Professeur
+                  👩‍🏫 {TEST_CREDENTIALS.professor.name}
                 </Button>
                 <Button
                   type="button"
@@ -160,7 +160,7 @@ export const LoginPage = () => {
                   onClick={() => handleTestLogin(TEST_CREDENTIALS.student)}
                   className="text-xs"
                 >
-                  👨‍🎓 Étudiant
+                  👩‍🎓 {TEST_CREDENTIALS.student.name}
                 </Button>
               </div>
             </div>
